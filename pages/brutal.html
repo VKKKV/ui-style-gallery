@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09 — Neubrutalism</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --accent: #ffff00; }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 3. NEUBRUTALISM ===== */
+.brutal{background:#fff;color:#000;font-family:system-ui,sans-serif}
+.brutal .badge{background:#000;color:#fff;border-radius:0;border:2px solid #000}
+.brutal h2{font-weight:900;font-size:clamp(28px,5vw,52px);text-transform:uppercase;letter-spacing:-1px}
+.brutal .card{border:3px solid #000;border-radius:0;padding:20px;box-shadow:5px 5px 0 #000;margin-bottom:12px}
+.brutal .card h4{font-size:16px;font-weight:800;margin-bottom:6px;text-transform:uppercase}
+.brutal .card p{font-size:13px;color:#333;line-height:1.5}
+.brutal .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.brutal .metric-card{padding:16px;text-align:center;border:3px solid #000;box-shadow:5px 5px 0 #000}
+.brutal .metric-card .num{font-size:32px;font-weight:900}
+.brutal .metric-card .lbl{font-size:10px;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-top:2px}
+.brutal .btn{background:#000;color:#fff;border:3px solid #000;padding:10px 24px;font-family:system-ui,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:4px 4px 0 #000;transition:box-shadow .1s,transform .1s;border-radius:0}
+.brutal .btn:hover{box-shadow:6px 6px 0 #000;transform:translate(-2px,-2px)}
+.brutal .btn-outline{background:#fff;color:#000}
+.brutal .tag{display:inline-block;background:#ff0;color:#000;padding:2px 8px;font-size:10px;font-weight:700;text-transform:uppercase;border:2px solid #000}
+.brutal .hr{height:3px;background:#000;margin:20px 0;border:none}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">09 Neubrutalism</span>
+  </nav>
+  <!-- ============ 3. NEUBRUTALISM ============ -->
+<section class="section brutal" id="brutal">
+  <div class="content">
+    <div class="section-header">
+      <div class="badge">Style 03</div>
+      <h2>NEUBRUTALISM</h2>
+      <p>3px borders · offset shadows · system fonts · pure colors. What you see is exactly what it is. No deception, no subtlety.</p>
+    </div>
+    <div class="layout-2col">
+      <div>
+        <div class="card">
+          <span class="tag">Hot take</span>
+          <h4>We don't do subtle</h4>
+          <p>Every pixel earns its place. If it doesn't communicate, it doesn't exist. Bold borders, raw colors, no gradients, no blur, no apologies.</p>
+        </div>
+        <div class="card" style="background:#ff0;box-shadow:5px 5px 0 #000">
+          <h4 style="font-size:13px">Notice</h4>
+          <p style="font-size:12px;color:#333;margin-top:6px">This is not a design trend. This is an ethic.</p>
+        </div>
+      </div>
+      <div>
+        <div class="metric-grid">
+          <div class="metric-card" style="background:#fff"><div class="num">84%</div><div class="lbl">faster load</div></div>
+          <div class="metric-card" style="background:#0f0;color:#000"><div class="num">2.3x</div><div class="lbl">conversion</div></div>
+          <div class="metric-card" style="background:#00f;color:#fff"><div class="num">Zero</div><div class="lbl">dependencies</div></div>
+          <div class="metric-card" style="background:#f00;color:#fff"><div class="num">100%</div><div class="lbl">honest</div></div>
+        </div>
+        <hr class="hr">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn">Get started</button>
+          <button class="btn btn-outline">Learn more</button>
+          <button class="btn" style="background:#f00">Danger</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

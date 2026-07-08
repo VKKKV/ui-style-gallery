@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04 — Scroll Animations</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    :root { --accent: #8b5cf6; }
+    body { background: #0a0a0a; }
+
+    /* ── Lenis smooth ── */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+    /* ── Hero ── */
+    .scroll-hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-hero::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+    .scroll-hero-title {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: #fff;
+      letter-spacing: 0.1em;
+      position: relative;
+      z-index: 1;
+    }
+    .scroll-hero-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #555;
+      letter-spacing: 0.3em;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: float 2s ease-in-out infinite;
+    }
+    .scroll-indicator span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: #444;
+      letter-spacing: 0.2em;
+    }
+    .scroll-indicator .arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    /* ── Sections ── */
+    .scroll-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+
+    .reveal-card {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 3rem;
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .reveal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    /* Reveal states */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s var(--out-expo), transform 0.8s var(--out-expo);
+    }
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    [data-reveal="left"] {
+      transform: translateX(-60px);
+    }
+    [data-reveal="left"].is-visible {
+      transform: translateX(0);
+    }
+    [data-reveal="right"] {
+      transform: translateX(60px);
+    }
+    [data-reveal="right"].is-visible {
+      transform: translateX(0);
+    }
+    [data-reveal="scale"] {
+      transform: scale(0.85);
+    }
+    [data-reveal="scale"].is-visible {
+      transform: scale(1);
+    }
+    [data-reveal="rotate"] {
+      transform: rotate(-5deg) scale(0.9);
+    }
+    [data-reveal="rotate"].is-visible {
+      transform: rotate(0deg) scale(1);
+    }
+
+    .reveal-card h3 {
+      font-family: 'Fjalla One', serif;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .reveal-card .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 4px;
+    }
+    .reveal-card p {
+      color: #888;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    /* Staggered grid */
+    .stagger-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      width: 100%;
+    }
+    .stagger-item {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s var(--out-expo), transform 0.6s var(--out-expo), border-color 0.3s;
+    }
+    .stagger-item.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .stagger-item:hover { border-color: var(--accent); }
+    .stagger-item .num {
+      font-family: 'Fjalla One', serif;
+      font-size: 2.5rem;
+      color: rgba(139,92,246,0.2);
+      margin-bottom: 0.5rem;
+    }
+    .stagger-item h4 {
+      font-family: 'Fjalla One', serif;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .stagger-item p {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    /* Parallax text */
+    .parallax-text {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(4rem, 15vw, 12rem);
+      color: rgba(255,255,255,0.03);
+      white-space: nowrap;
+      position: absolute;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    /* Progress bar */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 1001;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">04 Scroll Animations</span>
+  </nav>
+  <div class="scroll-progress" id="progress"></div>
+
+  <section class="scroll-hero">
+    <div class="scroll-hero-title">SCROLL</div>
+    <div class="scroll-hero-sub">LENIS + INTERSECTION OBSERVER</div>
+    <div class="scroll-indicator">
+      <span>SCROLL DOWN</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <section class="scroll-section">
+    <div class="parallax-text" data-parallax="0.3">REVEAL</div>
+    <div class="reveal-card" data-reveal="up" data-reveal-delay="0">
+      <span class="tag">FADE UP</span>
+      <h3>Intersection Observer</h3>
+      <p>Elements fade in from below as they enter the viewport. The observer fires once per element — no reverse animation on scroll back. Uses CSS transitions with expo easing for that satisfying deceleration.</p>
+    </div>
+  </section>
+
+  <section class="scroll-section">
+    <div class="parallax-text" data-parallax="-0.2">DIRECTION</div>
+    <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center; max-width:900px;">
+      <div class="reveal-card" data-reveal="left" data-reveal-delay="0" style="flex:1; min-width:280px;">
+        <span class="tag">SLIDE LEFT</span>
+        <h3>From the Left</h3>
+        <p>Slides in from the left with the same observer logic. Direction is controlled by the data-reveal attribute value.</p>
+      </div>
+      <div class="reveal-card" data-reveal="right" data-reveal-delay="150" style="flex:1; min-width:280px;">
+        <span class="tag">SLIDE RIGHT</span>
+        <h3>From the Right</h3>
+        <p>Same mechanism, opposite direction. The 150ms delay creates a staggered entrance when paired with the left card.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scroll-section">
+    <div class="parallax-text" data-parallax="0.15">STAGGER</div>
+    <div class="stagger-grid">
+      <div class="stagger-item" data-reveal="up" data-reveal-delay="0">
+        <div class="num">01</div>
+        <h4>Observe</h4>
+        <p>IntersectionObserver watches all [data-reveal] elements.</p>
+      </div>
+      <div class="stagger-item" data-reveal="up" data-reveal-delay="100">
+        <div class="num">02</div>
+        <h4>Delay</h4>
+        <p>Each item has a staggered delay for cascade effect.</p>
+      </div>
+      <div class="stagger-item" data-reveal="up" data-reveal-delay="200">
+        <div class="num">03</div>
+        <h4>Trigger</h4>
+        <p>Class is added once — unobserve after reveal.</p>
+      </div>
+      <div class="stagger-item" data-reveal="up" data-reveal-delay="300">
+        <div class="num">04</div>
+        <h4>Animate</h4>
+        <p>CSS transition with expo easing does the rest.</p>
+      </div>
+      <div class="stagger-item" data-reveal="up" data-reveal-delay="400">
+        <div class="num">05</div>
+        <h4>Smooth</h4>
+        <p>Lenis provides butter-smooth scrolling underneath.</p>
+      </div>
+      <div class="stagger-item" data-reveal="up" data-reveal-delay="500">
+        <div class="num">06</div>
+        <h4>Done</h4>
+        <p>Zero dependencies. Pure vanilla JS + CSS.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scroll-section" style="min-height:50vh;">
+    <div class="reveal-card" data-reveal="scale">
+      <span class="tag">SCALE</span>
+      <h3>Scale Entrance</h3>
+      <p>Starts at 0.85 scale and grows to 1.0. Subtle but effective for modal-like cards or featured content blocks.</p>
+    </div>
+  </section>
+
+  <section class="scroll-section" style="min-height:50vh;">
+    <div class="reveal-card" data-reveal="rotate">
+      <span class="tag">ROTATE</span>
+      <h3>Rotated Entrance</h3>
+      <p>Combines a slight rotation with scale for a playful, dynamic reveal. Works great for cards and thumbnails.</p>
+    </div>
+  </section>
+
+  <div style="height:20vh;"></div>
+
+  <script src="../assets/js/scroll-reveal.js"></script>
+  <script>
+    // Lenis smooth scroll (CDN)
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/lenis@1.1.18/dist/lenis.min.js';
+    script.onload = () => {
+      const lenis = new Lenis({ duration: 1.3, smoothTouch: false });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Update scroll progress
+      lenis.on('scroll', (e) => {
+        const scrollTop = e.animatedScroll;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+        document.getElementById('progress').style.width = progress + '%';
+      });
+    };
+    document.head.appendChild(script);
+
+    // Parallax text
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      document.querySelectorAll('[data-parallax]').forEach(el => {
+        const speed = parseFloat(el.dataset.parallax);
+        el.style.transform = `translateX(${scrollY * speed}px)`;
+      });
+    });
+
+    // Init scroll reveal
+    new ScrollReveal({ selector: '[data-reveal]' });
+    new ScrollReveal({ selector: '.stagger-item', activeClass: 'is-visible' });
+  </script>
+</body>
+</html>

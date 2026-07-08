@@ -1,476 +1,191 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark light">
-<title>UI Style Gallery</title>
-<meta name="description" content="5 hand-curated UI styles: Tactical HUD, Dark Swiss, Neubrutalism, Apple/Spatial, Nous/Hermes. Live demos with full CSS.">
-<meta property="og:title" content="UI Style Gallery">
-<meta property="og:description" content="5 hand-curated UI styles with live demos.">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#0000f2">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;color-scheme:dark light}
-body{background:#111;color:#eee;font-family:system-ui,sans-serif;min-height:100vh}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Style Gallery</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <style>
+    .gallery-index {
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(0,16,228,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.05) 0%, transparent 50%),
+        #0a0a0a;
+    }
+    .card[data-theme="op"]        { --accent: #0010e4; }
+    .card[data-theme="shuffle"]   { --accent: #00ff88; }
+    .card[data-theme="marquee"]   { --accent: #ff3366; }
+    .card[data-theme="scroll"]    { --accent: #8b5cf6; }
+    .card[data-theme="cursor"]    { --accent: #ff8800; }
+    .card[data-theme="carousel"]  { --accent: #00d4ff; }
+    .card[data-theme="hud"]       { --accent: #00ff00; }
+    .card[data-theme="swiss"]     { --accent: #ffffff; }
+    .card[data-theme="brutal"]    { --accent: #ffff00; }
+    .card[data-theme="apple"]     { --accent: #0071e3; }
+    .card[data-theme="nous"]      { --accent: #0000f2; }
 
-/* -- Navigation -- */
-.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #222;padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.nav h1{font-size:12px;font-weight:600;color:#666;margin-right:auto;letter-spacing:.5px;text-transform:uppercase}
-.nav a{color:#555;text-decoration:none;font-size:11px;padding:4px 10px;border-radius:4px;transition:.15s;font-weight:500}
-.nav a:hover{color:#fff;background:#222}
+    .card {
+      opacity: 0;
+      animation: fadeInUp 0.6s var(--out-expo) forwards;
+    }
+    .card:nth-child(1)  { animation-delay: 0.05s; }
+    .card:nth-child(2)  { animation-delay: 0.10s; }
+    .card:nth-child(3)  { animation-delay: 0.15s; }
+    .card:nth-child(4)  { animation-delay: 0.20s; }
+    .card:nth-child(5)  { animation-delay: 0.25s; }
+    .card:nth-child(6)  { animation-delay: 0.30s; }
+    .card:nth-child(7)  { animation-delay: 0.35s; }
+    .card:nth-child(8)  { animation-delay: 0.40s; }
+    .card:nth-child(9)  { animation-delay: 0.45s; }
+    .card:nth-child(10) { animation-delay: 0.50s; }
+    .card:nth-child(11) { animation-delay: 0.55s; }
 
-/* -- Shared section helpers -- */
-.section{padding:60px 32px;min-height:80vh;display:flex;flex-direction:column;justify-content:center}
-.content{max-width:1200px;margin:0 auto;width:100%}
-.section-header{margin-bottom:40px;max-width:720px}
-.section-header .badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px}
-.section-header h2{font-size:clamp(24px,4vw,48px);line-height:1.05;margin-bottom:10px;font-weight:700}
-.section-header p{font-size:14px;opacity:.65;max-width:540px;line-height:1.6}
-.layout-2col{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
-
-/* Reduced motion: kill all animations */
-@media (prefers-reduced-motion: reduce) {
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-}
-
-@media(max-width:768px){.layout-2col{grid-template-columns:1fr}}
-
-/* ===== 1. TACTICAL HUD ===== */
-.hud{background:#000;color:#0f0;font-family:'JetBrains Mono',monospace;position:relative}
-.hud::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,0,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,0,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
-.hud .badge{background:rgba(0,255,0,.12);color:#0f0;border:1px solid rgba(0,255,0,.25)}
-.hud h2{color:#0f0;text-shadow:0 0 15px rgba(0,255,0,.4)}
-.hud .card{background:rgba(0,255,0,.03);border:1px solid rgba(0,255,0,.12);border-radius:0;padding:20px;position:relative}
-.hud .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#0f0,transparent)}
-.hud .metric{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(0,255,0,.07);font-size:12px;letter-spacing:.3px}
-.hud .metric .val{color:#0f0;font-weight:500}
-.hud .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:16px 0}
-.hud .stat-box{background:rgba(0,255,0,.04);border:1px solid rgba(0,255,0,.1);padding:14px;text-align:center}
-.hud .stat-box .num{font-size:24px;font-weight:600;color:#0f0}
-.hud .stat-box .label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;opacity:.45;margin-top:4px}
-.hud .btn{background:transparent;color:#0f0;border:1px solid #0f0;padding:8px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:.15s;text-transform:uppercase;letter-spacing:1.5px}
-.hud .btn:hover{background:#0f0;color:#000;box-shadow:0 0 18px rgba(0,255,0,.25)}
-.hud .scanline{position:relative;overflow:hidden}
-@media (prefers-reduced-motion: no-preference) {
-  .hud .scanline::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:rgba(0,255,0,.06);animation:scanline 4s linear infinite;pointer-events:none}
-}
-@keyframes scanline{0%{top:0}100%{top:100%}}
-.hud .blink-cursor{display:inline-block;width:7px;height:14px;background:#0f0;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:3px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hud .term-line{font-size:13px;line-height:1.8}
-.hud .term-line .p{color:#555}
-.hud .term-line .c{color:#0f0}
-
-/* ===== 2. DARK SWISS ===== */
-.dark-swiss{background:#000;color:#f5f5f5;font-family:Inter,sans-serif}
-.dark-swiss .badge{background:rgba(255,255,255,.07);color:#fff;letter-spacing:1.5px}
-.dark-swiss h2{font-weight:700;letter-spacing:-.5px;color:#fff}
-.dark-swiss .rule{width:48px;height:2px;background:#fff;margin:20px 0}
-.dark-swiss .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.dark-swiss .grid-3 > div{border-right:1px solid rgba(255,255,255,.06);padding:28px 24px}
-.dark-swiss .grid-3 > div:last-child{border-right:none}
-.dark-swiss .grid-3 .label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:10px}
-.dark-swiss .grid-3 p{font-size:14px;font-weight:400;line-height:1.7;color:#999}
-.dark-swiss .btn{background:transparent;color:#fff;border:2px solid #fff;padding:10px 28px;font-family:Inter,sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.15s;border-radius:0}
-.dark-swiss .btn:hover{background:#fff;color:#000}
-.dark-swiss .meta{font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase}
-.dark-swiss .demo-type{display:flex;gap:48px;flex-wrap:wrap;margin:24px 0}
-.dark-swiss .demo-type .hL{font-size:36px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
-.dark-swiss .demo-type .hM{font-size:22px;font-weight:600;letter-spacing:-.3px;line-height:1.2}
-.dark-swiss .demo-type .body{font-size:14px;color:#999;max-width:400px;line-height:1.7}
-
-/* ===== 3. NEUBRUTALISM ===== */
-.brutal{background:#fff;color:#000;font-family:system-ui,sans-serif}
-.brutal .badge{background:#000;color:#fff;border-radius:0;border:2px solid #000}
-.brutal h2{font-weight:900;font-size:clamp(28px,5vw,52px);text-transform:uppercase;letter-spacing:-1px}
-.brutal .card{border:3px solid #000;border-radius:0;padding:20px;box-shadow:5px 5px 0 #000;margin-bottom:12px}
-.brutal .card h4{font-size:16px;font-weight:800;margin-bottom:6px;text-transform:uppercase}
-.brutal .card p{font-size:13px;color:#333;line-height:1.5}
-.brutal .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.brutal .metric-card{padding:16px;text-align:center;border:3px solid #000;box-shadow:5px 5px 0 #000}
-.brutal .metric-card .num{font-size:32px;font-weight:900}
-.brutal .metric-card .lbl{font-size:10px;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-top:2px}
-.brutal .btn{background:#000;color:#fff;border:3px solid #000;padding:10px 24px;font-family:system-ui,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:4px 4px 0 #000;transition:box-shadow .1s,transform .1s;border-radius:0}
-.brutal .btn:hover{box-shadow:6px 6px 0 #000;transform:translate(-2px,-2px)}
-.brutal .btn-outline{background:#fff;color:#000}
-.brutal .tag{display:inline-block;background:#ff0;color:#000;padding:2px 8px;font-size:10px;font-weight:700;text-transform:uppercase;border:2px solid #000}
-.brutal .hr{height:3px;background:#000;margin:20px 0;border:none}
-
-/* ===== 4. APPLE / SPATIAL ===== */
-.apple{background:#f5f5f7;color:#1d1d1f;font-family:Inter,sans-serif}
-.apple .badge{background:#1d1d1f;color:#fff;border-radius:20px;font-size:10px;font-weight:600}
-.apple h2{font-weight:700;letter-spacing:-.03em;font-size:clamp(28px,5vw,48px);color:#1d1d1f}
-.apple .sub{font-size:17px;color:#86868b;font-weight:400;max-width:480px;line-height:1.5}
-.apple .card{border-radius:18px;padding:28px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.04)}
-.apple .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
-.apple .feature-grid .feat{background:#fff;border-radius:16px;padding:24px 20px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,.03);transition:.25s}
-.apple .feature-grid .feat:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.06)}
-.apple .feature-grid .feat .ico{font-size:26px;margin-bottom:8px}
-.apple .feature-grid .feat h4{font-size:13px;font-weight:600;margin-bottom:4px}
-.apple .feature-grid .feat p{font-size:12px;color:#86868b;line-height:1.5;max-width:200px;margin:0 auto}
-.apple .btn-pill{background:#0071e3;color:#fff;border:none;padding:11px 24px;font-family:Inter,sans-serif;font-size:13px;font-weight:500;border-radius:40px;cursor:pointer;transition:.2s}
-.apple .btn-pill:hover{background:#0077ed}
-.apple .btn-ghost{background:rgba(0,0,0,.05);color:#1d1d1f;border:none;padding:11px 24px;font-size:13px;font-weight:500;border-radius:40px;cursor:pointer;transition:.2s}
-.apple .btn-ghost:hover{background:rgba(0,0,0,.08)}
-.apple .pill{display:inline-block;background:rgba(0,0,0,.04);color:#1d1d1f;padding:4px 12px;border-radius:40px;font-size:11px;font-weight:500}
-.apple .chip-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-
-/* ===== 5. NOUS / HERMES ===== */
-.nous{background:#0000f2;color:#f5f5f5;font-family:system-ui,sans-serif;position:relative;min-height:100vh;display:flex;flex-direction:column}
-/* Layer 1: hero-art lighten blend */
-.nous .artwork{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;z-index:0}
-.nous .artwork .hero-img{position:absolute;top:8%;right:2%;width:48%;max-width:1128px;mix-blend-mode:lighten;pointer-events:none;user-select:none;-webkit-user-select:none}
-/* Layer 2: vignette */
-.nous .vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 42%, transparent 50%, #0000f2 100%);opacity:.2}
-/* Layer 3: noise */
-.nous .noise{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.15;mix-blend-mode:color-burn;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:12.8rem 12.8rem}
-.nous > *:not(.artwork):not(.vignette):not(.noise){position:relative;z-index:3}
-.nous nav{display:flex;align-items:center;gap:28px;padding:28px 36px;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;flex-wrap:wrap}
-.nous nav a{color:#f5f5f5;text-decoration:none;transition:.15s}
-.nous nav a:hover{opacity:.7}
-.nous nav .brand{font-size:21px;font-weight:800;letter-spacing:0;line-height:1;margin-right:auto}
-.nous nav .brand span{display:block}
-.nous nav .icon-link{opacity:.6;line-height:0;display:flex}
-.nous nav .install-btn{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:4px}
-.nous .hero{padding:20px 36px 60px;max-width:1200px;margin:0 auto;width:100%;flex:1}
-.nous .hero .eye{font-size:12px;font-weight:600;letter-spacing:2px;opacity:.6;margin-bottom:20px}
-.nous .hero h1{font-family:'EB Garamond',Georgia,serif;font-weight:300;font-size:clamp(36px,6vw,72px);letter-spacing:.03em;line-height:.88;color:#f5f5f5;margin-bottom:36px;max-width:800px}
-.nous .hero h1 span{display:block}
-.nous .install-area{background:#fff;border-radius:4px;padding:20px 24px;max-width:600px;margin-bottom:28px}
-.nous .install-area .tabs{display:flex;gap:0;margin-bottom:12px;font-size:11px}
-.nous .install-area .tabs span{padding:4px 14px;color:#999;font-weight:600;cursor:default;border-bottom:2px solid transparent}
-.nous .install-area .tabs .active{color:#0000f2;border-bottom-color:#0000f2}
-.nous .install-area .cmd{font-family:'JetBrains Mono',monospace;font-size:13px;color:#333;display:flex;justify-content:space-between;align-items:center}
-.nous .install-area .cmd code{background:rgba(0,0,0,.04);padding:8px 12px;flex:1;font-size:12px;color:#1d1d1f}
-.nous .install-area .cmd button{background:#0000f2;color:#fff;border:none;padding:8px 16px;font-size:11px;font-weight:600;cursor:pointer;border-radius:2px;margin-left:8px;transition:.15s}
-.nous .install-area .cmd button:hover{opacity:.9}
-.nous .platforms{display:flex;gap:1px;margin-bottom:48px;background:rgba(255,255,255,.08)}
-.nous .platforms .plat{flex:1;min-width:140px;display:flex;flex-direction:column;position:relative;overflow:hidden;aspect-ratio:6/5}
-.nous .platforms .plat .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45;pointer-events:none;user-select:none}
-.nous .platforms .plat .content{position:relative;z-index:1;padding:20px 24px;display:flex;flex-direction:column;height:100%;background:rgba(0,0,242,.3)}
-.nous .platforms .plat .os{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:.4;margin-bottom:6px}
-.nous .platforms .plat h3{font-size:16px;font-weight:600;margin-bottom:4px}
-.nous .platforms .plat .action{font-size:11px;opacity:.5;margin-top:auto;padding-top:8px}
-.nous .features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-bottom:48px}
-.nous .features .feat{position:relative;overflow:hidden;min-height:150px;display:flex;flex-direction:column;justify-content:center}
-.nous .features .feat .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;pointer-events:none;user-select:none}
-.nous .features .feat .content{position:relative;z-index:1;padding:24px 20px;background:#fff;display:flex;flex-direction:column;justify-content:center;min-height:150px}
-.nous .features .feat h3{font-size:12px;font-weight:700;color:#1d1d1f;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
-.nous .features .feat p{font-size:11px;color:#666;line-height:1.5}
-.nous .features-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:.4;margin-bottom:16px}
-.nous .footer-area{border-top:1px solid rgba(255,255,255,.08);padding:48px 36px;text-align:center}
-.nous .footer-area .link{color:#f5f5f5;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.6;transition:.15s}
-.nous .footer-area .link:hover{opacity:1}
-
-@media(max-width:768px){
-  .nous .features{grid-template-columns:repeat(2,1fr)}
-  .nous .platforms{flex-direction:column}
-  .nous .platforms .plat{aspect-ratio:auto;min-height:120px}
-}
-@media(max-width:480px){
-  .nous .features{grid-template-columns:1fr}
-}
-</style>
+    .section-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0 0.5rem;
+    }
+    .section-divider span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: #444;
+      letter-spacing: 0.2em;
+      white-space: nowrap;
+    }
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #222;
+    }
+  </style>
 </head>
 <body>
+  <div class="gallery-index">
+    <h1>UI STYLE GALLERY</h1>
+    <p class="subtitle">// 11 interaction & visual design demos</p>
 
-<nav class="nav">
-  <h1>UI Style Gallery</h1>
-  <a href="#hud">Tactical HUD</a>
-  <a href="#swiss">Dark Swiss</a>
-  <a href="#brutal">Neubrutalism</a>
-  <a href="#apple">Apple / Spatial</a>
-  <a href="#nous">Nous / Hermes</a>
-</nav>
+    <div class="card-grid">
 
-<!-- ============ 1. TACTICAL HUD ============ -->
-<section class="section hud scanline" id="hud">
-  <div class="content" style="position:relative;z-index:1">
-    <div class="section-header">
-      <div class="badge">Style 01</div>
-      <h2>TACTICAL HUD // COMMAND CENTER</h2>
-      <p>Pure black #000 + phosphor green #0f0 + scanlines + grid overlay. Flight instrument meets system console.</p>
-    </div>
-    <div class="layout-2col">
-      <div>
-        <div class="card" style="margin-bottom:12px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:11px;letter-spacing:1px;opacity:.5">
-            <span>SYS.ALPHA // ONLINE</span>
-            <span>UPTIME 142d 7h 23m</span>
-          </div>
-          <div class="stat-grid" style="margin-top:0">
-            <div class="stat-box"><div class="num">847</div><div class="label">requests/s</div></div>
-            <div class="stat-box"><div class="num">99.7</div><div class="label">uptime %</div></div>
-            <div class="stat-box"><div class="num">23</div><div class="label">active nodes</div></div>
-            <div class="stat-box"><div class="num">12ms</div><div class="label">p50 latency</div></div>
-          </div>
+      <!-- ── Interaction Effects ── -->
+      <div class="section-divider"><span>INTERACTION EFFECTS</span></div>
+
+      <a href="pages/op.html" class="card" data-theme="op">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">01</div>
+          <div class="card__title">Opening Animation</div>
+          <div class="card__desc">Noise texture overlay + blue multiply blend + staged entrance sequence with 3D flip.</div>
         </div>
-        <div class="card">
-          <div class="metric"><span>> SYSTEM > MEMORY USAGE</span><span class="val">7.2 / 16 GB</span></div>
-          <div class="metric"><span>> SYSTEM > DISK</span><span class="val">234 / 512 GB</span></div>
-          <div class="metric"><span>> NETWORK > THROUGHPUT</span><span class="val">1.4 Gbps</span></div>
-          <div class="metric"><span>> NETWORK > PACKET LOSS</span><span class="val">0.02%</span></div>
-          <div class="metric"><span>> SECURITY > ENCRYPTION</span><span class="val">AES-256-GCM ✓</span></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/shuffle.html" class="card" data-theme="shuffle">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">02</div>
+          <div class="card__title">ShuffleText</div>
+          <div class="card__desc">Per-character scramble typewriter. Random glyphs converge to final text with staggered timing.</div>
         </div>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div style="font-size:10px;letter-spacing:2px;opacity:.35;margin-bottom:12px">TERMINAL // SESSION 0x4F3A</div>
-          <div class="term-line"><span class="p">root@hq ~ $</span> <span class="c">deploy --target prod --region us-east</span></div>
-          <div style="font-size:13px;line-height:1.8;color:#555;padding-left:14px">  building container image...</div>
-          <div style="font-size:13px;line-height:1.8;color:#555;padding-left:14px">  pushing to registry.ecr.us-east-1</div>
-          <div style="font-size:13px;line-height:1.8;color:#555;padding-left:14px">  deploying 4 service replicas</div>
-          <div style="font-size:13px;line-height:1.8;color:#0f0;padding-left:14px">  ✓ deploy complete (12.4s)</div>
-          <div class="term-line" style="margin-top:4px"><span class="p">root@hq ~ $</span> <span class="blink-cursor"></span></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/marquee.html" class="card" data-theme="marquee">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">03</div>
+          <div class="card__title">Infinite Marquee</div>
+          <div class="card__desc">Dual-band infinite horizontal scroll. Opposing directions, SVG line art, CSS-only motion.</div>
         </div>
-        <div style="display:flex;gap:10px">
-          <button class="btn">Execute</button>
-          <button class="btn" style="opacity:.6">Schedule</button>
-          <button class="btn" style="opacity:.35">Monitor</button>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/scroll.html" class="card" data-theme="scroll">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">04</div>
+          <div class="card__title">Scroll Animations</div>
+          <div class="card__desc">Lenis smooth scroll + IntersectionObserver reveal. Staggered fade-in-up with elastic easing.</div>
         </div>
-        <div style="margin-top:16px;font-size:9px;opacity:.25;letter-spacing:2px;text-align:center">SECURE CONNECTION ACTIVE // ALL SYSTEMS NOMINAL</div>
-      </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/cursor.html" class="card" data-theme="cursor">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">05</div>
+          <div class="card__title">Custom Cursor</div>
+          <div class="card__desc">Magnetic follower cursor with hover state expansion. Lerp-based smooth tracking.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/carousel.html" class="card" data-theme="carousel">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">06</div>
+          <div class="card__title">Carousel + Lightbox</div>
+          <div class="card__desc">Swiper loop carousel with auto-play, parallax slides, and YouTube modal embed.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <!-- ── Visual Themes ── -->
+      <div class="section-divider"><span>VISUAL THEMES</span></div>
+
+      <a href="pages/hud.html" class="card" data-theme="hud">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">07</div>
+          <div class="card__title">Tactical HUD</div>
+          <div class="card__desc">Phosphor green on black. Scanlines, grid overlay, terminal emulator. Flight instrument meets system console.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/swiss.html" class="card" data-theme="swiss">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">08</div>
+          <div class="card__title">Dark Swiss</div>
+          <div class="card__desc">Pure black · Inter only · No shadows. Information hierarchy through weight, spacing, and position alone.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/brutal.html" class="card" data-theme="brutal">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">09</div>
+          <div class="card__title">Neubrutalism</div>
+          <div class="card__desc">3px borders · offset shadows · system fonts · pure colors. No deception, no subtlety.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/apple.html" class="card" data-theme="apple">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">10</div>
+          <div class="card__title">Apple / Spatial</div>
+          <div class="card__desc">#f5f5f7 canvas · large-radius cards · pill buttons · precision typography · translucent whites.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/nous.html" class="card" data-theme="nous">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">11</div>
+          <div class="card__title">Nous / Hermes</div>
+          <div class="card__desc">Electric blue canvas · hero-art lighten blend · SVG noise grain · vignette · EB Garamond headings.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
     </div>
   </div>
-</section>
-
-<!-- ============ 2. DARK SWISS ============ -->
-<section class="section dark-swiss" id="swiss">
-  <div class="content">
-    <div class="section-header">
-      <div class="badge">Style 02</div>
-      <h2>DARK SWISS</h2>
-      <p>Pure black · Inter only · No shadows · No decoration. Information hierarchy through weight, spacing, and position alone.</p>
-    </div>
-    <div class="rule"></div>
-    <div class="grid-3">
-      <div>
-        <div class="label">Typography</div>
-        <p>Inter 300–800 weight. All-caps labels with generous tracking. Body at 14px/1.7, headings in 8pt increments. One font family to rule them all.</p>
-      </div>
-      <div>
-        <div class="label">Grid</div>
-        <p>12-column baseline grid. Every element snaps to it. No orphan widths, no magic numbers. Layout derives from content, not from containers.</p>
-      </div>
-      <div>
-        <div class="label">Color</div>
-        <p>Monochromatic. Black #000, near-white #f5f5f5, grey scale #333→#555→#888→#999 for hierarchy. One accent color at most, used sparingly.</p>
-      </div>
-    </div>
-    <div class="rule"></div>
-    <div class="demo-type">
-      <div>
-        <div class="meta">Heading L</div>
-        <div class="hL">Design is<br>how it works</div>
-      </div>
-      <div>
-        <div class="meta">Heading M</div>
-        <div class="hM">Form follows function</div>
-      </div>
-      <div>
-        <div class="meta">Body</div>
-        <div class="body">Typography is the craft of endowing human language with a durable visible form, and thus with an independent existence.</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:12px;margin-top:8px">
-      <button class="btn">Explore work</button>
-      <button class="btn" style="opacity:.5">About</button>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 3. NEUBRUTALISM ============ -->
-<section class="section brutal" id="brutal">
-  <div class="content">
-    <div class="section-header">
-      <div class="badge">Style 03</div>
-      <h2>NEUBRUTALISM</h2>
-      <p>3px borders · offset shadows · system fonts · pure colors. What you see is exactly what it is. No deception, no subtlety.</p>
-    </div>
-    <div class="layout-2col">
-      <div>
-        <div class="card">
-          <span class="tag">Hot take</span>
-          <h4>We don't do subtle</h4>
-          <p>Every pixel earns its place. If it doesn't communicate, it doesn't exist. Bold borders, raw colors, no gradients, no blur, no apologies.</p>
-        </div>
-        <div class="card" style="background:#ff0;box-shadow:5px 5px 0 #000">
-          <h4 style="font-size:13px">Notice</h4>
-          <p style="font-size:12px;color:#333;margin-top:6px">This is not a design trend. This is an ethic.</p>
-        </div>
-      </div>
-      <div>
-        <div class="metric-grid">
-          <div class="metric-card" style="background:#fff"><div class="num">84%</div><div class="lbl">faster load</div></div>
-          <div class="metric-card" style="background:#0f0;color:#000"><div class="num">2.3x</div><div class="lbl">conversion</div></div>
-          <div class="metric-card" style="background:#00f;color:#fff"><div class="num">Zero</div><div class="lbl">dependencies</div></div>
-          <div class="metric-card" style="background:#f00;color:#fff"><div class="num">100%</div><div class="lbl">honest</div></div>
-        </div>
-        <hr class="hr">
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn">Get started</button>
-          <button class="btn btn-outline">Learn more</button>
-          <button class="btn" style="background:#f00">Danger</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 4. APPLE / SPATIAL ============ -->
-<section class="section apple" id="apple">
-  <div class="content">
-    <div class="section-header" style="text-align:center;margin:0 auto 40px">
-      <div class="badge">Style 04</div>
-      <h2 style="text-align:center">APPLE // SPATIAL</h2>
-      <p style="margin:0 auto">#f5f5f7 canvas · large-radius cards · pill buttons · precision typography · translucent whites.</p>
-      <div class="chip-row" style="margin-top:14px">
-        <span class="pill">Vision Pro</span>
-        <span class="pill">macOS Sequoia</span>
-        <span class="pill">iOS 19</span>
-      </div>
-    </div>
-    <div style="text-align:center;margin-bottom:36px">
-      <h2 style="font-size:clamp(28px,4vw,44px);text-align:center">Spatial Computing.<br>Redesigned.</h2>
-      <div class="sub" style="margin:12px auto 0">The era of boundariless computing is here.</div>
-      <div style="display:flex;justify-content:center;gap:12px;margin-top:20px">
-        <button class="btn-pill">Watch the film</button>
-        <button class="btn-ghost">Learn more</button>
-      </div>
-    </div>
-    <div class="feature-grid">
-      <div class="feat"><div class="ico">🖥️</div><h4>Infinite Canvas</h4><p>Apps float in your space. Arrange them anywhere, at any scale.</p></div>
-      <div class="feat"><div class="ico">👆</div><h4>Eye & Gesture</h4><p>Look, tap, scroll. Your hands stay free.</p></div>
-      <div class="feat"><div class="ico">🔊</div><h4>Spatial Audio</h4><p>Sound surrounds you like nowhere else.</p></div>
-      <div class="feat"><div class="ico">🪟</div><h4>Glass Interface</h4><p>Translucent panels with depth and shadow.</p></div>
-    </div>
-    <div style="margin-top:28px">
-      <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
-        <div>
-          <div style="font-size:12px;color:#86868b;margin-bottom:2px">From $3499 or $291.58/mo for 12 mo.*</div>
-          <div style="font-size:15px;font-weight:600">Apple Vision Pro</div>
-        </div>
-        <button class="btn-pill">Pre-order</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 5. NOUS / HERMES ============ -->
-<section class="nous" id="nous">
-  <!-- Layer 1: hero-art.webp with lighten blend — black disappears, light shapes glow -->
-  <div class="artwork">
-    <img class="hero-img" src="assets/hero-art.webp" alt="" draggable="false">
-  </div>
-  <!-- Layer 2: Vignette — darkens edges -->
-  <div class="vignette"></div>
-  <!-- Layer 3: Noise texture — SVG feTurbulence film grain -->
-  <div class="noise"></div>
-
-  <nav>
-    <div class="brand">
-      <span>HERMES</span>
-      <span>AGENT</span>
-    </div>
-    <a href="#">NOUS</a>
-    <a href="#">DOCS</a>
-    <a href="#" class="icon-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="12" x2="12" y2="12"/></svg>
-    </a>
-    <a href="#" class="icon-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-    </a>
-    <a href="#">PORTAL</a>
-    <a href="#" class="install-btn">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      INSTALL
-    </a>
-  </nav>
-
-  <div class="hero">
-    <div class="eye">OPEN SOURCE • MIT LICENSE</div>
-    <h1>
-      <span>THE AGENT</span>
-      <span>THAT GROWS</span>
-      <span>WITH YOU</span>
-    </h1>
-
-    <div class="install-area">
-      <div class="tabs">
-        <span class="active">macOS / Linux</span>
-        <span>Windows</span>
-      </div>
-      <div class="cmd">
-        <code>curl -fsSL https://hermes-agent.sh/install | sh</code>
-        <button>Copy</button>
-      </div>
-    </div>
-
-    <div class="platforms">
-      <div class="plat">
-        <img class="art" src="assets/platform-art-mac.webp" alt="" draggable="false">
-        <div class="content">
-          <div class="os">macOS 12+</div>
-          <h3>Mac OS</h3>
-          <div class="action">DOWNLOAD →</div>
-        </div>
-      </div>
-      <div class="plat">
-        <img class="art" src="assets/platform-art-windows.webp" alt="" draggable="false">
-        <div class="content">
-          <div class="os">Windows 10/11</div>
-          <h3>Windows</h3>
-          <div class="action">DOWNLOAD →</div>
-        </div>
-      </div>
-      <div class="plat">
-        <img class="art" src="assets/platform-art-linux.webp" alt="" draggable="false">
-        <div class="content">
-          <div class="os">Any Distro</div>
-          <h3>Linux</h3>
-          <div class="action">INSTALL VIA TERMINAL →</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="features-label">FEATURE PREVIEW</div>
-
-    <div class="features">
-      <div class="feat">
-        <img class="art" src="assets/feature-connect.webp" alt="" draggable="false">
-        <div class="content"><h3>Lives Everywhere</h3><p>Terminal, IDE, web — meet Hermes where you work.</p></div>
-      </div>
-      <div class="feat">
-        <img class="art" src="assets/feature-memory.webp" alt="" draggable="false">
-        <div class="content"><h3>Persistent Memory</h3><p>Remembers context across sessions automatically.</p></div>
-      </div>
-      <div class="feat">
-        <img class="art" src="assets/feature-automation.webp" alt="" draggable="false">
-        <div class="content"><h3>Focused Automation</h3><p>Delegate tasks, get results, stay in flow.</p></div>
-      </div>
-      <div class="feat">
-        <img class="art" src="assets/feature-tasks.webp" alt="" draggable="false">
-        <div class="content"><h3>Tasks Multiplied</h3><p>Spawn sub-agents for parallel problem solving.</p></div>
-      </div>
-      <div class="feat">
-        <img class="art" src="assets/feature-browse.webp" alt="" draggable="false">
-        <div class="content"><h3>Browse the Web</h3><p>Search, scrape, interact — all from the agent.</p></div>
-      </div>
-      <div class="feat">
-        <img class="art" src="assets/feature-sandbox.webp" alt="" draggable="false">
-        <div class="content"><h3>Isolated Sandboxing</h3><p>Every execution runs in a clean environment.</p></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-area">
-    <a href="#" class="link">VIEW ALL OUR PLANS →</a>
-  </div>
-</section>
-
 </body>
 </html>

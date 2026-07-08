@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 — Custom Cursor</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    :root { --accent: #ff8800; }
+    body {
+      background: #0a0a0a;
+      cursor: none;
+    }
+
+    /* ── Cursor Elements ── */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s, width 0.3s var(--out-expo), height 0.3s var(--out-expo), margin 0.3s var(--out-expo);
+      transform: translate(-100px, -100px);
+      will-change: transform;
+      margin-left: -4px;
+      margin-top: -4px;
+    }
+    .cursor.is-hover {
+      width: 14px; height: 14px;
+      margin-left: -7px;
+      margin-top: -7px;
+      mix-blend-mode: difference;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,136,0,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0;
+      transition: opacity 0.3s, width 0.4s var(--out-expo), height 0.4s var(--out-expo),
+                  margin 0.4s var(--out-expo), border-color 0.3s, background 0.3s;
+      transform: translate(-100px, -100px);
+      will-change: transform;
+      margin-left: -20px;
+      margin-top: -20px;
+    }
+    .cursor-follower.is-hover {
+      width: 64px; height: 64px;
+      margin-left: -32px;
+      margin-top: -32px;
+      border-color: var(--accent);
+      background: rgba(255,136,0,0.08);
+    }
+
+    /* ── Content ── */
+    .cursor-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      gap: 3rem;
+    }
+
+    .cursor-title {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(2rem, 8vw, 5rem);
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    .cursor-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #555;
+      letter-spacing: 0.2em;
+      text-align: center;
+    }
+
+    /* Hover targets */
+    .hover-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .hover-card {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .hover-card:hover {
+      border-color: var(--accent);
+      background: #1a1a1a;
+    }
+    .hover-card .icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .hover-card h4 {
+      font-family: 'Fjalla One', serif;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .hover-card p {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    /* Hover link */
+    .hover-link {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: #fff;
+      position: relative;
+      display: inline-block;
+      transition: color 0.3s;
+    }
+    .hover-link:hover { color: var(--accent); }
+    .hover-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.4s var(--out-expo);
+    }
+    .hover-link:hover::after { width: 100%; }
+
+    /* Hover image */
+    .hover-image-wrap {
+      width: 300px;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #222;
+      transition: border-color 0.3s, transform 0.4s var(--out-expo);
+    }
+    .hover-image-wrap:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+    .hover-image-wrap .placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fjalla One', serif;
+      font-size: 1.5rem;
+      color: rgba(255,255,255,0.1);
+    }
+
+    /* Lerp trail visualization */
+    .trail-section {
+      margin-top: 3rem;
+      text-align: center;
+    }
+    .trail-section p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #444;
+      margin-top: 1rem;
+    }
+
+    /* Mobile fallback message */
+    @media (hover: none) {
+      .cursor, .cursor-follower { display: none; }
+      body { cursor: auto; }
+      .mobile-msg {
+        display: block !important;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        color: #555;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+    }
+    .mobile-msg { display: none; }
+
+    /* ── Click Ripple ── */
+    .click-ripple {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9997;
+      animation: rippleOut 0.6s var(--out-expo) forwards;
+    }
+    @keyframes rippleOut {
+      from {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+      }
+      to {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">05 Custom Cursor</span>
+  </nav>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <div class="cursor-page">
+    <p class="mobile-msg">Custom cursor requires a mouse / trackpad. Touch devices use native cursor.</p>
+
+    <div class="cursor-title" data-cursor-hover>CUSTOM CURSOR</div>
+    <div class="cursor-sub">LERP-BASED MAGNETIC FOLLOWER</div>
+
+    <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center; align-items:center;">
+      <a class="hover-link" data-cursor-hover>HOVER LINK</a>
+      <span style="color:#333;">|</span>
+      <a class="hover-link" data-cursor-hover>ANOTHER LINK</a>
+    </div>
+
+    <div class="hover-image-wrap" data-cursor-hover>
+      <div class="placeholder">IMAGE HOVER</div>
+    </div>
+
+    <div class="hover-grid">
+      <div class="hover-card" data-cursor-hover>
+        <div class="icon">◎</div>
+        <h4>EXPAND</h4>
+        <p>Follower grows on hover with elastic easing.</p>
+      </div>
+      <div class="hover-card" data-cursor-hover>
+        <div class="icon">△</div>
+        <h4>BLEND</h4>
+        <p>Dot uses mix-blend-mode difference on hover.</p>
+      </div>
+      <div class="hover-card" data-cursor-hover>
+        <div class="icon">□</div>
+        <h4>LERP</h4>
+        <p>Both dots follow mouse with different lerp speeds.</p>
+      </div>
+    </div>
+
+    <div class="trail-section">
+      <div class="cursor-sub">CLICK ANYWHERE FOR RIPPLE</div>
+      <p>Dot speed: 0.15 · Follower speed: 0.08</p>
+    </div>
+  </div>
+
+  <script src="../assets/js/custom-cursor.js"></script>
+  <script>
+    new CustomCursor({
+      cursor: '#cursor',
+      follower: '#cursorFollower',
+      hoverTargets: '[data-cursor-hover]',
+      speed: 0.15,
+      followerSpeed: 0.08,
+    });
+
+    // Click ripple
+    document.addEventListener('click', (e) => {
+      const ripple = document.createElement('div');
+      ripple.className = 'click-ripple';
+      ripple.style.left = e.clientX + 'px';
+      ripple.style.top = e.clientY + 'px';
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+  </script>
+</body>
+</html>

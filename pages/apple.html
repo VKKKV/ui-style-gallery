@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 — Apple / Spatial</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --accent: #0071e3; }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 4. APPLE / SPATIAL ===== */
+.apple{background:#f5f5f7;color:#1d1d1f;font-family:Inter,sans-serif}
+.apple .badge{background:#1d1d1f;color:#fff;border-radius:20px;font-size:10px;font-weight:600}
+.apple h2{font-weight:700;letter-spacing:-.03em;font-size:clamp(28px,5vw,48px);color:#1d1d1f}
+.apple .sub{font-size:17px;color:#86868b;font-weight:400;max-width:480px;line-height:1.5}
+.apple .card{border-radius:18px;padding:28px;background:#fff;box-shadow:0 1px 12px rgba(0,0,0,.04)}
+.apple .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.apple .feature-grid .feat{background:#fff;border-radius:16px;padding:24px 20px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,.03);transition:.25s}
+.apple .feature-grid .feat:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.06)}
+.apple .feature-grid .feat .ico{font-size:26px;margin-bottom:8px}
+.apple .feature-grid .feat h4{font-size:13px;font-weight:600;margin-bottom:4px}
+.apple .feature-grid .feat p{font-size:12px;color:#86868b;line-height:1.5;max-width:200px;margin:0 auto}
+.apple .btn-pill{background:#0071e3;color:#fff;border:none;padding:11px 24px;font-family:Inter,sans-serif;font-size:13px;font-weight:500;border-radius:40px;cursor:pointer;transition:.2s}
+.apple .btn-pill:hover{background:#0077ed}
+.apple .btn-ghost{background:rgba(0,0,0,.05);color:#1d1d1f;border:none;padding:11px 24px;font-size:13px;font-weight:500;border-radius:40px;cursor:pointer;transition:.2s}
+.apple .btn-ghost:hover{background:rgba(0,0,0,.08)}
+.apple .pill{display:inline-block;background:rgba(0,0,0,.04);color:#1d1d1f;padding:4px 12px;border-radius:40px;font-size:11px;font-weight:500}
+.apple .chip-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">10 Apple / Spatial</span>
+  </nav>
+  <!-- ============ 4. APPLE / SPATIAL ============ -->
+<section class="section apple" id="apple">
+  <div class="content">
+    <div class="section-header" style="text-align:center;margin:0 auto 40px">
+      <div class="badge">Style 04</div>
+      <h2 style="text-align:center">APPLE // SPATIAL</h2>
+      <p style="margin:0 auto">#f5f5f7 canvas · large-radius cards · pill buttons · precision typography · translucent whites.</p>
+      <div class="chip-row" style="margin-top:14px">
+        <span class="pill">Vision Pro</span>
+        <span class="pill">macOS Sequoia</span>
+        <span class="pill">iOS 19</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-bottom:36px">
+      <h2 style="font-size:clamp(28px,4vw,44px);text-align:center">Spatial Computing.<br>Redesigned.</h2>
+      <div class="sub" style="margin:12px auto 0">The era of boundariless computing is here.</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:20px">
+        <button class="btn-pill">Watch the film</button>
+        <button class="btn-ghost">Learn more</button>
+      </div>
+    </div>
+    <div class="feature-grid">
+      <div class="feat"><div class="ico">🖥️</div><h4>Infinite Canvas</h4><p>Apps float in your space. Arrange them anywhere, at any scale.</p></div>
+      <div class="feat"><div class="ico">👆</div><h4>Eye & Gesture</h4><p>Look, tap, scroll. Your hands stay free.</p></div>
+      <div class="feat"><div class="ico">🔊</div><h4>Spatial Audio</h4><p>Sound surrounds you like nowhere else.</p></div>
+      <div class="feat"><div class="ico">🪟</div><h4>Glass Interface</h4><p>Translucent panels with depth and shadow.</p></div>
+    </div>
+    <div style="margin-top:28px">
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+        <div>
+          <div style="font-size:12px;color:#86868b;margin-bottom:2px">From $3499 or $291.58/mo for 12 mo.*</div>
+          <div style="font-size:15px;font-weight:600">Apple Vision Pro</div>
+        </div>
+        <button class="btn-pill">Pre-order</button>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

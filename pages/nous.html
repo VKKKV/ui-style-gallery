@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11 — Nous / Hermes</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #0000f2; }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 5. NOUS / HERMES ===== */
+.nous{background:#0000f2;color:#f5f5f5;font-family:system-ui,sans-serif;position:relative;min-height:100vh;display:flex;flex-direction:column}
+/* Layer 1: hero-art lighten blend */
+.nous .artwork{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;z-index:0}
+.nous .artwork .hero-img{position:absolute;top:8%;right:2%;width:48%;max-width:1128px;mix-blend-mode:lighten;pointer-events:none;user-select:none;-webkit-user-select:none}
+/* Layer 2: vignette */
+.nous .vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 42%, transparent 50%, #0000f2 100%);opacity:.2}
+/* Layer 3: noise */
+.nous .noise{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.15;mix-blend-mode:color-burn;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:12.8rem 12.8rem}
+.nous > *:not(.artwork):not(.vignette):not(.noise){position:relative;z-index:3}
+.nous nav{display:flex;align-items:center;gap:28px;padding:28px 36px;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;flex-wrap:wrap}
+.nous nav a{color:#f5f5f5;text-decoration:none;transition:.15s}
+.nous nav a:hover{opacity:.7}
+.nous nav .brand{font-size:21px;font-weight:800;letter-spacing:0;line-height:1;margin-right:auto}
+.nous nav .brand span{display:block}
+.nous nav .icon-link{opacity:.6;line-height:0;display:flex}
+.nous nav .install-btn{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:4px}
+.nous .hero{padding:20px 36px 60px;max-width:1200px;margin:0 auto;width:100%;flex:1}
+.nous .hero .eye{font-size:12px;font-weight:600;letter-spacing:2px;opacity:.6;margin-bottom:20px}
+.nous .hero h1{font-family:'EB Garamond',Georgia,serif;font-weight:300;font-size:clamp(36px,6vw,72px);letter-spacing:.03em;line-height:.88;color:#f5f5f5;margin-bottom:36px;max-width:800px}
+.nous .hero h1 span{display:block}
+.nous .install-area{background:#fff;border-radius:4px;padding:20px 24px;max-width:600px;margin-bottom:28px}
+.nous .install-area .tabs{display:flex;gap:0;margin-bottom:12px;font-size:11px}
+.nous .install-area .tabs span{padding:4px 14px;color:#999;font-weight:600;cursor:default;border-bottom:2px solid transparent}
+.nous .install-area .tabs .active{color:#0000f2;border-bottom-color:#0000f2}
+.nous .install-area .cmd{font-family:'JetBrains Mono',monospace;font-size:13px;color:#333;display:flex;justify-content:space-between;align-items:center}
+.nous .install-area .cmd code{background:rgba(0,0,0,.04);padding:8px 12px;flex:1;font-size:12px;color:#1d1d1f}
+.nous .install-area .cmd button{background:#0000f2;color:#fff;border:none;padding:8px 16px;font-size:11px;font-weight:600;cursor:pointer;border-radius:2px;margin-left:8px;transition:.15s}
+.nous .install-area .cmd button:hover{opacity:.9}
+.nous .platforms{display:flex;gap:1px;margin-bottom:48px;background:rgba(255,255,255,.08)}
+.nous .platforms .plat{flex:1;min-width:140px;display:flex;flex-direction:column;position:relative;overflow:hidden;aspect-ratio:6/5}
+.nous .platforms .plat .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45;pointer-events:none;user-select:none}
+.nous .platforms .plat .content{position:relative;z-index:1;padding:20px 24px;display:flex;flex-direction:column;height:100%;background:rgba(0,0,242,.3)}
+.nous .platforms .plat .os{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:.4;margin-bottom:6px}
+.nous .platforms .plat h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.nous .platforms .plat .action{font-size:11px;opacity:.5;margin-top:auto;padding-top:8px}
+.nous .features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-bottom:48px}
+.nous .features .feat{position:relative;overflow:hidden;min-height:150px;display:flex;flex-direction:column;justify-content:center}
+.nous .features .feat .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;pointer-events:none;user-select:none}
+.nous .features .feat .content{position:relative;z-index:1;padding:24px 20px;background:#fff;display:flex;flex-direction:column;justify-content:center;min-height:150px}
+.nous .features .feat h3{font-size:12px;font-weight:700;color:#1d1d1f;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.nous .features .feat p{font-size:11px;color:#666;line-height:1.5}
+.nous .features-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;opacity:.4;margin-bottom:16px}
+.nous .footer-area{border-top:1px solid rgba(255,255,255,.08);padding:48px 36px;text-align:center}
+.nous .footer-area .link{color:#f5f5f5;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.6;transition:.15s}
+.nous .footer-area .link:hover{opacity:1}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">11 Nous / Hermes</span>
+  </nav>
+  <!-- ============ 5. NOUS / HERMES ============ -->
+<section class="nous" id="nous">
+  <!-- Layer 1: hero-art.webp with lighten blend — black disappears, light shapes glow -->
+  <div class="artwork">
+    <img class="hero-img" src="../assets/hero-art.webp" alt="" draggable="false">
+  </div>
+  <!-- Layer 2: Vignette — darkens edges -->
+  <div class="vignette"></div>
+  <!-- Layer 3: Noise texture — SVG feTurbulence film grain -->
+  <div class="noise"></div>
+
+  <nav>
+    <div class="brand">
+      <span>HERMES</span>
+      <span>AGENT</span>
+    </div>
+    <a href="#">NOUS</a>
+    <a href="#">DOCS</a>
+    <a href="#" class="icon-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="12" x2="12" y2="12"/></svg>
+    </a>
+    <a href="#" class="icon-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+    </a>
+    <a href="#">PORTAL</a>
+    <a href="#" class="install-btn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      INSTALL
+    </a>
+  </nav>
+
+  <div class="hero">
+    <div class="eye">OPEN SOURCE • MIT LICENSE</div>
+    <h1>
+      <span>THE AGENT</span>
+      <span>THAT GROWS</span>
+      <span>WITH YOU</span>
+    </h1>
+
+    <div class="install-area">
+      <div class="tabs">
+        <span class="active">macOS / Linux</span>
+        <span>Windows</span>
+      </div>
+      <div class="cmd">
+        <code>curl -fsSL https://hermes-agent.sh/install | sh</code>
+        <button>Copy</button>
+      </div>
+    </div>
+
+    <div class="platforms">
+      <div class="plat">
+        <img class="art" src="../assets/platform-art-mac.webp" alt="" draggable="false">
+        <div class="content">
+          <div class="os">macOS 12+</div>
+          <h3>Mac OS</h3>
+          <div class="action">DOWNLOAD →</div>
+        </div>
+      </div>
+      <div class="plat">
+        <img class="art" src="../assets/platform-art-windows.webp" alt="" draggable="false">
+        <div class="content">
+          <div class="os">Windows 10/11</div>
+          <h3>Windows</h3>
+          <div class="action">DOWNLOAD →</div>
+        </div>
+      </div>
+      <div class="plat">
+        <img class="art" src="../assets/platform-art-linux.webp" alt="" draggable="false">
+        <div class="content">
+          <div class="os">Any Distro</div>
+          <h3>Linux</h3>
+          <div class="action">INSTALL VIA TERMINAL →</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-label">FEATURE PREVIEW</div>
+
+    <div class="features">
+      <div class="feat">
+        <img class="art" src="../assets/feature-connect.webp" alt="" draggable="false">
+        <div class="content"><h3>Lives Everywhere</h3><p>Terminal, IDE, web — meet Hermes where you work.</p></div>
+      </div>
+      <div class="feat">
+        <img class="art" src="../assets/feature-memory.webp" alt="" draggable="false">
+        <div class="content"><h3>Persistent Memory</h3><p>Remembers context across sessions automatically.</p></div>
+      </div>
+      <div class="feat">
+        <img class="art" src="../assets/feature-automation.webp" alt="" draggable="false">
+        <div class="content"><h3>Focused Automation</h3><p>Delegate tasks, get results, stay in flow.</p></div>
+      </div>
+      <div class="feat">
+        <img class="art" src="../assets/feature-tasks.webp" alt="" draggable="false">
+        <div class="content"><h3>Tasks Multiplied</h3><p>Spawn sub-agents for parallel problem solving.</p></div>
+      </div>
+      <div class="feat">
+        <img class="art" src="../assets/feature-browse.webp" alt="" draggable="false">
+        <div class="content"><h3>Browse the Web</h3><p>Search, scrape, interact — all from the agent.</p></div>
+      </div>
+      <div class="feat">
+        <img class="art" src="../assets/feature-sandbox.webp" alt="" draggable="false">
+        <div class="content"><h3>Isolated Sandboxing</h3><p>Every execution runs in a clean environment.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-area">
+    <a href="#" class="link">VIEW ALL OUR PLANS →</a>
+  </div>
+</section>
+</body>
+</html>

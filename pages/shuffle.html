@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02 — ShuffleText</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    :root { --accent: #00ff88; }
+    body {
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .shuffle-hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      gap: 3rem;
+    }
+
+    /* Main big title */
+    .shuffle-title {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(3rem, 12vw, 8rem);
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+    .shuffle-title .char {
+      display: inline-block;
+      transition: color 0.3s;
+    }
+    .shuffle-title .char.is-scrambling {
+      color: var(--accent);
+    }
+
+    /* Subtitle */
+    .shuffle-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      color: #555;
+      letter-spacing: 0.2em;
+    }
+
+    /* Hover row */
+    .shuffle-hover-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .shuffle-hover-item {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border: 1px solid #222;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .shuffle-hover-item:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .shuffle-hover-item::after {
+      content: 'HOVER ME';
+      position: absolute;
+      bottom: -1.4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      color: #333;
+      letter-spacing: 0.15em;
+    }
+
+    /* Controls */
+    .shuffle-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .ctrl-btn {
+      padding: 0.6rem 1.5rem;
+      border: 1px solid #333;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #888;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+    }
+    .ctrl-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,255,136,0.05);
+    }
+    .ctrl-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Input playground */
+    .shuffle-playground {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .shuffle-input {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      width: 300px;
+      max-width: 90vw;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .shuffle-input:focus { border-color: var(--accent); }
+    .shuffle-input::placeholder { color: #333; }
+
+    .shuffle-output {
+      font-family: 'Fjalla One', serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: #fff;
+      min-height: 1.2em;
+      text-align: center;
+    }
+
+    /* Blinking cursor */
+    .shuffle-title .cursor-blink {
+      display: inline-block;
+      width: 3px;
+      height: 0.8em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: baseline;
+      animation: pulse 0.8s steps(1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Scanline overlay */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">02 ShuffleText</span>
+  </nav>
+
+  <div class="scanlines"></div>
+
+  <div class="shuffle-hero">
+    <div class="shuffle-title" id="mainTitle" data-shuffle-auto data-shuffle-delay="500">
+      SHUFFLETEXT
+    </div>
+    <div class="shuffle-sub">PER-CHARACTER SCRAMBLE ANIMATION</div>
+
+    <div class="shuffle-hover-row">
+      <span class="shuffle-hover-item" data-shuffle-hover>DYNAMICS</span>
+      <span class="shuffle-hover-item" data-shuffle-hover>QUANTUM</span>
+      <span class="shuffle-hover-item" data-shuffle-hover>NEBULOUS</span>
+      <span class="shuffle-hover-item" data-shuffle-hover>CIPHER</span>
+    </div>
+
+    <div class="shuffle-controls">
+      <button class="ctrl-btn" onclick="replayMain()">REPLAY</button>
+      <button class="ctrl-btn" data-speed="20" onclick="setSpeed(this, 20)">FAST</button>
+      <button class="ctrl-btn active" data-speed="35" onclick="setSpeed(this, 35)">NORMAL</button>
+      <button class="ctrl-btn" data-speed="80" onclick="setSpeed(this, 80)">SLOW</button>
+    </div>
+
+    <div class="shuffle-playground">
+      <input class="shuffle-input" id="playInput" placeholder="Type something..." maxlength="20">
+      <div class="shuffle-output" id="playOutput"></div>
+    </div>
+  </div>
+
+  <script src="../assets/js/shuffle-text.js"></script>
+  <script>
+    let currentSpeed = 35;
+
+    function replayMain() {
+      const el = document.getElementById('mainTitle');
+      if (el._shuffleText) {
+        el._shuffleText.frameInterval = currentSpeed;
+        el._shuffleText.start();
+      }
+    }
+
+    function setSpeed(btn, speed) {
+      currentSpeed = speed;
+      document.querySelectorAll('.ctrl-btn[data-speed]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Playground input
+    const playInput = document.getElementById('playInput');
+    const playOutput = document.getElementById('playOutput');
+    let playShuffle = null;
+
+    playInput.addEventListener('input', () => {
+      const val = playInput.value.toUpperCase();
+      if (!val) {
+        playOutput.textContent = '';
+        return;
+      }
+      playOutput.textContent = val;
+      if (!playShuffle) {
+        playShuffle = new ShuffleText(playOutput, {
+          frameInterval: 30,
+          sourceChars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*',
+        });
+      } else {
+        playShuffle.originalText = val;
+      }
+      playShuffle.start();
+    });
+  </script>
+</body>
+</html>

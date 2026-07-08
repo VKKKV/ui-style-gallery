@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 — Dark Swiss</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --accent: #ffffff; }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 2. DARK SWISS ===== */
+.dark-swiss{background:#000;color:#f5f5f5;font-family:Inter,sans-serif}
+.dark-swiss .badge{background:rgba(255,255,255,.07);color:#fff;letter-spacing:1.5px}
+.dark-swiss h2{font-weight:700;letter-spacing:-.5px;color:#fff}
+.dark-swiss .rule{width:48px;height:2px;background:#fff;margin:20px 0}
+.dark-swiss .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.dark-swiss .grid-3 > div{border-right:1px solid rgba(255,255,255,.06);padding:28px 24px}
+.dark-swiss .grid-3 > div:last-child{border-right:none}
+.dark-swiss .grid-3 .label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:10px}
+.dark-swiss .grid-3 p{font-size:14px;font-weight:400;line-height:1.7;color:#999}
+.dark-swiss .btn{background:transparent;color:#fff;border:2px solid #fff;padding:10px 28px;font-family:Inter,sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.15s;border-radius:0}
+.dark-swiss .btn:hover{background:#fff;color:#000}
+.dark-swiss .meta{font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase}
+.dark-swiss .demo-type{display:flex;gap:48px;flex-wrap:wrap;margin:24px 0}
+.dark-swiss .demo-type .hL{font-size:36px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
+.dark-swiss .demo-type .hM{font-size:22px;font-weight:600;letter-spacing:-.3px;line-height:1.2}
+.dark-swiss .demo-type .body{font-size:14px;color:#999;max-width:400px;line-height:1.7}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">08 Dark Swiss</span>
+  </nav>
+  <!-- ============ 2. DARK SWISS ============ -->
+<section class="section dark-swiss" id="swiss">
+  <div class="content">
+    <div class="section-header">
+      <div class="badge">Style 02</div>
+      <h2>DARK SWISS</h2>
+      <p>Pure black · Inter only · No shadows · No decoration. Information hierarchy through weight, spacing, and position alone.</p>
+    </div>
+    <div class="rule"></div>
+    <div class="grid-3">
+      <div>
+        <div class="label">Typography</div>
+        <p>Inter 300–800 weight. All-caps labels with generous tracking. Body at 14px/1.7, headings in 8pt increments. One font family to rule them all.</p>
+      </div>
+      <div>
+        <div class="label">Grid</div>
+        <p>12-column baseline grid. Every element snaps to it. No orphan widths, no magic numbers. Layout derives from content, not from containers.</p>
+      </div>
+      <div>
+        <div class="label">Color</div>
+        <p>Monochromatic. Black #000, near-white #f5f5f5, grey scale #333→#555→#888→#999 for hierarchy. One accent color at most, used sparingly.</p>
+      </div>
+    </div>
+    <div class="rule"></div>
+    <div class="demo-type">
+      <div>
+        <div class="meta">Heading L</div>
+        <div class="hL">Design is<br>how it works</div>
+      </div>
+      <div>
+        <div class="meta">Heading M</div>
+        <div class="hM">Form follows function</div>
+      </div>
+      <div>
+        <div class="meta">Body</div>
+        <div class="body">Typography is the craft of endowing human language with a durable visible form, and thus with an independent existence.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px">
+      <button class="btn">Explore work</button>
+      <button class="btn" style="opacity:.5">About</button>
+    </div>
+  </div>
+</section>
+</body>
+</html>
