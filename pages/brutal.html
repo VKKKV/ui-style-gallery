@@ -3,21 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Foundry — hardware compliance</title>
-  <meta name="description" content="Regulatory compliance for hardware startups. CE, FCC, UKCA, UL — certified and shipping." />
+  <title>Foundry Compliance — hardware certification</title>
+  <meta name="description" content="Regulatory compliance for hardware startups." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(11% 0.005 60); --color-paper-2: oklch(15% 0.006 60);
-      --color-ink: oklch(96% 0.005 90); --color-ink-soft: oklch(72% 0.006 90);
-      --color-rule: oklch(28% 0.006 60); --color-accent: oklch(86% 0.18 95);
-      --font-display: "Bebas Neue", "Oswald", "Barlow Condensed", "Helvetica Neue", "Arial Narrow", sans-serif;
-      --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; --space-3xl: 6.5rem;
-    }
+    /* Hallmark · theme: brutal · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(11% 0.005 60); --color-paper-2: oklch(15% 0.006 60); --color-ink: oklch(96% 0.005 90); --color-ink-soft: oklch(72% 0.006 90); --color-rule: oklch(28% 0.006 60); --color-accent: oklch(86% 0.18 95); --font-display: "Bebas Neue", "Oswald", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; --space-3xl: 6.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
     .page { max-width: 80rem; margin: 0 auto; padding: 0; }
@@ -38,25 +32,25 @@
     .colophon { padding: var(--space-md) var(--space-lg); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .principles__list { grid-template-columns: 1fr; } .hero { padding: var(--space-xl) var(--space-lg); } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">FOUNDRY <strong style="color:var(--color-accent)">·</strong> compliance</span><span>CE · FCC · UKCA · UL</span></header>
+    <header class="masthead"><span class="masthead__brand">FOUNDRY</span><span>CE &middot; FCC &middot; UKCA &middot; UL</span></header>
     <section class="hero">
-      <h1 class="quote">Ship certified.<br>Not <span class="quote__strike">sorry</span>.<span class="quote__attr">— We handle the paperwork. You handle the product.</span></h1>
+      <h1 class="quote">Ship certified. Not <span class="quote__strike">sorry</span>.<span class="quote__attr">&mdash; We handle the paperwork. You handle the product.</span></h1>
     </section>
-    <section class="principles" aria-labelledby="principles-h">
-      <h2 class="principles__head" id="principles-h">§ How we work</h2>
+    <section class="principles"><h2 class="principles__head">How we work</h2>
       <ol class="principles__list">
-        <li class="principle"><span class="principle__num">01.</span><h3 class="principle__head">Test first</h3><p class="principle__body">We pre-test your design before the formal lab. Emissions, ESD, immunity &mdash; catch failures when a PCB spin costs $200, not $20,000.</p></li>
-        <li class="principle"><span class="principle__num">02.</span><h3 class="principle__head">One submission</h3><p class="principle__body">Our review process aims for a single pass at the notified body. No rework loops, no surprise test failures, no missed deadlines.</p></li>
-        <li class="principle"><span class="principle__num">03.</span><h3 class="principle__head">Market-wide</h3><p class="principle__body">CE, FCC, UKCA, UL, RCM &mdash; we certify for every market you ship to. One engineering review, multiple declarations.</p></li>
-        <li class="principle"><span class="principle__num">04.</span><h3 class="principle__head">Fixed price</h3><p class="principle__body">A single quote per project, not hourly. No surprise bills when testing runs longer than expected. What we quote is what you pay.</p></li>
+        <li class="principle"><span class="principle__num">01</span><h3 class="principle__head">Test first</h3><p class="principle__body">Pre-test your design before the formal lab. Catch failures when a PCB spin costs $200.</p></li>
+        <li class="principle"><span class="principle__num">02</span><h3 class="principle__head">One submission</h3><p class="principle__body">A single pass at the notified body. No rework loops, no surprise failures.</p></li>
+        <li class="principle"><span class="principle__num">03</span><h3 class="principle__head">Market-wide</h3><p class="principle__body">CE, FCC, UKCA, UL, RCM. One engineering review, multiple declarations.</p></li>
+        <li class="principle"><span class="principle__num">04</span><h3 class="principle__head">Fixed price</h3><p class="principle__body">A single quote per project, not hourly. What we quote is what you pay.</p></li>
       </ol>
     </section>
-    <footer class="colophon"><span>Foundry · 28 Queen St, London</span><span><a href="mailto:cert@foundry.compliance">cert@foundry.compliance</a></span></footer>
+    <footer class="colophon"><span>Foundry &middot; 28 Queen St &middot; London</span><span><a href="mailto:cert@foundry.compliance">cert@foundry.compliance</a></span></footer>
   </main>
 </body>
 </html>

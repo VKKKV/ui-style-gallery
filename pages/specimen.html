@@ -4,21 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Specimen — editorial design workshop</title>
-  <meta name="description" content="A workshop for designers who work with words — typography, grids, and the craft of editorial layout." />
+  <meta name="description" content="A workshop for designers who work with words." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,340;9..144,400;9..144,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(96% 0.018 80); --color-paper-2: oklch(93% 0.020 80);
-      --color-ink: oklch(18% 0.014 60); --color-ink-soft: oklch(45% 0.010 60);
-      --color-rule: oklch(78% 0.006 60); --color-accent: #FC4C02;
-      --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-    }
+    /* Hallmark · theme: specimen · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(96% 0.018 80); --color-paper-2: oklch(93% 0.020 80); --color-ink: oklch(18% 0.014 60); --color-ink-soft: oklch(45% 0.010 60); --color-rule: oklch(78% 0.006 60); --color-accent: #FC4C02; --font-display: "Fraunces", Georgia, serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 56rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -39,27 +32,27 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">Specimen</span><span>editorial workshop · Portland</span></header>
+    <header class="masthead"><span class="masthead__brand">Specimen</span><span>editorial workshop &middot; Portland</span></header>
     <section class="hero">
-      <p class="hero__label">Typography · grid · print</p>
+      <p class="hero__label">Typography &middot; grid &middot; print</p>
       <h1 class="hero__title">Words first.<br>Everything else follows.</h1>
-      <p class="hero__desc">A workshop for designers who work with words. Three days of typesetting, grid systems, and editorial layout — from specimen sheets to finished pages.</p>
-      <div class="hero__actions"><a href="#" class="btn btn--primary">Register now</a><a href="#" class="btn">View curriculum</a></div>
+      <p class="hero__desc">Three days of typesetting, grid systems, and editorial layout &mdash; from specimen sheets to finished pages.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--primary">Register now</a><a href="#" class="btn">Curriculum</a></div>
     </section>
-    <section aria-labelledby="wshop-h">
-      <h2 class="section-head" id="wshop-h">Workshops</h2>
+    <section aria-labelledby="wshop-h"><h2 class="section-head" id="wshop-h">Workshops</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Typography</h3><p>Choosing typefaces, setting type, building a typographic scale. From letter-spacing to leading, from book to poster.</p></li>
-        <li class="card"><h3>Grid</h3><p>Modular grids, column systems, and the baseline grid. Laying out pages that feel inevitable, not arbitrary.</p></li>
-        <li class="card"><h3>Print</h3><p>Preparing files for print. Spot colours, trapping, imposition, paper selection. From screen to sheet.</p></li>
+        <li class="card"><h3>Typography</h3><p>Choosing typefaces, setting type, building a typographic scale. From letter-spacing to leading.</p></li>
+        <li class="card"><h3>Grid</h3><p>Modular grids, column systems, and baseline grids. Pages that feel inevitable.</p></li>
+        <li class="card"><h3>Print</h3><p>Preparing files for print. Spot colours, trapping, imposition, paper selection.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Specimen · 324 SW Morrison, Portland</span><span><a href="mailto:type@specimen.workshop">type@specimen.workshop</a></span></footer>
+    <footer class="colophon"><span>Specimen &middot; 324 SW Morrison &middot; Portland</span><span><a href="mailto:type@specimen.workshop">type@specimen.workshop</a></span></footer>
   </main>
 </body>
 </html>

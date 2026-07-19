@@ -4,21 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coyote — trail running gear</title>
-  <meta name="description" content="Light, durable, repairable gear for trail and road runners." />
+  <meta name="description" content="Light, durable, repairable gear for trail runners." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(99% 0.003 30); --color-paper-2: oklch(96% 0.005 30);
-      --color-ink: oklch(12% 0.006 30); --color-ink-soft: oklch(45% 0.006 30);
-      --color-rule: oklch(82% 0.006 30); --color-accent: oklch(58% 0.19 35);
-      --font-display: "Inter Tight", "Inter", sans-serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-    }
+    /* Hallmark · theme: sport · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(99% 0.003 30); --color-paper-2: oklch(96% 0.005 30); --color-ink: oklch(12% 0.006 30); --color-ink-soft: oklch(45% 0.006 30); --color-rule: oklch(82% 0.006 30); --color-accent: oklch(58% 0.19 35); --font-display: "Inter Tight", "Inter", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -34,34 +27,33 @@
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border-color: var(--color-accent); }
     .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); list-style: none; padding: 0; margin: 0; }
-    .card { }
-    .card h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; margin: 0 0 var(--space-sm); text-transform: uppercase; letter-spacing: -0.005em; color: var(--color-ink); }
-    .card p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .card h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; margin: 0 0 var(--space-sm); text-transform: uppercase; color: var(--color-ink); }
     .card__meta { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin-block-end: var(--space-2xs); }
+    .card p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
     .colophon { padding-block-start: var(--space-lg); border-block-start: 2px solid var(--color-accent); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">COYOTE</span><span>trail running · est. 2020</span></header>
+    <header class="masthead"><span class="masthead__brand">COYOTE</span><span>trail running &middot; est. 2020</span></header>
     <section class="hero">
       <p class="hero__label">Gear for the long run</p>
-      <h1 class="hero__title">Built for the<br><span>long run</span>.</h1>
-      <p class="hero__desc">Lightweight, durable, repairable gear designed with trail and ultrarunners. Every product is field-tested for at least a season before we sell it.</p>
+      <h1 class="hero__title">Built for the <span>long run</span>.</h1>
+      <p class="hero__desc">Light, durable, repairable gear tested for at least a season before we sell it.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">Shop now</a><a href="#" class="btn">Our story</a></div>
     </section>
-    <section aria-labelledby="kit-h">
-      <h2 class="section-head" id="kit-h">Core kit</h2>
+    <section aria-labelledby="kit-h"><h2 class="section-head" id="kit-h">Core kit</h2>
       <ul class="grid-3">
-        <li class="card"><p class="card__meta">Vest · 8L</p><h3>Trail vest</h3><p>Dyneema composite shell, welded seams, four-way stretch. Two bottle holsters, six pockets. Weighs 142g. Made in Portland.</p></li>
-        <li class="card"><p class="card__meta">Shoe · 260g</p><h3>Speed shoe</h3><p>Zero-drop platform, Vibram Megagrip outsole, recycled mesh upper. Built for fast packers who cover 50K before lunch.</p></li>
-        <li class="card"><p class="card__meta">Shell · 185g</p><h3>Wind shell</h3><p>Pertex Quantum Air, fully seam-taped, stows in its own pocket. Windproof, breathable, and small enough to forget you&rsquo;re carrying it.</p></li>
+        <li class="card"><p class="card__meta">Vest &middot; 8L</p><h3>Trail vest</h3><p>Dyneema shell, welded seams. Two bottle holsters, six pockets. 142g. Made in Portland.</p></li>
+        <li class="card"><p class="card__meta">Shoe &middot; 260g</p><h3>Speed shoe</h3><p>Zero-drop, Vibram Megagrip, recycled mesh. Built for 50K days.</p></li>
+        <li class="card"><p class="card__meta">Shell &middot; 185g</p><h3>Wind shell</h3><p>Pertex Quantum Air, seam-taped. Windproof, breathable, stows in its pocket.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Coyote · Portland, OR</span><span><a href="mailto:trail@coyote.run">trail@coyote.run</a></span></footer>
+    <footer class="colophon"><span>Coyote &middot; Portland, OR</span><span><a href="mailto:trail@coyote.run">trail@coyote.run</a></span></footer>
   </main>
 </body>
 </html>

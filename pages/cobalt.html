@@ -4,20 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Distil — content extraction API</title>
-  <meta name="description" content="Extract structured data from any document — PDFs, invoices, contracts, forms. One API, any format." />
+  <meta name="description" content="Extract structured data from any document — PDFs, invoices, contracts, forms." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(98.5% 0.004 250); --color-paper-2: oklch(95% 0.008 250);
-      --color-ink: oklch(24% 0.020 258); --color-ink-soft: oklch(50% 0.025 258);
-      --color-rule: oklch(88% 0.015 258); --color-accent: oklch(58% 0.20 256);
-      --font-display: "Space Grotesk", sans-serif;
-      --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-    }
+    /* Hallmark · theme: cobalt · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(98.5% 0.004 250); --color-paper-2: oklch(95% 0.008 250); --color-ink: oklch(24% 0.020 258); --color-ink-soft: oklch(50% 0.025 258); --color-rule: oklch(88% 0.015 258); --color-accent: oklch(58% 0.20 256); --font-display: "Space Grotesk", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -40,14 +34,15 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">distil</span><span>extraction API · v3.1</span></header>
+    <header class="masthead"><span class="masthead__brand">distil</span><span>extraction API &middot; v3.1</span></header>
     <section class="hero">
-      <p class="hero__label">PDF · invoices · contracts · forms</p>
+      <p class="hero__label">PDF &middot; invoices &middot; contracts &middot; forms</p>
       <h1 class="hero__title">Extract <span>what matters</span>.</h1>
       <p class="hero__desc">One API that turns any document into structured data. Invoices, contracts, forms, reports &mdash; Distil reads them all and returns clean JSON. No training, no templates, no manual mapping.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">Start free</a><a href="#" class="btn btn--outline">API docs</a></div>
@@ -55,12 +50,12 @@
     <section aria-labelledby="how-h">
       <h2 class="section-head" id="how-h">How it works</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Upload</h3><p>Send any document via REST API or web UI. PDF, image, DOCX, scanned &mdash; Distil handles them all with the same endpoint.</p></li>
-        <li class="card"><h3>Extract</h3><p>AI-powered extraction identifies fields, tables, signatures, and metadata. Confidence scores for every extracted value.</p></li>
-        <li class="card"><h3>Deliver</h3><p>Structured JSON delivered to your webhook or returned synchronously. Integrate with Zapier, Make, or your own pipeline.</p></li>
+        <li class="card"><h3>Upload</h3><p>Send any document via REST API or web UI. PDF, image, DOCX, scanned &mdash; Distil handles them all.</p></li>
+        <li class="card"><h3>Extract</h3><p>AI-powered extraction identifies fields, tables, signatures, and metadata with confidence scores.</p></li>
+        <li class="card"><h3>Deliver</h3><p>Structured JSON to your webhook or returned synchronously. Integrate with Zapier, Make, or your own pipeline.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Distil · extraction API</span><span><a href="mailto:hi@distil.dev">hi@distil.dev</a></span></footer>
+    <footer class="colophon"><span>Distil &middot; extraction API</span><span><a href="mailto:hi@distil.dev">hi@distil.dev</a></span></footer>
   </main>
 </body>
 </html>

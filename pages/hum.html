@@ -8,8 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    /* Hallmark · theme: hum · macrostructure: App-Hero · brand: Bubble (sourdough) */
+    /* Hallmark · theme: hum · pre-emit: P4 H4 E4 S4 R4 V4 */
     :root {
       --color-paper: oklch(97% 0.012 95);
       --color-paper-2: oklch(94% 0.018 92);
@@ -18,353 +19,76 @@
       --color-rule: oklch(85% 0.016 90);
       --color-accent: oklch(86% 0.18 95);
       --color-accent-dim: oklch(86% 0.18 95 / 0.15);
-
-      --font-display: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-      --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-
-      --space-3xs: 0.25rem;
-      --space-2xs: 0.5rem;
-      --space-xs: 0.75rem;
-      --space-sm: 1rem;
-      --space-md: 1.5rem;
-      --space-lg: 2rem;
-      --space-xl: 3rem;
-      --space-2xl: 4.5rem;
-      --space-3xl: 6.5rem;
-
+      --font-display: "Plus Jakarta Sans", sans-serif;
+      --font-body: "Plus Jakarta Sans", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem;
+      --space-xl: 3rem; --space-2xl: 4.5rem; --space-3xl: 6.5rem;
       --measure-prose: 56ch;
       --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --dur-micro: 120ms;
     }
-
-    * { box-sizing: border-box; }
-    html, body { overflow-x: clip; }
-
-    body {
-      margin: 0;
-      background: var(--color-paper);
-      color: var(--color-ink);
-      font-family: var(--font-body);
-      font-size: 1.0625rem;
-      line-height: 1.55;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .page {
-      max-width: 64rem;
-      margin: 0 auto;
-      padding: var(--space-2xl) var(--space-lg) var(--space-3xl);
-    }
-
-    /* Masthead */
-    .masthead {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-ink-soft);
-      border-block-end: 1px solid var(--color-rule);
-      padding-block-end: var(--space-sm);
-      margin-block-end: var(--space-2xl);
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 56rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-3xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
     .masthead__brand { color: var(--color-ink); font-weight: 600; }
-
-    /* Hero */
-    .hero {
-      margin-block-end: var(--space-3xl);
-    }
-
-    .hero__label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-accent);
-      margin: 0 0 var(--space-sm);
-    }
-
-    .hero__title {
-      margin: 0 0 var(--space-md);
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
-      font-weight: 800;
-      line-height: 0.92;
-      letter-spacing: -0.03em;
-      color: var(--color-ink);
-    }
-
-    .hero__title em {
-      font-style: normal;
-      color: var(--color-accent);
-    }
-
-    .hero__desc {
-      font-size: 1.1rem;
-      color: var(--color-ink-soft);
-      max-width: var(--measure-prose);
-      line-height: 1.6;
-      margin: 0 0 var(--space-lg);
-    }
-
-    .hero__actions {
-      display: flex;
-      gap: var(--space-sm);
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5em;
-      padding: 0.75em 1.5em;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 600;
-      line-height: 1;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 999px;
-      transition: transform var(--dur-micro) var(--ease-out),
-                  box-shadow var(--dur-micro) var(--ease-out);
-    }
-
-    .btn:active { transform: scale(0.97); }
-
-    .btn--primary {
-      background: var(--color-accent);
-      color: var(--color-ink);
-      border: none;
-      box-shadow: 0 4px 14px var(--color-accent-dim);
-    }
-
-    .btn--primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px var(--color-accent-dim);
-    }
-
-    .btn--outline {
-      background: transparent;
-      color: var(--color-ink);
-      border: 2px solid var(--color-ink);
-    }
-
-    .btn--outline:hover {
-      background: var(--color-ink);
-      color: var(--color-paper);
-    }
-
-    /* How it works */
-    .steps {
-      margin-block-end: var(--space-3xl);
-      padding-block-start: var(--space-2xl);
-      border-block-start: 1px solid var(--color-rule);
-    }
-
-    .steps__head {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-ink-soft);
-      margin: 0 0 var(--space-lg);
-    }
-
-    .steps__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-lg);
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .step {
-      counter-increment: step-counter;
-    }
-
-    .steps__grid {
-      counter-reset: step-counter;
-    }
-
-    .step__num {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-accent);
-      display: block;
-      margin-block-end: var(--space-xs);
-    }
-
-    .step h3 {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin: 0 0 var(--space-2xs);
-      color: var(--color-ink);
-    }
-
-    .step p {
-      font-size: 0.95rem;
-      color: var(--color-ink-soft);
-      line-height: 1.55;
-      margin: 0;
-    }
-
-    /* Features */
-    .features {
-      margin-block-end: var(--space-3xl);
-      padding-block-start: var(--space-2xl);
-      border-block-start: 1px solid var(--color-rule);
-    }
-
-    .features__head {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-ink-soft);
-      margin: 0 0 var(--space-lg);
-    }
-
-    .features__list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm) var(--space-lg);
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .features__item {
-      padding: var(--space-md);
-      background: var(--color-paper-2);
-      border-radius: 16px;
-    }
-
-    .features__item h4 {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0 0 var(--space-3xs);
-      color: var(--color-ink);
-    }
-
-    .features__item p {
-      font-size: 0.9rem;
-      color: var(--color-ink-soft);
-      line-height: 1.5;
-      margin: 0;
-    }
-
-    /* Footer / signoff */
-    .colophon {
-      padding-block-start: var(--space-lg);
-      border-block-start: 1px solid var(--color-rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-ink-soft);
-    }
-
-    .colophon a {
-      color: var(--color-ink-soft);
-      text-decoration: none;
-      border-block-end: 1px solid transparent;
-      transition: color var(--dur-micro) var(--ease-out);
-    }
-
-    .colophon a:hover {
-      color: var(--color-accent);
-    }
-
-    @media (max-width: 48rem) {
-      .page { padding: var(--space-xl) var(--space-md) var(--space-2xl); }
-      .steps__grid { grid-template-columns: 1fr; gap: var(--space-md); }
-      .features__list { grid-template-columns: 1fr; }
-    }
+    .hero { margin-block-end: var(--space-3xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 800; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); }
+    .hero__title em { font-style: normal; color: var(--color-accent); }
+    .hero__desc { font-size: 1.1rem; color: var(--color-ink-soft); max-width: var(--measure-prose); line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .hero__actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.75em 1.5em; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms var(--ease-out); }
+    .btn--primary { background: var(--color-accent); color: var(--color-ink); border: none; }
+    .btn--primary:hover { transform: translateY(-2px); }
+    .btn--outline { background: transparent; color: var(--color-ink); border: 2px solid var(--color-ink); }
+    .btn--outline:hover { background: var(--color-ink); color: var(--color-paper); }
+    .steps { margin-block-end: var(--space-3xl); padding-block-start: var(--space-2xl); border-block-start: 1px solid var(--color-rule); }
+    .steps__head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .steps__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); list-style: none; padding: 0; margin: 0; }
+    .step__num { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); display: block; margin-block-end: var(--space-xs); }
+    .step h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin: 0 0 var(--space-2xs); color: var(--color-ink); }
+    .step p { font-size: 0.95rem; color: var(--color-ink-soft); line-height: 1.55; margin: 0; }
+    .features { margin-block-end: var(--space-3xl); padding-block-start: var(--space-2xl); border-block-start: 1px solid var(--color-rule); }
+    .features__head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .features__list { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-sm) var(--space-lg); list-style: none; padding: 0; margin: 0; }
+    .features__item { padding: var(--space-md); background: var(--color-paper-2); border-radius: 16px; }
+    .features__item h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin: 0 0 var(--space-3xs); color: var(--color-ink); }
+    .features__item p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
+    .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .steps__grid { grid-template-columns: 1fr; } .features__list { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead">
-      <span class="masthead__brand">Bubble</span>
-      <span>v2.4 · sourdough companion</span>
-    </header>
-
+    <header class="masthead"><span class="masthead__brand">Bubble</span><span>v2.4 &middot; sourdough companion</span></header>
     <section class="hero">
-      <p class="hero__label">Guided sourdough · no dogma</p>
-      <h1 class="hero__title">Your starter<br>deserves <em>better care</em>.</h1>
-      <p class="hero__desc">
-        Bubble is a bake-along app that watches your starter, not the clock.
-        Feed reminders, hydration adjustments, and a step-through bake flow
-        that adapts to your kitchen's temperature and schedule — not the other way around.
-      </p>
-      <div class="hero__actions">
-        <a href="#" class="btn btn--primary">Start your starter →</a>
-        <a href="#" class="btn btn--outline">See the science</a>
-      </div>
+      <p class="hero__label">Guided sourdough &middot; no dogma</p>
+      <h1 class="hero__title">Your starter deserves <em>better care</em>.</h1>
+      <p class="hero__desc">Bubble is a bake-along app that watches your starter, not the clock. Feed reminders, hydration adjustments, and a step-through bake flow that adapts to your kitchen&rsquo;s temperature.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--primary">Start your starter &rarr;</a><a href="#" class="btn btn--outline">See the science</a></div>
     </section>
-
     <section class="steps" aria-labelledby="how-h">
       <h2 class="steps__head" id="how-h">How it works</h2>
       <ol class="steps__grid">
-        <li class="step">
-          <span class="step__num">01</span>
-          <h3>Log a feeding</h3>
-          <p>Tell Bubble what you fed your starter — flour type, ratio, temperature. The app learns its rhythm within three feeds.</p>
-        </li>
-        <li class="step">
-          <span class="step__num">02</span>
-          <h3>Watch the curve</h3>
-          <p>A live activity graph shows rise, peak, and fall. No more guessing whether it's ready — the peak is marked for you.</p>
-        </li>
-        <li class="step">
-          <span class="step__num">03</span>
-          <h3>Bake when it says</h3>
-          <p>Bubble sends a notification at peak activity and opens a timed bake flow. Stretch-and-fold intervals, proof timers, oven temp — all pre-set for your recipe.</p>
-        </li>
+        <li class="step"><span class="step__num">01</span><h3>Log a feeding</h3><p>Tell Bubble what you fed your starter &mdash; flour type, ratio, temperature. The app learns its rhythm within three feeds.</p></li>
+        <li class="step"><span class="step__num">02</span><h3>Watch the curve</h3><p>A live activity graph shows rise, peak, and fall. No more guessing &mdash; the peak is marked for you.</p></li>
+        <li class="step"><span class="step__num">03</span><h3>Bake when it says</h3><p>Bubble notifies you at peak activity and opens a timed bake flow. All pre-set for your recipe.</p></li>
       </ol>
     </section>
-
     <section class="features" aria-labelledby="feat-h">
       <h2 class="features__head" id="feat-h">What you get</h2>
       <ul class="features__list">
-        <li class="features__item">
-          <h4>Temperature-aware scheduling</h4>
-          <p>Feeds and bakes adjust to your room temp. A 28°C kitchen gets different timing than 18°C — Bubble handles it.</p>
-        </li>
-        <li class="features__item">
-          <h4>Recipe scaling</h4>
-          <p>Enter the flour weight you want to use. Bubble recalculates hydration, preferment, and bulk fermentation times.</p>
-        </li>
-        <li class="features__item">
-          <h4>Starter journal</h4>
-          <p>Every feed logged. Every bake rated. Over time, Bubble builds a profile of what your starter likes — and what it doesn't.</p>
-        </li>
-        <li class="features__item">
-          <h4>Offline-first</h4>
-          <p>No account required. No cloud dependency. The app works in airplane mode — your starter doesn't need a server.</p>
-        </li>
+        <li class="features__item"><h4>Temperature-aware</h4><p>Feeds and bakes adjust to your room temp. A warm kitchen gets different timing than a cool one.</p></li>
+        <li class="features__item"><h4>Recipe scaling</h4><p>Enter flour weight. Bubble recalculates hydration, preferment, and bulk fermentation.</p></li>
+        <li class="features__item"><h4>Starter journal</h4><p>Every feed logged, every bake rated. Over time, Bubble knows what your starter likes.</p></li>
+        <li class="features__item"><h4>Offline-first</h4><p>No account required. Works in airplane mode &mdash; your starter doesn&rsquo;t need a server.</p></li>
       </ul>
     </section>
-
-    <footer class="colophon">
-      <span>Bubble · a bake-along app · v2.4</span>
-      <span><a href="mailto:hello@bubble.bake">hello@bubble.bake</a></span>
-    </footer>
+    <footer class="colophon"><span>Bubble &middot; a bake-along app</span><span><a href="mailto:hello@bubble.bake">hello@bubble.bake</a></span></footer>
   </main>
 </body>
 </html>

@@ -4,27 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Canonical — infrastructure monitoring</title>
-  <meta name="description" content="Watch everything, anywhere. Real-time infrastructure monitoring built for teams that ship fast." />
+  <meta name="description" content="Watch everything, anywhere. Real-time infrastructure monitoring." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: terminal · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(0% 0 0);
-      --color-paper-2: oklch(8% 0.005 140);
-      --color-ink: oklch(92% 0.010 140);
-      --color-ink-soft: oklch(55% 0.015 140);
-      --color-rule: oklch(20% 0.008 140);
-      --color-accent: oklch(78% 0.19 138);
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+    :root { --color-paper: oklch(0% 0 0); --color-paper-2: oklch(8% 0.005 140); --color-ink: oklch(92% 0.010 140); --color-ink-soft: oklch(55% 0.015 140); --color-rule: oklch(20% 0.008 140); --color-accent: oklch(78% 0.19 138); --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-mono); font-size: 0.9375rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    .page { max-width: 64rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
     .masthead { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
     .masthead__brand { color: var(--color-accent); font-weight: 700; }
     .hero { margin-block-end: var(--space-2xl); }
@@ -32,7 +22,7 @@
     .hero__title { margin: 0 0 var(--space-md); font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.03em; color: var(--color-ink); }
     .hero__title span { color: var(--color-accent); }
     .hero__desc { font-size: 0.95rem; color: var(--color-ink-soft); max-width: 52ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--color-rule); background: transparent; color: var(--color-ink); transition: border-color 120ms var(--ease-out), color 120ms var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--color-rule); background: transparent; color: var(--color-ink); transition: border-color 120ms ease, color 120ms ease; }
     .btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border-color: var(--color-accent); }
     .btn--primary:hover { background: transparent; color: var(--color-accent); }
@@ -49,24 +39,24 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3, .metrics { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">canonical</span><span>v3.2 · infrastructure monitoring</span></header>
+    <header class="masthead"><span class="masthead__brand">canonical</span><span>v3.2 &middot; infra monitoring</span></header>
     <section class="hero">
-      <p class="hero__label">Real-time · every stack</p>
+      <p class="hero__label">Real-time &middot; every stack</p>
       <h1 class="hero__title">$ watch <span>everything</span></h1>
-      <p class="hero__desc">One agent, every metric. CPU, memory, disk, network, custom counters — streamed to a single dashboard with 15-second alerting. No agents to configure, no dashboards to build from scratch.</p>
-      <div class="hero__actions"><a href="#" class="btn btn--primary">Deploy now</a><a href="#" class="btn">Read the docs <span style="color:var(--color-ink-soft)">→</span></a></div>
+      <p class="hero__desc">One agent, every metric. CPU, memory, disk, network &mdash; streamed to a single dashboard with 15-second alerting.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--primary">Deploy now</a><a href="#" class="btn">Read the docs &rarr;</a></div>
     </section>
-    <section aria-labelledby="cmd-h">
-      <h2 class="section-head" id="cmd-h">Commands</h2>
+    <section aria-labelledby="cmd-h"><h2 class="section-head" id="cmd-h">Commands</h2>
       <ul class="grid-3">
-        <li class="cmd"><h3>status</h3><p>See every node in your infrastructure, live. Green for healthy, red for failing, yellow for degraded. Aggregated by service, region, and team.</p></li>
-        <li class="cmd"><h3>tail</h3><p>Stream logs from any node or service in real time. Filter by severity, source, or regex. Share a view with your team via URL.</p></li>
-        <li class="cmd"><h3>stats</h3><p>Historic and real-time graphs for every metric. CPU, memory, disk I/O, network latency — all with automatic anomaly detection.</p></li>
+        <li class="cmd"><h3>status</h3><p>See every node in your infrastructure, live. Green for healthy, red for failing.</p></li>
+        <li class="cmd"><h3>tail</h3><p>Stream logs from any node in real time. Filter by severity, source, or regex.</p></li>
+        <li class="cmd"><h3>stats</h3><p>Historic and real-time graphs with automatic anomaly detection.</p></li>
       </ul>
     </section>
     <div class="metrics">
@@ -74,7 +64,7 @@
       <div class="metric"><span class="num">15s</span><span class="label">alert latency</span></div>
       <div class="metric"><span class="num">99.99%</span><span class="label">uptime</span></div>
     </div>
-    <footer class="colophon"><span>canonical · open-source monitoring</span><span><a href="mailto:ops@canonical.dev">ops@canonical.dev</a></span></footer>
+    <footer class="colophon"><span>canonical &middot; open-source monitoring</span><span><a href="mailto:ops@canonical.dev">ops@canonical.dev</a></span></footer>
   </main>
 </body>
 </html>

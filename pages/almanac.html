@@ -4,21 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anya Park — product designer</title>
-  <meta name="description" content="Portfolio of Anya Park — product designer working on durable systems, from transit to tools." />
+  <meta name="description" content="Portfolio of Anya Park, product designer." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(96% 0.008 260); --color-paper-2: oklch(93% 0.010 260);
-      --color-ink: oklch(18% 0.012 260); --color-ink-soft: oklch(42% 0.010 260);
-      --color-rule: oklch(80% 0.008 260); --color-accent: oklch(38% 0.10 260);
-      --font-display: "Hanken Grotesk", "Inter", sans-serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-    }
+    /* Hallmark · theme: almanac · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(96% 0.008 260); --color-paper-2: oklch(93% 0.010 260); --color-ink: oklch(18% 0.012 260); --color-ink-soft: oklch(42% 0.010 260); --color-rule: oklch(80% 0.008 260); --color-accent: oklch(38% 0.10 260); --font-display: "Hanken Grotesk", "Inter", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -38,27 +31,27 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">Anya Park</span><span>product designer · Portland</span></header>
+    <header class="masthead"><span class="masthead__brand">Anya Park</span><span>product designer &middot; Portland</span></header>
     <section class="hero">
-      <p class="hero__label">Systems · tools · interfaces</p>
+      <p class="hero__label">Systems &middot; tools &middot; interfaces</p>
       <h1 class="hero__title">Design for durable systems.</h1>
-      <p class="hero__desc">I design tools and interfaces for people who work with complex systems &mdash; transit operators, farmers, field researchers. Products that earn their place through reliability, not novelty.</p>
+      <p class="hero__desc">Tools and interfaces for people who work with complex systems &mdash; transit operators, farmers, field researchers. Reliability, not novelty.</p>
       <div class="hero__actions"><a href="#" class="btn">View work</a><a href="#" class="btn">Contact</a></div>
     </section>
-    <section aria-labelledby="work-h">
-      <h2 class="section-head" id="work-h">Selected work</h2>
+    <section aria-labelledby="work-h"><h2 class="section-head" id="work-h">Selected work</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Transit app</h3><p>Real-time arrival predictions for regional bus networks. Designed with operators, for riders. Used by 200K daily commuters.</p></li>
-        <li class="card"><h3>Farmstand</h3><p>Inventory and sales platform for small farmers markets. Offline-first, cash-register simple. Running at 40+ markets across Oregon.</p></li>
-        <li class="card"><h3>Field guide</h3><p>Mobile data collection tool for ecological field surveys. Used by the BLM and three university research groups to track endangered species.</p></li>
+        <li class="card"><h3>Transit app</h3><p>Real-time arrival predictions for regional bus. Used by 200K daily commuters.</p></li>
+        <li class="card"><h3>Farmstand</h3><p>Offline-first inventory platform for farmers markets. Running at 40+ markets across Oregon.</p></li>
+        <li class="card"><h3>Field guide</h3><p>Mobile data collection for ecological surveys. Used by BLM and three university research groups.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Anya Park · PDX</span><span><a href="mailto:anya@park.design">anya@park.design</a></span></footer>
+    <footer class="colophon"><span>Anya Park &middot; PDX</span><span><a href="mailto:anya@park.design">anya@park.design</a></span></footer>
   </main>
 </body>
 </html>

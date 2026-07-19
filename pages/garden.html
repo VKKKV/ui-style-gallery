@@ -4,28 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hollowback Apiary — wildflower honey</title>
-  <meta name="description" content="Small-batch wildflower honey from the Klamath-Siskiyou corridor. Cold-extracted, unfiltered, unpasteurized." />
+  <meta name="description" content="Small-batch wildflower honey from the Klamath-Siskiyou corridor." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,340;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: garden · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(95.5% 0.022 92);
-      --color-paper-2: oklch(93% 0.024 92);
-      --color-ink: oklch(24% 0.052 152);
-      --color-ink-soft: oklch(37% 0.06 145);
-      --color-rule: oklch(82% 0.030 90);
-      --color-accent: oklch(47% 0.13 140);
-      --color-accent-warm: oklch(54% 0.14 46);
-      --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --measure-prose: 56ch;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+    :root { --color-paper: oklch(95.5% 0.022 92); --color-paper-2: oklch(93% 0.024 92); --color-ink: oklch(24% 0.052 152); --color-ink-soft: oklch(37% 0.06 145); --color-rule: oklch(82% 0.030 90); --color-accent: oklch(47% 0.13 140); --font-display: "Fraunces", Georgia, serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -34,54 +20,45 @@
     .hero { margin-block-end: var(--space-2xl); }
     .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
     .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 340; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); font-variation-settings: "opsz" 72; }
-    .hero__title em { font-style: italic; color: var(--color-accent-warm); }
-    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: var(--measure-prose); line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 8px; transition: transform 120ms var(--ease-out); }
+    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 8px; transition: transform 120ms ease; }
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border: none; }
     .btn--primary:hover { transform: translateY(-2px); }
     .btn--outline { background: transparent; color: var(--color-ink); border: 1.5px solid var(--color-ink); }
-    .btn--outline:hover { background: var(--color-ink); color: var(--color-paper); }
     .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
-    .card { padding: var(--space-md); background: var(--color-paper-2); border: 1px solid color-mix(in oklch, var(--color-accent) 12%, transparent); border-radius: 10px; }
-    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); font-variation-settings: "opsz" 36; }
-    .card p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .card { padding: var(--space-md); border: 1px solid color-mix(in oklch, var(--color-accent) 12%, transparent); border-radius: 10px; background: var(--color-paper-2); }
+    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
+    .card p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
     .features { margin-block: var(--space-2xl); padding-block-start: var(--space-xl); border-block-start: 1px solid var(--color-rule); }
     .features__list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm) var(--space-lg); list-style: none; padding: 0; margin: 0; }
-    .features__item { padding: var(--space-md); background: var(--color-paper-2); border-radius: 10px; }
+    .features__item { padding: var(--space-md); border-radius: 10px; background: var(--color-paper-2); }
     .features__item h4 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin: 0 0 var(--space-2xs); color: var(--color-ink); }
     .features__item p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
-    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); }
-    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } .features__list { grid-template-columns: 1fr; } }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
+    .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3, .features__list { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">Hollowback Apiary</span><span>Klamath-Siskiyou · est. 2019</span></header>
+    <header class="masthead"><span class="masthead__brand">Hollowback Apiary</span><span>Klamath-Siskiyou &middot; est. 2019</span></header>
     <section class="hero">
-      <p class="hero__label">2025 harvest · now available</p>
-      <h1 class="hero__title">Harvest from the <em>hollowback</em>.</h1>
-      <p class="hero__desc">Cold-extracted from hives set deep in the Klamath-Siskiyou corridor. Light amber, unfiltered, unpasteurized — exactly as the bees made it. Every jar tells the season&rsquo;s story.</p>
+      <p class="hero__label">2025 harvest &middot; now available</p>
+      <h1 class="hero__title">Harvest from the hollowback.</h1>
+      <p class="hero__desc">Cold-extracted from hives set deep in the Klamath-Siskiyou corridor. Unfiltered, unpasteurized &mdash; exactly as the bees made it.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">Order a jar</a><a href="#" class="btn btn--outline">Harvest notes</a></div>
     </section>
-    <section aria-labelledby="how-h">
-      <h2 class="section-head" id="how-h">Our honeys</h2>
+    <section aria-labelledby="honey-h"><h2 class="section-head" id="honey-h">Our honeys</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Spring Wildflower</h3><p>Light amber with notes of madrone bark and wild clover. The first draw — bright, complex, fleeting.</p></li>
-        <li class="card"><h3>Summer Madrone</h3><p>Deep copper, almost bronze. Rich and resinous, with a finish that lingers like warm stone.</p></li>
-        <li class="card"><h3>Buckwheat</h3><p>Dark as molasses, thick as cold oil. Molasses-and-rye intensity. A winter staple.</p></li>
+        <li class="card"><h3>Spring Wildflower</h3><p>Light amber with notes of madrone bark and wild clover. The first draw &mdash; bright and fleeting.</p></li>
+        <li class="card"><h3>Summer Madrone</h3><p>Deep copper, almost bronze. Rich and resinous with a finish that lingers.</p></li>
+        <li class="card"><h3>Buckwheat</h3><p>Dark as molasses, thick as cold oil. Molasses-and-rye intensity for winter.</p></li>
       </ul>
     </section>
-    <section class="features" aria-labelledby="practice-h">
-      <h2 class="section-head" id="practice-h">Our practice</h2>
-      <ul class="features__list">
-        <li class="features__item"><h4>Treatment-free</h4><p>We don&rsquo;t medicate. Strong hives are selected by winter survival, not chemical intervention.</p></li>
-        <li class="features__item"><h4>Cold extraction</h4><p>No heat, no enzymes destroyed. The honey reaches your table exactly as it left the comb.</p></li>
-        <li class="features__item"><h4>Top-bar hives</h4><p>Minimal intervention beekeeping. The bees build their own comb — we just provide the bars.</p></li>
-        <li class="features__item"><h4>Seasonal rotations</h4><p>Hives follow the bloom. Spring in the valley, summer in the high meadow, autumn in the chaparral.</p></li>
-      </ul>
-    </section>
-    <footer class="colophon"><span>Hollowback Apiary · Klamath-Siskiyou, CA</span><span><a href="mailto:hello@hollowback.honey">hello@hollowback.honey</a></span></footer>
+    <footer class="colophon"><span>Hollowback Apiary &middot; Klamath-Siskiyou, CA</span><span><a href="mailto:hello@hollowback.honey">hello@hollowback.honey</a></span></footer>
   </main>
 </body>
 </html>

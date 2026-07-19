@@ -4,68 +4,56 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Petiole — botanical design studio</title>
-  <meta name="description" content="A botanical design studio crafting gardens, installations, and living systems." />
+  <meta name="description" content="A botanical design studio crafting gardens and living installations." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: bloom · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(95% 0.018 75);
-      --color-paper-2: oklch(91% 0.020 75);
-      --color-ink: oklch(22% 0.020 60);
-      --color-ink-soft: oklch(45% 0.018 60);
-      --color-rule: oklch(78% 0.016 70);
-      --color-accent: oklch(56% 0.13 35);
-      --font-display: "Instrument Serif", Georgia, serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+    :root { --color-paper: oklch(95% 0.018 75); --color-paper-2: oklch(91% 0.020 75); --color-ink: oklch(22% 0.020 60); --color-ink-soft: oklch(45% 0.018 60); --color-rule: oklch(78% 0.016 70); --color-accent: oklch(56% 0.13 35); --font-display: "Instrument Serif", Georgia, serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
     .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
-    .masthead__brand { font-family: var(--font-display); font-size: 1.1rem; text-transform: none; letter-spacing: -0.01em; color: var(--color-ink); }
+    .masthead__brand { font-family: var(--font-display); font-size: 1.1rem; text-transform: none; letter-spacing: -0.01em; color: var(--color-ink); font-style: italic; }
     .hero { margin-block-end: var(--space-2xl); }
     .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
     .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 400; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); font-style: italic; }
     .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms ease; }
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border: none; }
     .btn--primary:hover { transform: translateY(-2px); }
     .btn--outline { background: transparent; color: var(--color-ink); border: 1.5px solid var(--color-ink); }
     .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
     .card { padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: 10px; background: var(--color-paper-2); }
-    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
+    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
     .card p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">Petiole</span><span>botanical design · Lisbon</span></header>
+    <header class="masthead"><span class="masthead__brand">Petiole</span><span>botanical design &middot; Lisbon</span></header>
     <section class="hero">
       <p class="hero__label">Cultivated since 2020</p>
       <h1 class="hero__title">From seed to specimen.</h1>
-      <p class="hero__desc">A botanical design studio working at the intersection of horticulture, architecture, and ecology. We design gardens, build living installations, and tend the spaces between.</p>
+      <p class="hero__desc">A botanical design studio at the intersection of horticulture, architecture, and ecology. Gardens, living installations, and the spaces between.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">View our work</a><a href="#" class="btn btn--outline">Get in touch</a></div>
     </section>
-    <section aria-labelledby="serv-h">
-      <h2 class="section-head" id="serv-h">What we do</h2>
+    <section aria-labelledby="serv-h"><h2 class="section-head" id="serv-h">What we do</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Garden design</h3><p>Residential and commercial gardens built for the local climate. Native plants, responsible irrigation, year-round interest.</p></li>
-        <li class="card"><h3>Floral installation</h3><p>Events, galleries, and editorial. Seasonal arrangements that follow the bloom &mdash; not a catalogue.</p></li>
-        <li class="card"><h3>Workshops</h3><p>Propagation, pressing, and botanical drawing. Small groups, slow pace, hands-on. Open to all skill levels.</p></li>
+        <li class="card"><h3>Garden design</h3><p>Residential and commercial gardens built for local climate. Native plants, responsible irrigation, year-round interest.</p></li>
+        <li class="card"><h3>Floral installation</h3><p>Events, galleries, and editorial. Seasonal arrangements that follow the bloom.</p></li>
+        <li class="card"><h3>Workshops</h3><p>Propagation, pressing, and botanical drawing. Small groups, slow pace, hands-on.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Petiole · Rua das Gaivotas 12 · Lisbon</span><span><a href="mailto:hello@petiole.studio">hello@petiole.studio</a></span></footer>
+    <footer class="colophon"><span>Petiole &middot; Rua das Gaivotas 12 &middot; Lisbon</span><span><a href="mailto:hello@petiole.studio">hello@petiole.studio</a></span></footer>
   </main>
 </body>
 </html>

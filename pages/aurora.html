@@ -4,40 +4,27 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aether — orbital tracking</title>
-  <meta name="description" content="Real-time satellite tracking and orbital analytics for operators, regulators, and astronomers." />
+  <meta name="description" content="Real-time satellite tracking and orbital analytics." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: aurora · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(8% 0.015 260);
-      --color-paper-2: oklch(14% 0.018 260);
-      --color-ink: oklch(94% 0.010 240);
-      --color-ink-soft: oklch(60% 0.015 250);
-      --color-rule: oklch(25% 0.015 260);
-      --color-accent: oklch(72% 0.17 200);
-      --font-display: "Space Grotesk", sans-serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+    :root { --color-paper: oklch(8% 0.015 260); --color-paper-2: oklch(14% 0.018 260); --color-ink: oklch(94% 0.010 240); --color-ink-soft: oklch(60% 0.015 250); --color-rule: oklch(25% 0.015 260); --color-accent: oklch(72% 0.17 200); --font-display: "Space Grotesk", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    .page { max-width: 64rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
     .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
     .masthead__brand { color: var(--color-accent); font-weight: 600; }
     .hero { margin-block-end: var(--space-2xl); }
     .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-sm); }
-    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 500; font-size: clamp(2.6rem, 6vw, 4.2rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 500; font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); }
     .hero__title span { color: var(--color-accent); }
     .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 52ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid var(--color-rule); background: transparent; color: var(--color-ink); border-radius: 999px; transition: border-color 120ms var(--ease-out), background 120ms var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid var(--color-rule); background: transparent; color: var(--color-ink); border-radius: 999px; transition: border-color 120ms ease, background 120ms ease; }
     .btn:hover { border-color: var(--color-accent); background: color-mix(in oklch, var(--color-accent) 8%, transparent); }
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border-color: var(--color-accent); }
-    .btn--primary:hover { background: color-mix(in oklch, var(--color-accent) 85%, white); }
     .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
     .card { padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: 10px; background: var(--color-paper-2); }
@@ -50,24 +37,24 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3, .metrics { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">AETHER</span><span>orbital tracking · v2.1</span></header>
+    <header class="masthead"><span class="masthead__brand">AETHER</span><span>orbital tracking &middot; v2.1</span></header>
     <section class="hero">
-      <p class="hero__label">Real-time · 10,000+ objects</p>
-      <h1 class="hero__title">Watch the sky.<br>Know what&rsquo;s <span>up there</span>.</h1>
-      <p class="hero__desc">Track satellites, debris, and spacecraft in real time. Collision prediction, orbital decay modelling, and regulatory reporting &mdash; all from one platform.</p>
+      <p class="hero__label">Real-time &middot; 10,000+ objects</p>
+      <h1 class="hero__title">Watch the sky.<br><span>Know what&rsquo;s up there</span>.</h1>
+      <p class="hero__desc">Track satellites, debris, and spacecraft in real time. Collision prediction and orbital decay modelling.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">Start tracking</a><a href="#" class="btn">API docs</a></div>
     </section>
-    <section aria-labelledby="platform-h">
-      <h2 class="section-head" id="platform-h">Platform</h2>
+    <section aria-labelledby="platform-h"><h2 class="section-head" id="platform-h">Platform</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Track</h3><p>Real-time TLE updates for every tracked object. Search by name, NORAD ID, or orbital parameters. Historic passes and future visibility windows.</p></li>
-        <li class="card"><h3>Predict</h3><p>Machine-learning models for orbital decay and re-entry. Know when and where a satellite will come down, days in advance.</p></li>
-        <li class="card"><h3>Collide</h3><p>Automated conjunction analysis. Receive alerts when your asset has a &gt;1:10,000 collision probability. Actionable, not alarmist.</p></li>
+        <li class="card"><h3>Track</h3><p>Real-time TLE updates for every tracked object. Search by name, NORAD ID, or orbital parameters.</p></li>
+        <li class="card"><h3>Predict</h3><p>ML models for orbital decay and re-entry. Know when and where a satellite will come down.</p></li>
+        <li class="card"><h3>Collide</h3><p>Automated conjunction alerts when your asset has a risk above 1:10,000.</p></li>
       </ul>
     </section>
     <div class="metrics">
@@ -75,7 +62,7 @@
       <div class="metric"><span class="num">Real-time</span><span class="label">TLE updates</span></div>
       <div class="metric"><span class="num">24/7</span><span class="label">sensor network</span></div>
     </div>
-    <footer class="colophon"><span>Aether · orbital tracking collective</span><span><a href="mailto:ops@aether.space">ops@aether.space</a></span></footer>
+    <footer class="colophon"><span>Aether &middot; orbital tracking collective</span><span><a href="mailto:ops@aether.space">ops@aether.space</a></span></footer>
   </main>
 </body>
 </html>

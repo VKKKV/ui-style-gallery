@@ -4,21 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Terrain — landscape architecture</title>
-  <meta name="description" content="A landscape architecture studio designing public spaces, coastal walks, and ecological corridors." />
+  <meta name="description" content="A landscape architecture studio designing public spaces and ecological corridors." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,340;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(95% 0.006 220); --color-paper-2: oklch(91% 0.008 220);
-      --color-ink: oklch(20% 0.010 220); --color-ink-soft: oklch(45% 0.008 220);
-      --color-rule: oklch(78% 0.006 220); --color-accent: oklch(46% 0.14 145);
-      --font-display: "Fraunces", Georgia, serif;
-      --font-body: "Inter", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-    }
+    /* Hallmark · theme: studio · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(95% 0.006 220); --color-paper-2: oklch(91% 0.008 220); --color-ink: oklch(20% 0.010 220); --color-ink-soft: oklch(45% 0.008 220); --color-rule: oklch(78% 0.006 220); --color-accent: oklch(46% 0.14 145); --font-display: "Fraunces", Georgia, serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -39,27 +32,27 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">Terrain</span><span>landscape architecture · Lisbon</span></header>
+    <header class="masthead"><span class="masthead__brand">Terrain</span><span>landscape architecture &middot; Lisbon</span></header>
     <section class="hero">
-      <p class="hero__label">Public space · ecology · coastal</p>
-      <h1 class="hero__title">Shape the ground<br>you stand on.</h1>
-      <p class="hero__desc">We design landscapes that work with ecology, not against it. Parks, coastal walks, and urban spaces that restore biodiversity while serving communities.</p>
+      <p class="hero__label">Public space &middot; ecology &middot; coastal</p>
+      <h1 class="hero__title">Shape the ground you stand on.</h1>
+      <p class="hero__desc">Landscapes that work with ecology. Parks, coastal walks, and urban spaces that restore biodiversity.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">View projects</a><a href="#" class="btn">Our approach</a></div>
     </section>
-    <section aria-labelledby="proj-h">
-      <h2 class="section-head" id="proj-h">Selected projects</h2>
+    <section aria-labelledby="proj-h"><h2 class="section-head" id="proj-h">Selected projects</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Railyard Park</h3><p>A 12-acre former rail yard reimagined as a public park. Native prairie restoration, stormwater management, and community gathering spaces on contaminated brownfield.</p></li>
-        <li class="card"><h3>Coastal Walk</h3><p>Eight kilometres of restored dune system with an elevated boardwalk. Designed to withstand sea-level rise while providing access to a protected shoreline.</p></li>
-        <li class="card"><h3>Rooftop Meadow</h3><p>A 2,000m&sup2; green roof on a municipal building. Meadow grasses, sedum, and wildflowers &mdash; habitat for pollinators in the middle of the city.</p></li>
+        <li class="card"><h3>Railyard Park</h3><p>12-acre former rail yard as public park. Native prairie, stormwater, community space on brownfield.</p></li>
+        <li class="card"><h3>Coastal Walk</h3><p>8km of restored dune system with elevated boardwalk. Designed for sea-level rise.</p></li>
+        <li class="card"><h3>Rooftop Meadow</h3><p>2,000m&sup2; green roof with meadow grasses and wildflowers. Urban pollinator habitat.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Terrain · Rua da Rosa 28 · Lisbon</span><span><a href="mailto:studio@terrain.land">studio@terrain.land</a></span></footer>
+    <footer class="colophon"><span>Terrain &middot; Rua da Rosa 28 &middot; Lisbon</span><span><a href="mailto:studio@terrain.land">studio@terrain.land</a></span></footer>
   </main>
 </body>
 </html>

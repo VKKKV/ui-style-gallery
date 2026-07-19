@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Drift — coastal research</title>
+  <title>Drift — coastal research collective</title>
   <meta name="description" content="A coastal research collective studying tides, ecosystems, and the edge between land and sea." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,19 +11,7 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: coral · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(94% 0.016 75);
-      --color-paper-2: oklch(90% 0.020 75);
-      --color-ink: oklch(18% 0.018 30);
-      --color-ink-soft: oklch(42% 0.015 30);
-      --color-rule: oklch(78% 0.016 70);
-      --color-accent: oklch(64% 0.165 28);
-      --font-display: "DM Sans", sans-serif;
-      --font-body: "DM Sans", system-ui, -apple-system, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+    :root { --color-paper: oklch(94% 0.016 75); --color-paper-2: oklch(90% 0.020 75); --color-ink: oklch(18% 0.018 30); --color-ink-soft: oklch(42% 0.015 30); --color-rule: oklch(78% 0.016 70); --color-accent: oklch(64% 0.165 28); --font-display: "DM Sans", sans-serif; --font-body: "DM Sans", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -34,7 +22,7 @@
     .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 5vw, 4rem); line-height: 0.92; letter-spacing: -0.025em; color: var(--color-ink); }
     .hero__title span { color: var(--color-accent); }
     .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms ease; }
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border: none; }
     .btn--primary:hover { transform: translateY(-2px); }
     .btn--outline { background: transparent; color: var(--color-ink); border: 1.5px solid var(--color-ink); }
@@ -46,27 +34,27 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">DRIFT</span><span>coastal research · est. 2021</span></header>
+    <header class="masthead"><span class="masthead__brand">DRIFT</span><span>coastal research &middot; est. 2021</span></header>
     <section class="hero">
       <p class="hero__label">Science at the shoreline</p>
       <h1 class="hero__title">The coast is a system.<br><span>We read it</span>.</h1>
-      <p class="hero__desc">Tide gauges, sediment cores, and salt marsh surveys. We work with communities to understand and protect the edge between land and sea.</p>
+      <p class="hero__desc">Tide gauges, sediment cores, and salt marsh surveys. We work with communities to understand the edge between land and sea.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">Our research</a><a href="#" class="btn btn--outline">Get involved</a></div>
     </section>
-    <section aria-labelledby="work-h">
-      <h2 class="section-head" id="work-h">Current work</h2>
+    <section aria-labelledby="work-h"><h2 class="section-head" id="work-h">Current work</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Tide gauges</h3><p>A network of low-cost tide gauges installed along the Oregon coast. Open data, real-time feeds, community-maintained.</p></li>
-        <li class="card"><h3>Salt marsh</h3><p>Mapping marsh migration in response to sea-level rise. Ground-truthing satellite data with boots-in-the-mud surveys.</p></li>
-        <li class="card"><h3>Plastic survey</h3><p>Monthly microplastic sampling at twelve beach transects. Building a baseline for policy and remediation.</p></li>
+        <li class="card"><h3>Tide gauges</h3><p>A network of low-cost gauges along the Oregon coast. Open data, real-time feeds, community-maintained.</p></li>
+        <li class="card"><h3>Salt marsh</h3><p>Mapping marsh migration in response to sea-level rise. Ground-truthing satellite data.</p></li>
+        <li class="card"><h3>Plastic survey</h3><p>Monthly microplastic sampling at twelve beach transects. Building a baseline for policy.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Drift · Pacific Northwest</span><span><a href="mailto:hello@drift.coast">hello@drift.coast</a></span></footer>
+    <footer class="colophon"><span>Drift &middot; Pacific Northwest</span><span><a href="mailto:hello@drift.coast">hello@drift.coast</a></span></footer>
   </main>
 </body>
 </html>

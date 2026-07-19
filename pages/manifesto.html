@@ -4,20 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TraceJam — observability</title>
-  <meta name="description" content="Observability for distributed systems. Traces, metrics, logs — correlated and queryable in real time." />
+  <meta name="description" content="Observability for distributed systems." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(5% 0.003 30); --color-paper-2: oklch(10% 0.005 30);
-      --color-ink: oklch(96% 0.005 30); --color-ink-soft: oklch(60% 0.008 30);
-      --color-rule: oklch(22% 0.008 30); --color-accent: #E51A1A;
-      --font-display: "Anton", "Bebas Neue", "Oswald", sans-serif;
-      --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; --space-3xl: 6.5rem;
-    }
+    /* Hallmark · theme: manifesto · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(5% 0.003 30); --color-paper-2: oklch(10% 0.005 30); --color-ink: oklch(96% 0.005 30); --color-ink-soft: oklch(60% 0.008 30); --color-rule: oklch(22% 0.008 30); --color-accent: #E51A1A; --font-display: "Anton", "Bebas Neue", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; --space-3xl: 6.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
     .page { max-width: 80rem; margin: 0 auto; padding: 0; }
@@ -37,25 +31,25 @@
     .colophon { padding: var(--space-md) var(--space-lg); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .principles__list { grid-template-columns: 1fr; } .hero { padding: var(--space-xl) var(--space-lg); } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">TRACEJAM</span><span>observability · v3.0</span></header>
+    <header class="masthead"><span class="masthead__brand">TRACEJAM</span><span>observability &middot; v3.0</span></header>
     <section class="hero">
-      <h1 class="quote">Your system is talking.<br><span>Are you listening?</span><span class="quote__attr">— Traces, metrics, logs · correlated · one query language</span></h1>
+      <h1 class="quote">Your system is talking.<br><span>Are you listening?</span><span class="quote__attr">&mdash; Traces, metrics, logs &middot; one query language</span></h1>
     </section>
-    <section class="principles" aria-labelledby="principles-h">
-      <h2 class="principles__head" id="principles-h">§ Principles</h2>
+    <section class="principles"><h2 class="principles__head">Principles</h2>
       <ol class="principles__list">
-        <li class="principle"><span class="principle__num">01.</span><h3 class="principle__head">One signal, not three</h3><p class="principle__body">Traces without metrics are stories without numbers. Metrics without traces are numbers without stories. TraceJam correlates them automatically &mdash; no manual stitching.</p></li>
-        <li class="principle"><span class="principle__num">02.</span><h3 class="principle__head">Retain everything</h3><p class="principle__body">Raw data is cheap. Regret is expensive. Store every trace, every metric point, every log line. Query anything from the last 30 days. No sampling surprises.</p></li>
-        <li class="principle"><span class="principle__num">03.</span><h3 class="principle__head">Fire when it matters</h3><p class="principle__body">Every alert is a hypothesis: something is wrong, here&rsquo;s the evidence, here&rsquo;s the trail. No noise, no pager fatigue. Alert quality over quantity.</p></li>
-        <li class="principle"><span class="principle__num">04.</span><h3 class="principle__head">Open format</h3><p class="principle__body">OpenTelemetry-native. Export to any backend, import from any source. Zero lock-in. Your data, your retention, your rules.</p></li>
+        <li class="principle"><span class="principle__num">01</span><h3 class="principle__head">One signal</h3><p class="principle__body">Traces without metrics are stories without numbers. TraceJam correlates all three automatically.</p></li>
+        <li class="principle"><span class="principle__num">02</span><h3 class="principle__head">Retain everything</h3><p class="principle__body">Store every trace, every metric, every log. Query anything from the last 30 days. No sampling surprises.</p></li>
+        <li class="principle"><span class="principle__num">03</span><h3 class="principle__head">Fire when it matters</h3><p class="principle__body">Every alert is a hypothesis with evidence and a trail. No noise, no pager fatigue.</p></li>
+        <li class="principle"><span class="principle__num">04</span><h3 class="principle__head">Open format</h3><p class="principle__body">OpenTelemetry-native. Export to any backend. Zero lock-in.</p></li>
       </ol>
     </section>
-    <footer class="colophon"><span>TraceJam · open-core observability</span><span><a href="mailto:ops@tracejam.dev">ops@tracejam.dev</a></span></footer>
+    <footer class="colophon"><span>TraceJam &middot; open-core observability</span><span><a href="mailto:ops@tracejam.dev">ops@tracejam.dev</a></span></footer>
   </main>
 </body>
 </html>

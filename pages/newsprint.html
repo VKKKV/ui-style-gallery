@@ -4,26 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Broadsheet — slow journalism</title>
-  <meta name="description" content="A monthly broadsheet of long-form journalism. Stories that take their time, in print and online." />
+  <meta name="description" content="A monthly broadsheet of long-form journalism." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: newsprint · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(93% 0.025 30);
-      --color-paper-2: oklch(89% 0.028 30);
-      --color-ink: oklch(18% 0.030 25);
-      --color-ink-soft: oklch(40% 0.025 28);
-      --color-rule: oklch(75% 0.020 30);
-      --color-accent: oklch(35% 0.08 25);
-      --font-display: "Playfair Display", Georgia, serif;
-      --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --measure-prose: 58ch;
-    }
+    :root { --color-paper: oklch(93% 0.025 30); --color-paper-2: oklch(89% 0.028 30); --color-ink: oklch(18% 0.030 25); --color-ink-soft: oklch(40% 0.025 28); --color-rule: oklch(75% 0.020 30); --color-accent: oklch(35% 0.08 25); --font-display: "Playfair Display", Georgia, serif; --font-body: "Source Serif 4", Georgia, serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; --measure-prose: 58ch; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65; -webkit-font-smoothing: antialiased; }
     .page { max-width: 56rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
@@ -33,7 +21,7 @@
     .hero__label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-md); }
     .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 5vw, 4rem); line-height: 0.92; letter-spacing: -0.025em; color: var(--color-ink); }
     .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: var(--measure-prose); line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.6em 1.4em; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 1px solid var(--color-ink); background: transparent; color: var(--color-ink); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.6em 1.4em; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 1px solid var(--color-ink); background: transparent; color: var(--color-ink); transition: background 120ms ease; }
     .btn:hover { background: var(--color-ink); color: var(--color-paper); }
     .btn--solid { background: var(--color-ink); color: var(--color-paper); }
     .section-head { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-lg); border-block-start: 1px solid var(--color-rule); padding-block-start: var(--space-md); }
@@ -45,27 +33,27 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 2px solid var(--color-ink); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: underline; text-underline-offset: 2px; }
     .colophon a:hover { color: var(--color-ink); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">The Broadsheet</span><span>Issue 47 · July 2026</span></header>
+    <header class="masthead"><span class="masthead__brand">The Broadsheet</span><span>Issue 47 &middot; July 2026</span></header>
     <section class="hero">
-      <p class="hero__label">Slow journalism · monthly</p>
-      <h1 class="hero__title">Read slowly.<br>Think clearly.</h1>
-      <p class="hero__desc">One story at a time, in print and online. No breaking news, no hot takes — just long-form reporting that takes the time it needs.</p>
+      <p class="hero__label">Slow journalism &middot; monthly</p>
+      <h1 class="hero__title">Read slowly. Think clearly.</h1>
+      <p class="hero__desc">One story at a time, in print and online. No breaking news, no hot takes &mdash; just long-form reporting that takes the time it needs.</p>
       <div class="hero__actions"><a href="#" class="btn btn--solid">Subscribe</a><a href="#" class="btn">Read online</a></div>
     </section>
-    <section aria-labelledby="issue-h">
-      <h2 class="section-head" id="issue-h">This issue</h2>
+    <section aria-labelledby="issue-h"><h2 class="section-head" id="issue-h">This issue</h2>
       <ul class="stories">
-        <li class="story"><p class="kicker">Feature</p><h3>The Water War</h3><p>Three years of drought in the Klamath Basin. Farmers, tribes, and a river running dry. A reporter walks the canal system from headgate to last ditch.</p></li>
-        <li class="story"><p class="kicker">Dispatch</p><h3>The Last Bookshop in Hull</h3><p>When the last independent bookshop on Hessle Road closes, what does a neighbourhood lose? A portrait of a street and the people who still read.</p></li>
-        <li class="story"><p class="kicker">Essay</p><h3>A City in Maps</h3><p>How Lisbon&rsquo;s cartographers drew their city into being &mdash; from 16th-century portolan charts to the pixel-perfect tiles of the modern metro map.</p></li>
+        <li class="story"><p class="kicker">Feature</p><h3>The Water War</h3><p>Three years of drought in the Klamath Basin. A reporter walks the canal system from headgate to last ditch.</p></li>
+        <li class="story"><p class="kicker">Dispatch</p><h3>The Last Bookshop in Hull</h3><p>When the last independent bookshop closes, what does a neighbourhood lose? A portrait of a street.</p></li>
+        <li class="story"><p class="kicker">Essay</p><h3>A City in Maps</h3><p>How Lisbon&rsquo;s cartographers drew their city into being &mdash; from portolan charts to the modern metro map.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>The Broadsheet · printed in Portland, OR</span><span><a href="mailto:editors@broadsheet.journal">editors@broadsheet.journal</a></span></footer>
+    <footer class="colophon"><span>The Broadsheet &middot; printed in Portland, OR</span><span><a href="mailto:editors@broadsheet.journal">editors@broadsheet.journal</a></span></footer>
   </main>
 </body>
 </html>

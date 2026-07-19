@@ -4,68 +4,55 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Off-Register — risograph print fair</title>
-  <meta name="description" content="A weekend of misregistered ink, bold colour, and independent print culture." />
+  <meta name="description" content="A weekend of misregistered ink and independent print culture." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: riso · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(91% 0.034 30);
-      --color-paper-2: oklch(88% 0.036 30);
-      --color-ink: oklch(18% 0.060 30);
-      --color-ink-soft: oklch(40% 0.040 30);
-      --color-rule: oklch(74% 0.030 30);
-      --color-accent: oklch(58% 0.170 220);
-      --color-accent-2: oklch(78% 0.180 95);
-      --font-display: "Public Sans", system-ui, -apple-system, sans-serif;
-      --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
+    :root { --color-paper: oklch(91% 0.034 30); --color-paper-2: oklch(88% 0.036 30); --color-ink: oklch(18% 0.060 30); --color-ink-soft: oklch(40% 0.040 30); --color-rule: oklch(74% 0.030 30); --color-accent: oklch(58% 0.170 220); --color-accent-2: oklch(78% 0.180 95); --font-display: "Public Sans", sans-serif; --font-body: "Source Serif 4", Georgia, serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    .page { max-width: 64rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
     .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 2px solid var(--color-ink); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
     .masthead__brand { color: var(--color-ink); font-weight: 800; }
     .hero { margin-block-end: var(--space-2xl); }
     .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-sm); }
     .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--color-ink); text-shadow: -3px 2px 0 var(--color-accent), 3px -1px 0 var(--color-accent-2); }
-    .hero__desc { font-size: 1.05rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; border: 2px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); transition: transform 120ms var(--ease-out); }
+    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; border: 2px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); transition: transform 120ms ease; }
     .btn:hover { transform: translate(-2px, -2px); }
     .btn--solid { background: var(--color-ink); color: var(--color-paper); }
     .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
     .card { padding: var(--space-md); border: 2px solid var(--color-ink); background: var(--color-paper); }
     .card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
-    .card p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .card p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
     .colophon { padding-block-start: var(--space-lg); border-block-start: 2px solid var(--color-ink); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { text-decoration: underline; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">Off-Register</span><span>Risograph · May 9&ndash;11 · Portland</span></header>
+    <header class="masthead"><span class="masthead__brand">Off-Register</span><span>Risograph &middot; May 9&ndash;11 &middot; Portland</span></header>
     <section class="hero">
-      <p class="hero__label">Print fair · eighth edition</p>
-      <h1 class="hero__title">Ink off<br>the plate.</h1>
-      <p class="hero__desc">Three days of misregistered colour, double-hit black, and the smell of master rolls. 30+ risograph studios, live printing, workshops, and a zine fair that fills two floors of the old union hall.</p>
+      <p class="hero__label">Print fair &middot; eighth edition</p>
+      <h1 class="hero__title">Ink off the plate.</h1>
+      <p class="hero__desc">Three days of misregistered colour and double-hit black. 30+ risograph studios, live printing, workshops, and a zine fair across two floors.</p>
       <div class="hero__actions"><a href="#" class="btn btn--solid">Get tickets</a><a href="#" class="btn">Exhibitor list</a></div>
     </section>
-    <section aria-labelledby="exhib-h">
-      <h2 class="section-head" id="exhib-h">Featured exhibitors</h2>
+    <section aria-labelledby="exhib-h"><h2 class="section-head" id="exhib-h">Featured exhibitors</h2>
       <ul class="grid-3">
-        <li class="card"><h3>Punch Press</h3><p>Oakland-based. Two-colour political posters, hand-drawn and Riso-printed in runs of 200. Bold, loud, unmissable.</p></li>
-        <li class="card"><h3>Folded Map</h3><p>Detroit. Zines about architecture and urban decay. Cyan + fluorescent pink are their signature.</p></li>
-        <li class="card"><h3>Dune Press</h3><p>Seattle. Risograph-printed field guides to Pacific Northwest fungi — scientific illustration meets punk production.</p></li>
+        <li class="card"><h3>Punch Press</h3><p>Oakland-based. Two-colour political posters, hand-drawn and Riso-printed in runs of 200.</p></li>
+        <li class="card"><h3>Folded Map</h3><p>Detroit. Zines about architecture and urban decay. Cyan + fluorescent pink signature.</p></li>
+        <li class="card"><h3>Dune Press</h3><p>Seattle. Risograph field guides to Pacific Northwest fungi &mdash; science meets punk.</p></li>
       </ul>
     </section>
-    <footer class="colophon"><span>Off-Register · 1422 SE Ankeny · Portland, OR</span><span><a href="mailto:press@offregister.fair">press@offregister.fair</a></span></footer>
+    <footer class="colophon"><span>Off-Register &middot; 1422 SE Ankeny &middot; Portland, OR</span><span><a href="mailto:press@offregister.fair">press@offregister.fair</a></span></footer>
   </main>
 </body>
 </html>

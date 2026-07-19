@@ -4,23 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Streampipe — real-time data pipelines</title>
-  <meta name="description" content="Build real-time data pipelines in minutes. Connect, transform, and deliver events at scale." />
+  <meta name="description" content="Build real-time data pipelines in minutes." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
-    :root {
-      --color-paper: oklch(15% 0.022 250); --color-paper-2: oklch(20% 0.024 250);
-      --color-ink: oklch(95% 0.008 230); --color-ink-soft: oklch(60% 0.018 240);
-      --color-rule: oklch(33% 0.024 245); --color-accent: oklch(72% 0.16 220);
-      --font-display: "Space Grotesk", sans-serif;
-      --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
-    }
+    /* Hallmark · theme: midnight · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root { --color-paper: oklch(15% 0.022 250); --color-paper-2: oklch(20% 0.024 250); --color-ink: oklch(95% 0.008 230); --color-ink-soft: oklch(60% 0.018 240); --color-rule: oklch(33% 0.024 245); --color-accent: oklch(72% 0.16 220); --font-display: "Space Grotesk", sans-serif; --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    .page { max-width: 64rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
     .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
     .masthead__brand { font-weight: 700; color: var(--color-accent); }
     .hero { margin-block-end: var(--space-2xl); }
@@ -43,24 +37,24 @@
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3, .metrics { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead"><span class="masthead__brand">streampipe</span><span>real-time · v2.4</span></header>
+    <header class="masthead"><span class="masthead__brand">streampipe</span><span>real-time &middot; v2.4</span></header>
     <section class="hero">
-      <p class="hero__label">Connect · transform · deliver</p>
+      <p class="hero__label">Connect &middot; transform &middot; deliver</p>
       <h1 class="hero__title">Data moves. <span>Stream it.</span></h1>
-      <p class="hero__desc">Build real-time data pipelines in minutes. Connect any source, transform on the fly, and deliver events to any destination. From prototype to production without changing tools.</p>
+      <p class="hero__desc">Build real-time data pipelines in minutes. Connect any source, transform on the fly, deliver to any destination.</p>
       <div class="hero__actions"><a href="#" class="btn btn--primary">Get started</a><a href="#" class="btn">View docs</a></div>
     </section>
-    <section aria-labelledby="how-h">
-      <h2 class="section-head" id="how-h">Pipeline</h2>
+    <section aria-labelledby="how-h"><h2 class="section-head" id="how-h">Pipeline</h2>
       <ul class="grid-3">
-        <li class="cmd"><h3>Connect</h3><p>Kafka, Postgres, S3, webhooks, MQTT — plug in any source. Built-in connectors for 30+ data systems, with a plugin SDK for the rest.</p></li>
-        <li class="cmd"><h3>Transform</h3><p>Filter, aggregate, join, and enrich streams in real time. SQL or WASM — pick your tool. No cold starts, no batch windows.</p></li>
-        <li class="cmd"><h3>Deliver</h3><p>Route to any destination: databases, queues, APIs, or data lakes. Exactly-once semantics, automatic retries, dead-letter queues.</p></li>
+        <li class="cmd"><h3>Connect</h3><p>Kafka, Postgres, S3, webhooks, MQTT &mdash; plug in any source. Built-in connectors for 30+ systems.</p></li>
+        <li class="cmd"><h3>Transform</h3><p>Filter, aggregate, join, and enrich in real time. SQL or WASM. No cold starts, no batch windows.</p></li>
+        <li class="cmd"><h3>Deliver</h3><p>Route to any destination. Exactly-once semantics, automatic retries, dead-letter queues.</p></li>
       </ul>
     </section>
     <div class="metrics">
@@ -68,7 +62,7 @@
       <div class="metric"><span class="num">2M</span><span class="label">events/sec</span></div>
       <div class="metric"><span class="num">34</span><span class="label">regions</span></div>
     </div>
-    <footer class="colophon"><span>Streampipe · open-source streaming</span><span><a href="mailto:ops@streampipe.io">ops@streampipe.io</a></span></footer>
+    <footer class="colophon"><span>Streampipe &middot; open-source streaming</span><span><a href="mailto:ops@streampipe.io">ops@streampipe.io</a></span></footer>
   </main>
 </body>
 </html>
