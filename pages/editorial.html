@@ -1,580 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>23 — Editorial</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verbatim — long-form digital</title>
+  <meta name="description" content="A digital magazine for stories that take their time — long-form narrative, deep reporting, and the craft of slow journalism." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
     /* Hallmark · theme: editorial · pre-emit: P4 H4 E4 S4 R4 V4 */
-    
-    :root { --accent: oklch(60% 0.16 35); }
-    body { margin: 0; }
-    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
-    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
-    .section-header { margin-bottom: 40px; max-width: 720px; }
-    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
-    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
-    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
-    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
-    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    :root {
+      --color-paper: oklch(94% 0.020 75);
+      --color-paper-2: oklch(90% 0.022 75);
+      --color-ink: oklch(15% 0.014 280);
+      --color-ink-soft: oklch(42% 0.012 280);
+      --color-rule: oklch(78% 0.015 75);
+      --color-accent: oklch(60% 0.16 35);
+      --font-display: 'Inter Tight', 'Inter', sans-serif;
+      --font-body: 'Source Serif 4', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --measure: 60ch;
     }
 
-    /* ===== 23. EDITORIAL / VERBATIM ===== */
-    .editorial {
-      background: oklch(94% 0.020 75);
-      color: oklch(15% 0.014 280);
-      font-family: 'Inter', system-ui, sans-serif;
-    }
-    .editorial .badge {
-      background: oklch(60% 0.16 35 / 0.1);
-      color: oklch(60% 0.16 35);
-      border-radius: 0;
-      border: 0.5px solid oklch(60% 0.16 35 / 0.3);
-      letter-spacing: 2px;
-    }
-    .editorial h2 {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      letter-spacing: -0.032em;
-      color: oklch(15% 0.014 280);
-      line-height: 1.02;
-    }
-    .editorial .dek {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 15px;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-paper);
+      color: var(--color-ink);
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.65;
       font-weight: 400;
-      line-height: 1.6;
-      color: oklch(40% 0.012 280);
-      max-width: 540px;
+      -webkit-font-smoothing: antialiased;
     }
-    .editorial .code-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: oklch(60% 0.16 35);
-      margin-bottom: 10px;
-    }
-    .editorial .hairline {
-      height: 0.5px;
-      background: oklch(15% 0.014 280 / 0.12);
-      border: none;
-      width: 100%;
-      margin: 0;
-    }
-    .editorial .hairline--accent {
-      background: oklch(60% 0.16 35);
-      width: 48px;
-      height: 0.5px;
-    }
-    .editorial .byline {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 11px;
+
+    /* ─── Typography ─── */
+    h1, h2, h3 {
+      font-family: var(--font-display);
       font-weight: 500;
-      color: oklch(40% 0.012 280);
-      letter-spacing: 0.02em;
-    }
-    .editorial .byline em {
-      font-style: italic;
-      font-weight: 400;
-      color: oklch(60% 0.16 35);
-    }
-    .editorial .pub-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: oklch(55% 0.01 280);
-    }
-
-    /* ── Hero ── */
-    .editorial .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: end;
-      padding: 40px 0 60px;
-      border-bottom: 0.5px solid oklch(15% 0.014 280 / 0.1);
-      margin-bottom: 48px;
-    }
-    .editorial .hero-lead {
-      grid-column: 1 / 2;
-    }
-    .editorial .hero-lead .category-tag {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: oklch(60% 0.16 35);
-      border: 0.5px solid oklch(60% 0.16 35 / 0.4);
-      padding: 4px 10px;
-      margin-bottom: 20px;
-    }
-    .editorial .hero-lead h1 {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      font-size: clamp(36px, 5.5vw, 64px);
-      letter-spacing: -0.035em;
-      line-height: 0.94;
-      color: oklch(15% 0.014 280);
-      margin-bottom: 18px;
-    }
-    .editorial .hero-lead .hero-dek {
-      font-size: 15px;
-      line-height: 1.65;
-      color: oklch(40% 0.012 280);
-      max-width: 440px;
-      margin-bottom: 20px;
-    }
-    .editorial .hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding-top: 16px;
-      border-top: 0.5px solid oklch(15% 0.014 280 / 0.1);
-    }
-    .editorial .hero-visual {
-      grid-column: 2 / 3;
-      background: oklch(15% 0.014 280 / 0.04);
-      aspect-ratio: 4 / 3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0.5px solid oklch(15% 0.014 280 / 0.08);
-    }
-    .editorial .hero-visual .placeholder-icon {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      font-size: 48px;
-      color: oklch(15% 0.014 280 / 0.06);
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-
-    /* ── Asymmetric Grid ── */
-    .editorial .asymmetric-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr 1fr;
-      gap: 1px;
-      margin: 40px 0;
-      background: oklch(15% 0.014 280 / 0.1);
-    }
-    .editorial .asymmetric-grid > * {
-      background: oklch(94% 0.020 75);
-      padding: 32px 28px;
-    }
-    .editorial .asymmetric-grid .feature-card--large {
-      grid-column: 1 / 2;
-    }
-    .editorial .asymmetric-grid .feature-card--wide {
-      grid-column: 2 / 4;
-    }
-
-    /* ── Feature Cards ── */
-    .editorial .feature-card {
-      border: 0.5px solid transparent;
-      transition: border-color 0.25s ease;
-    }
-    .editorial .feature-card:hover {
-      border-color: oklch(60% 0.16 35 / 0.25);
-    }
-    .editorial .feature-card .card-category {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: oklch(60% 0.16 35);
-      margin-bottom: 12px;
-    }
-    .editorial .feature-card h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      font-size: clamp(16px, 2vw, 24px);
-      letter-spacing: -0.025em;
-      line-height: 1.08;
-      color: oklch(15% 0.014 280);
-      margin-bottom: 10px;
-    }
-    .editorial .feature-card p {
-      font-size: 13px;
-      line-height: 1.65;
-      color: oklch(40% 0.012 280);
-      margin-bottom: 16px;
-    }
-    .editorial .feature-card .read-link {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      color: oklch(60% 0.16 35);
-      letter-spacing: 0.02em;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: gap 0.2s ease;
-    }
-    .editorial .feature-card .read-link:hover {
-      gap: 10px;
-    }
-    .editorial .feature-card .card-image {
-      background: oklch(15% 0.014 280 / 0.04);
-      aspect-ratio: 16 / 10;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0.5px solid oklch(15% 0.014 280 / 0.06);
-    }
-    .editorial .feature-card .card-image .img-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: oklch(15% 0.014 280 / 0.12);
-    }
-    .editorial .feature-card .card-meta {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: oklch(55% 0.01 280);
-    }
-
-    /* ── Magazine Grid (2-col + sidebar) ── */
-    .editorial .magazine-grid {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 48px;
-      margin: 48px 0;
-    }
-    @media (max-width: 860px) {
-      .editorial .magazine-grid { grid-template-columns: 1fr; }
-    }
-    .editorial .magazine-grid .main-col .article {
-      padding: 24px 0;
-      border-bottom: 0.5px solid oklch(15% 0.014 280 / 0.08);
-    }
-    .editorial .magazine-grid .main-col .article:last-child {
-      border-bottom: none;
-    }
-    .editorial .magazine-grid .main-col .article .article-number {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      font-size: 13px;
-      color: oklch(60% 0.16 35 / 0.4);
-      margin-bottom: 4px;
-    }
-    .editorial .magazine-grid .main-col .article h4 {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: -0.02em;
       line-height: 1.15;
-      color: oklch(15% 0.014 280);
-      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
     }
-    .editorial .magazine-grid .main-col .article p {
-      font-size: 13px;
-      line-height: 1.6;
-      color: oklch(40% 0.012 280);
+    h1 { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
+    h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+    h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
+    p { max-width: var(--measure); margin-bottom: 1rem; font-size: 1rem; }
+    a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--color-accent); transition: color 0.2s; }
+    a:hover { color: var(--color-accent); }
+
+    /* ─── Layout ─── */
+    .page { max-width: 68rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ─── Masthead ─── */
+    .masthead {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--color-ink-soft);
+      border-block-end: 1px solid var(--color-rule);
+      padding-block-end: 0.75rem; margin-block-end: 3rem;
     }
-    .editorial .magazine-grid .sidebar {
-      border-left: 0.5px solid oklch(15% 0.014 280 / 0.1);
-      padding-left: 32px;
+    .masthead__brand { color: var(--color-accent); font-weight: 500; }
+
+    /* ─── Hero ─── */
+    .hero { margin-block-end: 3.5rem; }
+    .hero__label {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--color-accent); margin: 0 0 1rem;
     }
-    .editorial .magazine-grid .sidebar .sidebar-section {
-      margin-bottom: 28px;
-    }
-    .editorial .magazine-grid .sidebar .sidebar-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: oklch(55% 0.01 280);
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 0.5px solid oklch(15% 0.014 280 / 0.1);
-    }
-    .editorial .magazine-grid .sidebar .sidebar-item {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 1.5;
-      color: oklch(15% 0.014 280);
-      padding: 8px 0;
-      border-bottom: 0.5px solid oklch(15% 0.014 280 / 0.05);
-      cursor: default;
-      transition: color 0.2s ease;
-    }
-    .editorial .magazine-grid .sidebar .sidebar-item:hover {
-      color: oklch(60% 0.16 35);
-    }
-    .editorial .magazine-grid .sidebar .sidebar-item:last-child {
-      border-bottom: none;
-    }
-    .editorial .magazine-grid .sidebar .sidebar-item .item-meta {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 7px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: oklch(55% 0.01 280);
-      margin-top: 3px;
+    .hero h1 { margin: 0 0 1rem; }
+    .hero__desc {
+      font-size: 1.1rem; color: var(--color-ink-soft);
+      max-width: var(--measure); line-height: 1.6; margin: 0;
     }
 
-    /* ── Pull Quote ── */
-    .editorial .pull-quote {
-      margin: 48px 0;
-      padding: 32px 0;
-      border-top: 0.5px solid oklch(15% 0.014 280 / 0.1);
-      border-bottom: 0.5px solid oklch(15% 0.014 280 / 0.1);
-    }
-    .editorial .pull-quote blockquote {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      font-size: clamp(22px, 3.5vw, 38px);
-      letter-spacing: -0.03em;
-      line-height: 1.04;
-      color: oklch(15% 0.014 280);
-      max-width: 720px;
-      margin: 0 auto;
-    }
-    .editorial .pull-quote .attribution {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      color: oklch(40% 0.012 280);
-      text-align: right;
-      margin-top: 14px;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .editorial .pull-quote .attribution::before {
-      content: '\2014 ';
+    /* ─── Section common ─── */
+    .section { padding-block-start: 2.5rem; border-block-start: 1px solid var(--color-rule); margin-block-end: 2.5rem; }
+    .section__head {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--color-ink-soft); margin: 0 0 1.5rem;
     }
 
-    /* ── Stat Bar ── */
-    .editorial .stat-bar {
-      display: flex;
-      gap: 0;
-      border-top: 0.5px solid oklch(15% 0.014 280 / 0.1);
-      border-bottom: 0.5px solid oklch(15% 0.014 280 / 0.1);
-      margin: 40px 0;
+    /* ─── Features grid ─── */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .feature { }
+    .feature h3 { margin: 0 0 0.5rem; }
+    .feature p { font-size: 0.9375rem; color: var(--color-ink-soft); margin: 0; }
+
+    /* ─── About ─── */
+    .about-text { font-size: 1rem; color: var(--color-ink-soft); max-width: var(--measure); }
+
+    /* ─── Colophon ─── */
+    .colophon {
+      padding-block-start: 1.5rem;
+      border-block-start: 1px solid var(--color-rule);
+      display: flex; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.75rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--color-ink-soft);
     }
-    .editorial .stat-bar .stat-cell {
-      flex: 1;
-      padding: 20px 24px;
-      border-right: 0.5px solid oklch(15% 0.014 280 / 0.1);
-    }
-    .editorial .stat-bar .stat-cell:last-child {
-      border-right: none;
-    }
-    .editorial .stat-bar .stat-cell .stat-num {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 800;
-      font-size: 28px;
-      letter-spacing: -0.03em;
-      color: oklch(60% 0.16 35);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .editorial .stat-bar .stat-cell .stat-lbl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: oklch(55% 0.01 280);
+    .colophon a { text-decoration: underline; text-decoration-color: var(--color-rule); }
+
+    @media (max-width: 48rem) {
+      .features { grid-template-columns: 1fr; }
     }
 
-    /* ── Footer / Magazine Strip ── */
-    .editorial .mag-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 0;
-      border-top: 0.5px solid oklch(15% 0.014 280 / 0.1);
-      margin-top: 40px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: oklch(55% 0.01 280);
-    }
-    .editorial .mag-footer .issue {
-      font-weight: 500;
-      color: oklch(60% 0.16 35);
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
-  <nav class="page-header">
-    <a href="../index.html">Gallery</a>
-    <span class="sep">/</span>
-    <span class="current">23 Editorial</span>
-  </nav>
+  <main class="page">
+    <header class="masthead">
+      <span class="masthead__brand">Verbatim</span>
+      <span>Issue № 14 · Summer 2026</span>
+    </header>
 
-  <!-- ============ 23. EDITORIAL / VERBATIM ============ -->
-  <section class="section editorial" id="editorial">
-    <div class="content">
+    <section class="hero">
+      <p class="hero__label">Digital long-form magazine</p>
+      <h1>Stories that&nbsp;take their&nbsp;time</h1>
+      <p class="hero__desc">
+        A home for narrative depth, rigorous reporting, and the ideas that
+        demand more than a headline and a hot take.
+      </p>
+    </section>
 
-      <!-- Section Header -->
-      <div class="section-header">
-        <div class="badge">Style 23 · VERBATIM</div>
-        <h2>The longform <span style="color:oklch(60% 0.16 35)">digital</span> magazine.</h2>
-        <p>Warm cream paper · Inter Tight 800 display · coral accent. Hairline rules, asymmetric grids, 0px radius. For stories that earn the space.</p>
+    <section class="section" aria-labelledby="feat-h">
+      <h2 class="section__head" id="feat-h">Featured pieces</h2>
+      <div class="features">
+        <article class="feature">
+          <h3>The Quiet Index</h3>
+          <p>A photographer walks the length of the Los Angeles aqueduct, cataloguing what the drought maps leave out — the abandoned homesteads, the receding oaks, the birds that stay.</p>
+        </article>
+        <article class="feature">
+          <h3>Against the Algorithmic Edit</h3>
+          <p>Why a growing cohort of editors is abandoning predictive text tools. An inquiry into the gap between what AI suggests and what a sentence needs.</p>
+        </article>
+        <article class="feature">
+          <h3>The Last Fire Lookout</h3>
+          <p>On a tower in the Gifford Pinchot National Forest, a 23-year-old watches for smoke. A profile of solitude, attentiveness, and the dying art of watching.</p>
+        </article>
       </div>
+    </section>
 
-      <!-- Hero: Featured Story -->
-      <div class="hero">
-        <div class="hero-lead">
-          <div class="category-tag">Longform</div>
-          <h1>The Frame<br>That Holds<br>the Light</h1>
-          <div class="hero-dek">
-            In an age of infinite scroll, a growing number of photographers are returning to the discipline of the single, considered frame. What they&rsquo;re finding is not constraint&mdash;but freedom.
-          </div>
-          <div class="hero-meta">
-            <span class="byline">By <em>Elena Voss</em></span>
-            <span class="hairline" style="width:1px;height:14px;display:inline-block;background:oklch(15% 0.014 280 / 0.15);flex:none"></span>
-            <span class="pub-date">Issue 04 · August 2026</span>
-            <span class="pub-date" style="color:oklch(60% 0.16 35)">32 min read</span>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="placeholder-icon">⧖</div>
-        </div>
-      </div>
+    <section class="section" aria-labelledby="about-h">
+      <h2 class="section__head" id="about-h">About</h2>
+      <p class="about-text">
+        Verbatim is an independent magazine devoted to long-form narrative and
+        visual storytelling. We commission pieces that take weeks to report and
+        days to edit — because some stories refuse to be compressed into
+        listicles, explainers, or thread-shaped fragments.
+      </p>
+      <p class="about-text">
+        Founded in 2021, we publish four issues a year, each built around a
+        single theme. No ads, no trackers, no paywall-gated archives. Every
+        issue is designed to be read slowly, offline, on whatever device you
+        have.
+      </p>
+    </section>
 
-      <!-- Asymmetric Feature Grid -->
-      <div class="code-label">In this issue</div>
-      <div class="asymmetric-grid">
-        <div class="feature-card feature-card--large">
-          <div class="card-image">
-            <span class="img-label">Photography · 16:10</span>
-          </div>
-          <div class="card-category">Photography</div>
-          <h3>The Unbroken Line: Edward Burtynsky&rsquo;s Extraction</h3>
-          <p>A retrospective spanning four decades of industrial landscape photography reveals the sublime terror of how we reshape the earth.</p>
-          <div class="card-meta">Words by Marcus Reed · 18 min</div>
-        </div>
-        <div class="feature-card feature-card--wide">
-          <div class="card-category">Culture</div>
-          <h3>Rewriting the Rules of the Recording Studio</h3>
-          <p>How a collective of engineers in Reykjav&iacute;k are building a new vernacular for recorded sound&mdash;one that treats the room as an instrument rather than an obstacle.</p>
-          <p style="font-size:12px;color:oklch(55% 0.01 280)">The result is a sound that engineer Margr&eacute;t Einarsd&oacute;ttir describes as &ldquo;impossibly present, as though the music were happening in the same cubic meter of air as your ears.&rdquo;</p>
-          <div class="card-meta">Words by Sasha Kim · Photography by J&oacute;n Orri Halld&oacute;rsson · 24 min</div>
-        </div>
-      </div>
-
-      <!-- Pull Quote -->
-      <div class="pull-quote">
-        <blockquote>&ldquo;The single most important decision in any documentary project is not what to include&mdash;it is what to leave out.&rdquo;</blockquote>
-        <div class="attribution">Susan Meiselas, interview with Verbatim, 2025</div>
-      </div>
-
-      <!-- Magazine Grid (main + sidebar) -->
-      <div class="code-label">More from this issue</div>
-      <div class="magazine-grid">
-        <div class="main-col">
-          <div class="article">
-            <div class="article-number">01</div>
-            <h4>What the Archives Don&rsquo;t Show</h4>
-            <p>Museum collections hold millions of images. But whose stories are missing? A reckoning with the colonial gaze in institutional photography archives.</p>
-          </div>
-          <div class="article">
-            <div class="article-number">02</div>
-            <h4>The Quiet Mastery of Slow Journalism</h4>
-            <p>In an industry chasing clicks, a handful of editors are betting on the opposite: stories that take months to report and hours to read. The data suggests they&rsquo;re winning.</p>
-          </div>
-          <div class="article">
-            <div class="article-number">03</div>
-            <h4>Listening to Concrete: Brutalist Architecture in the Nordic Periphery</h4>
-            <p>From the University of Troms&oslash; to the Helsinki Music Centre, a photographic survey of how brutalist forms interact with arctic light.</p>
-          </div>
-          <div class="article">
-            <div class="article-number">04</div>
-            <h4>The Last Darkroom in Manhattan</h4>
-            <p>At 8th Street and Avenue C, a communal darkroom has outlasted every commercial lab in the borough. Its members are fighting to keep the chemicals flowing.</p>
-          </div>
-        </div>
-        <div class="sidebar">
-          <div class="sidebar-section">
-            <div class="sidebar-label">Departments</div>
-            <div class="sidebar-item">
-              The Desk <span class="item-meta">Editor&rsquo;s Letter</span>
-            </div>
-            <div class="sidebar-item">
-              Contact Sheet <span class="item-meta">Portfolio</span>
-            </div>
-            <div class="sidebar-item">
-              Field Notes <span class="item-meta">First-person</span>
-            </div>
-            <div class="sidebar-item">
-              The Shelf <span class="item-meta">Books + Zines</span>
-            </div>
-            <div class="sidebar-item">
-              Late Return <span class="item-meta">Criticism</span>
-            </div>
-          </div>
-          <div class="sidebar-section">
-            <div class="sidebar-label">Contributors</div>
-            <div class="sidebar-item">
-              Elena Voss <span class="item-meta">Writer at Large</span>
-            </div>
-            <div class="sidebar-item">
-              J&oacute;n Orri Halld&oacute;rsson <span class="item-meta">Photographer</span>
-            </div>
-            <div class="sidebar-item">
-              Marcus Reed <span class="item-meta">Senior Editor</span>
-            </div>
-            <div class="sidebar-item">
-              Sasha Kim <span class="item-meta">Culture Editor</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stats -->
-      <div class="code-label">The numbers</div>
-      <div class="stat-bar">
-        <div class="stat-cell">
-          <div class="stat-num">14</div>
-          <div class="stat-lbl">Stories this issue</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">48K</div>
-          <div class="stat-lbl">Words published</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">6</div>
-          <div class="stat-lbl">Photographers</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">11</div>
-          <div class="stat-lbl">Countries</div>
-        </div>
-      </div>
-
-      <!-- Second Pull Quote -->
-      <div class="pull-quote" style="margin-top:32px">
-        <blockquote>&ldquo;We are not in the business of capturing reality. We are in the business of constructing a version of it worth paying attention to.&rdquo;</blockquote>
-        <div class="attribution">W. Eugene Smith, from a letter to the Magnum board, 1955</div>
-      </div>
-
-      <!-- Footer Strip -->
-      <div class="mag-footer">
-        <span>Verbatim</span>
-        <span class="issue">Issue 04</span>
-        <span>August 2026</span>
-        <span>Printed in Iceland</span>
-      </div>
-
-    </div>
-  </section>
+    <footer class="colophon">
+      <span>Verbatim · ISSN 2834-0912</span>
+      <span><a href="mailto:hello@verbatim.mag">hello@verbatim.mag</a> · <a href="#">Archive</a></span>
+    </footer>
+  </main>
 </body>
 </html>

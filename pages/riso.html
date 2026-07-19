@@ -1,649 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Off-Register — Indie Risograph Print Fair</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Off-Register — risograph print fair</title>
+  <meta name="description" content="A weekend of misregistered ink, bold colour, and independent print culture." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet"
-  />
-    <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: riso · pre-emit: P4 H4 E4 S4 R4 V4 */
-    
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --paper: oklch(91% 0.034 30);
-      --ink:   oklch(18% 0.060 30);
-      --cyan:  oklch(58% 0.170 220);
-      --yellow: oklch(78% 0.180 95);
-      --card-radius: 2px;
-
-      --font-display: 'Public Sans', system-ui, sans-serif;
-      --font-body:    'Newsreader', Georgia, serif;
-      --font-label:   'JetBrains Mono', 'Geist Mono', monospace;
+      --color-paper: oklch(91% 0.034 30);
+      --color-paper-2: oklch(88% 0.036 30);
+      --color-ink: oklch(18% 0.060 30);
+      --color-ink-soft: oklch(40% 0.040 30);
+      --color-rule: oklch(74% 0.030 30);
+      --color-accent: oklch(58% 0.170 220);
+      --color-accent-2: oklch(78% 0.180 95);
+      --font-display: "Public Sans", system-ui, -apple-system, sans-serif;
+      --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
+      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-
-    html { font-size: 100%; scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      color: var(--ink);
-      background-color: var(--paper);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Misregistration text shadow utility ── */
-    .mis {
-      position: relative;
-      display: inline-block;
-    }
-    .mis::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0; left: 0;
-      pointer-events: none;
-      /* hard-offset CMYK misregistration — cyan plate offset left, yellow offset right */
-      text-shadow:
-        -2px  1px 0 var(--cyan),
-         2px -1px 0 var(--yellow),
-        -1px -1px 0 color-mix(in oklch, var(--cyan) 50%, var(--yellow) 50%);
-      opacity: 0.85;
-    }
-
-    .mis-heading {
-      text-shadow:
-        -3px  2px 0 var(--cyan),
-         3px -1px 0 var(--yellow),
-        -1px -2px 0 color-mix(in oklch, var(--cyan) 40%, var(--yellow) 60%);
-    }
-
-    .mis-label {
-      text-shadow:
-        -1.5px  1px 0 var(--cyan),
-         1.5px -1px 0 var(--yellow);
-    }
-
-    /* ── Layout ── */
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* ── Nav ── */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.25rem 0;
-      border-bottom: 1px solid color-mix(in oklch, var(--ink) 12%, transparent);
-      font-family: var(--font-label);
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .nav-logo {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 1.15rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--ink);
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .nav-links a:hover {
-      text-shadow:
-        -1px 1px 0 var(--cyan),
-         1px 0 0 var(--yellow);
-    }
-
-    /* ── Hero ── */
-    .hero {
-      padding: 5rem 0 4rem;
-      text-align: center;
-      position: relative;
-    }
-    .hero :is(h1, .hero-date, .hero-venue) {
-      position: relative;
-      z-index: 1;
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: clamp(3rem, 10vw, 6.5rem);
-      line-height: 0.95;
-      text-transform: uppercase;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.5rem;
-      transition: text-shadow 0.3s;
-    }
-    .hero h1:hover {
-      text-shadow:
-        -4px  3px 0 var(--cyan),
-         4px -2px 0 var(--yellow),
-        -2px -3px 0 color-mix(in oklch, var(--cyan) 30%, var(--yellow) 70%);
-    }
-    .hero-tagline {
-      font-family: var(--font-body);
-      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-      font-weight: 400;
-      font-style: italic;
-      color: color-mix(in oklch, var(--ink) 70%, transparent);
-      margin-bottom: 2rem;
-    }
-    .hero-meta {
-      font-family: var(--font-label);
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      opacity: 0.8;
-    }
-    .hero-meta span {
-      display: inline-block;
-    }
-    .hero-meta .mis-label {
-      margin: 0 0.5rem;
-    }
-    .hero-cta {
-      margin-top: 2.5rem;
-    }
-
-    /* ── Buttons ── */
-    .btn {
-      display: inline-block;
-      font-family: var(--font-label);
-      font-size: 0.8rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 0.85rem 2.2rem;
-      border-radius: var(--card-radius);
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 2px solid var(--ink);
-      background: transparent;
-      color: var(--ink);
-    }
-    .btn-primary {
-      background: var(--ink);
-      color: var(--paper);
-      border-color: var(--ink);
-    }
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--ink);
-      box-shadow:
-        -3px 3px 0 var(--cyan),
-         3px -2px 0 var(--yellow);
-    }
-    .btn-outline:hover {
-      box-shadow:
-        -3px 3px 0 var(--cyan),
-         3px -2px 0 var(--yellow);
-    }
-
-    /* ── Section Shared ── */
-    section {
-      padding: 4.5rem 0;
-    }
-    .section-label {
-      font-family: var(--font-label);
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 0.75rem;
-      opacity: 0.6;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
-      position: relative;
-      display: inline-block;
-    }
-    .section-desc {
-      max-width: 600px;
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: color-mix(in oklch, var(--ink) 78%, transparent);
-    }
-
-    /* ── About / Intro ── */
-    .intro-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-    .intro-grid p {
-      font-size: 1.05rem;
-      color: color-mix(in oklch, var(--ink) 80%, transparent);
-    }
-    .intro-grid p:not(:last-child) {
-      margin-bottom: 1.25rem;
-    }
-
-    /* ── Features Grid ── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-    .feature-card {
-      background: color-mix(in oklch, var(--paper) 60%, white 40%);
-      border: 1px solid color-mix(in oklch, var(--ink) 10%, transparent);
-      border-radius: var(--card-radius);
-      padding: 2rem 1.75rem;
-      transition: all 0.25s;
-      position: relative;
-    }
-    .feature-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow:
-        -4px 4px 0 var(--cyan),
-         4px -3px 0 var(--yellow);
-      border-color: var(--ink);
-    }
-    .feature-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-    .feature-card h3 {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.01em;
-    }
-    .feature-card p {
-      font-size: 0.95rem;
-      color: color-mix(in oklch, var(--ink) 75%, transparent);
-      line-height: 1.6;
-    }
-    .feature-count {
-      font-family: var(--font-label);
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 1rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid color-mix(in oklch, var(--ink) 10%, transparent);
-      color: color-mix(in oklch, var(--ink) 55%, transparent);
-    }
-
-    /* ── Schedule / Workshops ── */
-    .schedule-list {
-      margin-top: 2rem;
-      display: grid;
-      gap: 1rem;
-    }
-    .schedule-item {
-      display: flex;
-      gap: 1.5rem;
-      align-items: baseline;
-      padding: 1.25rem 1.5rem;
-      background: color-mix(in oklch, var(--paper) 60%, white 40%);
-      border: 1px solid color-mix(in oklch, var(--ink) 10%, transparent);
-      border-radius: var(--card-radius);
-      transition: all 0.2s;
-    }
-    .schedule-item:hover {
-      box-shadow:
-        -2px 2px 0 var(--cyan),
-         2px -2px 0 var(--yellow);
-      border-color: var(--ink);
-    }
-    .schedule-time {
-      font-family: var(--font-label);
-      font-size: 0.8rem;
-      font-weight: 500;
-      white-space: nowrap;
-      min-width: 5rem;
-      color: var(--cyan);
-      text-shadow: 0 0 0 transparent;
-    }
-    .schedule-info h4 {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 0.2rem;
-    }
-    .schedule-info p {
-      font-size: 0.9rem;
-      color: color-mix(in oklch, var(--ink) 65%, transparent);
-    }
-
-    /* ── CTA Section ── */
-    .cta-section {
-      text-align: center;
-      padding: 5rem 0;
-      border-top: 1px solid color-mix(in oklch, var(--ink) 12%, transparent);
-      border-bottom: 1px solid color-mix(in oklch, var(--ink) 12%, transparent);
-    }
-    .cta-section h2 {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-    }
-    .cta-section p {
-      max-width: 500px;
-      margin: 0 auto 2rem;
-      color: color-mix(in oklch, var(--ink) 70%, transparent);
-      font-size: 1.05rem;
-    }
-
-    /* ── Footer ── */
-    footer {
-      padding: 2.5rem 0;
-      font-family: var(--font-label);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      color: color-mix(in oklch, var(--ink) 50%, transparent);
-    }
-    footer a {
-      color: color-mix(in oklch, var(--ink) 60%, transparent);
-      text-decoration: none;
-    }
-    footer a:hover {
-      color: var(--ink);
-      text-shadow:
-        -1px 1px 0 var(--cyan),
-         1px 0 0 var(--yellow);
-    }
-
-    /* ── Decorative misregistration lines ── */
-    .mis-rule {
-      height: 1px;
-      background: var(--ink);
-      position: relative;
-      margin: 2rem 0;
-    }
-    .mis-rule::before {
-      content: '';
-      position: absolute;
-      top: 1px; left: 0;
-      width: 100%;
-      height: 1px;
-      background: var(--cyan);
-      opacity: 0.4;
-    }
-    .mis-rule::after {
-      content: '';
-      position: absolute;
-      top: -1px; left: 1px;
-      width: 100%;
-      height: 1px;
-      background: var(--yellow);
-      opacity: 0.4;
-    }
-
-    /* ── Ribbon accent bar ── */
-    .accent-bar {
-      height: 4px;
-      background: repeating-linear-gradient(
-        90deg,
-        var(--cyan) 0px,
-        var(--cyan) 8px,
-        transparent 8px,
-        transparent 16px,
-        var(--yellow) 16px,
-        var(--yellow) 24px,
-        transparent 24px,
-        transparent 32px
-      );
-      opacity: 0.7;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 820px) {
-      .intro-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      .features-grid { grid-template-columns: 1fr; }
-      nav { flex-direction: column; gap: 0.75rem; }
-      .nav-links { gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
-    }
-    @media (max-width: 540px) {
-      .hero { padding: 3rem 0 2.5rem; }
-      .schedule-item { flex-direction: column; gap: 0.5rem; }
-      footer { flex-direction: column; align-items: center; text-align: center; }
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 64rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 2px solid var(--color-ink); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
+    .masthead__brand { color: var(--color-ink); font-weight: 800; }
+    .hero { margin-block-end: var(--space-2xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-sm); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--color-ink); text-shadow: -3px 2px 0 var(--color-accent), 3px -1px 0 var(--color-accent-2); }
+    .hero__desc { font-size: 1.05rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; border: 2px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); transition: transform 120ms var(--ease-out); }
+    .btn:hover { transform: translate(-2px, -2px); }
+    .btn--solid { background: var(--color-ink); color: var(--color-paper); }
+    .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
+    .card { padding: var(--space-md); border: 2px solid var(--color-ink); background: var(--color-paper); }
+    .card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
+    .card p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 2px solid var(--color-ink); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
+    .colophon a:hover { text-decoration: underline; }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-
-  <!-- ─── Accent Ribbon ─── -->
-  <div class="accent-bar"></div>
-
-  <!-- ─── Navigation ─── -->
-  <div class="container">
-    <nav>
-      <div class="nav-logo mis" data-text="OFF-REGISTER">OFF-REGISTER</div>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#vendors">Vendors</a></li>
-        <li><a href="#workshops">Workshops</a></li>
-        <li><a href="#zines">Zine Library</a></li>
-        <li><a href="#visit">Visit</a></li>
+  <main class="page">
+    <header class="masthead"><span class="masthead__brand">Off-Register</span><span>Risograph · May 9&ndash;11 · Portland</span></header>
+    <section class="hero">
+      <p class="hero__label">Print fair · eighth edition</p>
+      <h1 class="hero__title">Ink off<br>the plate.</h1>
+      <p class="hero__desc">Three days of misregistered colour, double-hit black, and the smell of master rolls. 30+ risograph studios, live printing, workshops, and a zine fair that fills two floors of the old union hall.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--solid">Get tickets</a><a href="#" class="btn">Exhibitor list</a></div>
+    </section>
+    <section aria-labelledby="exhib-h">
+      <h2 class="section-head" id="exhib-h">Featured exhibitors</h2>
+      <ul class="grid-3">
+        <li class="card"><h3>Punch Press</h3><p>Oakland-based. Two-colour political posters, hand-drawn and Riso-printed in runs of 200. Bold, loud, unmissable.</p></li>
+        <li class="card"><h3>Folded Map</h3><p>Detroit. Zines about architecture and urban decay. Cyan + fluorescent pink are their signature.</p></li>
+        <li class="card"><h3>Dune Press</h3><p>Seattle. Risograph-printed field guides to Pacific Northwest fungi — scientific illustration meets punk production.</p></li>
       </ul>
-    </nav>
-  </div>
-
-  <!-- ─── Hero ─── -->
-  <section class="hero">
-    <div class="container">
-      <p class="section-label mis-label" style="margin-bottom:0.75rem;">Brooklyn · October 17–19, 2026</p>
-      <h1 class="mis-heading" data-text="PRINT FAIR">PRINT FAIR</h1>
-      <p class="hero-tagline">Where the plate never quite lines up — and that's the point</p>
-      <div class="hero-meta">
-        <span class="mis-label">✦</span>
-        <span>60+ independent publishers</span>
-        <span class="mis-label">✦</span>
-        <span>hands-on workshops</span>
-        <span class="mis-label">✦</span>
-        <span>live printing demos</span>
-      </div>
-      <div class="hero-cta">
-        <a href="#tickets" class="btn btn-primary">Get Tickets</a>
-        <a href="#vendors" class="btn btn-outline" style="margin-left:0.75rem;">See Vendors</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="container"><div class="mis-rule"></div></div>
-
-  <!-- ─── About ─── -->
-  <section id="about">
-    <div class="container">
-      <p class="section-label mis-label">About</p>
-      <div class="intro-grid">
-        <div>
-          <h2 class="section-title mis" data-text="Off-Register">Off-Register</h2>
-          <p>
-            Off-Register is a three-day celebration of risograph printing — a medium beloved for
-            its vibrant spot colours, visible roller marks, and that signature imperfect registration
-            that gives every print a handmade soul.
-          </p>
-          <p>
-            Founded in 2022, the fair brings together independent zine makers, small-press publishers,
-            print studios, and illustrators who have chosen the humble risograph as their medium. What
-            the machine lacks in precision, it makes up for in character.
-          </p>
-        </div>
-        <div>
-          <p>
-            This year we're taking over the former <em>Knickerbocker Stage</em> in East Williamsburg —
-            a raw industrial loft with concrete floors, exposed brick, and the kind of afternoon light
-            that makes cyan ink sing.
-          </p>
-          <p>
-            Expect messy ink-stained fingers, lively panel talks, a dedicated zine library with over
-            400 titles, and a communal poster-printing wall where anyone can pull a print.
-          </p>
-          <p style="font-family:var(--font-label);font-size:0.8rem;margin-top:1.5rem;opacity:0.6;">
-            <span class="mis-label">☀</span> All ages · sliding scale admission · riso-printed tote bag with every ticket
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Features: Vendors · Workshops · Zine Library ─── -->
-  <section id="vendors">
-    <div class="container">
-      <p class="section-label mis-label">What to expect</p>
-      <h2 class="section-title" style="margin-bottom:0.5rem;">Three halls, three vibes</h2>
-      <p class="section-desc">
-        Spread across the venue, each area has its own personality — but every corner rewards
-        the curious browser.
-      </p>
-
-      <div class="features-grid">
-        <!-- Vendors -->
-        <div class="feature-card">
-          <span class="feature-icon">🖨</span>
-          <h3 class="mis" data-text="Vendors">Vendors</h3>
-          <p>
-            Browse prints, zines, posters, and artists' books from 60+ independent publishers
-            and print studios from across North America and Europe.
-          </p>
-          <div class="feature-count">60+ tables · 12 countries</div>
-        </div>
-
-        <!-- Workshops -->
-        <div class="feature-card">
-          <span class="feature-icon">✂️</span>
-          <h3 class="mis" data-text="Workshops">Workshops</h3>
-          <p>
-            Hands-on sessions led by master printers: two-colour separation, digital-to-riso
-            workflow, DIY binding, and experimental overprinting techniques.
-          </p>
-          <div class="feature-count">8 sessions · all levels welcome</div>
-        </div>
-
-        <!-- Zine Library -->
-        <div class="feature-card">
-          <span class="feature-icon">📚</span>
-          <h3 class="mis" data-text="Zine Library">Zine Library</h3>
-          <p>
-            A quiet reading room with over 400 risograph-printed zines spanning comics, poetry,
-            photography, and artists' monographs. Read, trade, or be inspired.
-          </p>
-          <div class="feature-count">400+ titles · open all weekend</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="container"><div class="mis-rule"></div></div>
-
-  <!-- ─── Workshop Schedule ─── -->
-  <section id="workshops">
-    <div class="container">
-      <p class="section-label mis-label">Workshops</p>
-      <h2 class="section-title" style="margin-bottom:0.5rem;">Learn the process</h2>
-      <p class="section-desc">
-        From beginners to seasoned printers, our workshop track has something for everyone.
-        All materials included.
-      </p>
-
-      <div class="schedule-list">
-        <div class="schedule-item">
-          <div class="schedule-time">Fri 10am</div>
-          <div class="schedule-info">
-            <h4 class="mis" data-text="Riso 101: Two-Colour Separation">Riso 101: Two-Colour Separation</h4>
-            <p>Learn to prepare artwork for two-colour risograph printing — master channels, halftones, and overprint effects.</p>
-          </div>
-        </div>
-        <div class="schedule-item">
-          <div class="schedule-time">Fri 2pm</div>
-          <div class="schedule-info">
-            <h4 class="mis" data-text="Digital to Riso Workflow">Digital to Riso Workflow</h4>
-            <p>Bridge the gap between screen and paper: colour profiling, file prep, and master-making strategies.</p>
-          </div>
-        </div>
-        <div class="schedule-item">
-          <div class="schedule-time">Sat 11am</div>
-          <div class="schedule-info">
-            <h4 class="mis" data-text="Experimental Overprinting">Experimental Overprinting</h4>
-            <p>Push the risograph beyond its limits — unconventional colour combos, gradients, and intentional misregistration.</p>
-          </div>
-        </div>
-        <div class="schedule-item">
-          <div class="schedule-time">Sat 3pm</div>
-          <div class="schedule-info">
-            <h4 class="mis" data-text="DIY Zine Binding">DIY Zine Binding</h4>
-            <p>Fold, stitch, and bind your own mini-zine using saddle-stitch and Japanese stab binding techniques.</p>
-          </div>
-        </div>
-        <div class="schedule-item">
-          <div class="schedule-time">Sun 12pm</div>
-          <div class="schedule-info">
-            <h4 class="mis" data-text="Poster Printing Jam">Poster Printing Jam</h4>
-            <p>Collaborative large-format printing session — bring a design or make one on the spot, then pull a print.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── CTA ─── -->
-  <section id="visit">
-    <div class="container">
-      <div class="cta-section">
-        <h2 class="mis-heading" data-text="See you there">See you there</h2>
-        <p>
-          Knickerbocker Stage, East Williamsburg, Brooklyn.<br />
-          October 17–19 · 10am – 7pm daily.
-        </p>
-        <a href="#" class="btn btn-primary">Reserve Your Spot</a>
-        <span style="display:inline-block;margin-left:1rem;font-family:var(--font-label);font-size:0.75rem;opacity:0.5;">
-          or pay what you can at the door
-        </span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Footer ─── -->
-  <div class="container">
-    <footer>
-      <span>© 2026 Off-Register — made with messy ink</span>
-      <span>
-        <a href="#">Instagram</a> · <a href="#">Bluesky</a> · <a href="#">Contact</a>
-      </span>
-    </footer>
-  </div>
-
-  <!-- ─── Accent Ribbon ─── -->
-  <div class="accent-bar" style="margin-top:0;"></div>
-
+    </section>
+    <footer class="colophon"><span>Off-Register · 1422 SE Ankeny · Portland, OR</span><span><a href="mailto:press@offregister.fair">press@offregister.fair</a></span></footer>
+  </main>
 </body>
 </html>

@@ -1,452 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>19 — Bloom</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Petiole — botanical design studio</title>
+  <meta name="description" content="A botanical design studio crafting gardens, installations, and living systems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
     /* Hallmark · theme: bloom · pre-emit: P4 H4 E4 S4 R4 V4 */
-    
     :root {
-      --paper: oklch(97% 0.010 72);
-      --ink: oklch(20% 0.022 40);
-      --accent: oklch(56% 0.13 35);
-      --radius-card: 16px;
-      --radius-pill: 999px;
+      --color-paper: oklch(95% 0.018 75);
+      --color-paper-2: oklch(91% 0.020 75);
+      --color-ink: oklch(22% 0.020 60);
+      --color-ink-soft: oklch(45% 0.018 60);
+      --color-rule: oklch(78% 0.016 70);
+      --color-accent: oklch(56% 0.13 35);
+      --font-display: "Instrument Serif", Georgia, serif;
+      --font-body: "Inter", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
+      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    body { margin: 0; background: var(--paper); color: var(--ink); }
-    .page-header { background: color-mix(in oklch, var(--paper), black 3%); border-bottom-color: color-mix(in oklch, var(--paper), black 7%); }
-    .page-header .current { color: var(--accent); }
-
-    .section {
-      padding: 60px 32px;
-      min-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
-    .section-header { margin-bottom: 48px; max-width: 720px; }
-    .section-header .badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 14px;
-    }
-    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
-    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
-    @media (max-width: 768px) { .section { padding: 40px 20px; } }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-    }
-
-    /* ═══════════════════════════════════════════
-       19. BLOOM — MINDFUL WELLNESS
-       ═══════════════════════════════════════════ */
-    .bloom {
-      font-family: 'Inter', 'Geist', system-ui, sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-    }
-    .bloom .badge {
-      background: color-mix(in oklch, var(--accent), transparent 88%);
-      color: var(--accent);
-      border: none;
-    }
-    .bloom h2 {
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-    }
-    .bloom .subhead {
-      font-size: 15px;
-      color: color-mix(in oklch, var(--ink), transparent 35%);
-      line-height: 1.7;
-    }
-
-    /* ── Hero ── */
-    .bloom .hero-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 56px;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-    @media (max-width: 860px) {
-      .bloom .hero-layout { grid-template-columns: 1fr; gap: 40px; }
-    }
-    .bloom .hero-left h1 {
-      font-family: 'Inter', 'Geist', sans-serif;
-      font-size: clamp(34px, 5vw, 58px);
-      font-weight: 600;
-      letter-spacing: -0.038em;
-      line-height: 1.08;
-      margin-bottom: 18px;
-      color: var(--ink);
-    }
-    .bloom .hero-left h1 em { font-style: normal; color: var(--accent); }
-    .bloom .hero-left p {
-      font-size: 15px;
-      line-height: 1.7;
-      color: color-mix(in oklch, var(--ink), transparent 40%);
-      margin-bottom: 32px;
-      max-width: 440px;
-    }
-    .bloom .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-
-    /* ── Pill CTAs ── */
-    .bloom .pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 12px 32px;
-      border-radius: var(--radius-pill);
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      border: none;
-      line-height: 1;
-    }
-    .bloom .pill-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 16px -4px color-mix(in oklch, var(--accent), transparent 50%);
-    }
-    .bloom .pill-primary:hover {
-      filter: brightness(1.08);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px -6px color-mix(in oklch, var(--accent), transparent 35%);
-    }
-    .bloom .pill-ghost {
-      background: transparent;
-      color: var(--ink);
-      border: 1.5px solid color-mix(in oklch, var(--ink), transparent 82%);
-    }
-    .bloom .pill-ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── Mediation Card (hero visual) ── */
-    .bloom .meditation-card {
-      background: color-mix(in oklch, var(--paper), white 6%);
-      border: 1px solid color-mix(in oklch, var(--ink), transparent 90%);
-      border-radius: var(--radius-card);
-      padding: 28px 24px 24px;
-      box-shadow:
-        0 8px 32px -12px color-mix(in oklch, var(--ink), transparent 78%),
-        0 2px 8px -2px color-mix(in oklch, var(--ink), transparent 88%);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .bloom .meditation-card .mc-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .bloom .meditation-card .mc-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: color-mix(in oklch, var(--ink), transparent 50%);
-    }
-    .bloom .meditation-card .mc-status {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: color-mix(in oklch, var(--accent), transparent 20%);
-      background: color-mix(in oklch, var(--accent), transparent 88%);
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-    .bloom .mc-circle {
-      width: 160px; height: 160px;
-      margin: 0 auto;
-      border-radius: 50%;
-      position: relative;
-      background: color-mix(in oklch, var(--accent), transparent 88%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .bloom .mc-circle-inner {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      background: color-mix(in oklch, var(--accent), transparent 72%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-    .bloom .mc-circle-inner .mc-time {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .bloom .mc-circle-inner .mc-phase {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: color-mix(in oklch, var(--accent), transparent 20%);
-      margin-top: 4px;
-    }
-    .bloom .mc-breath {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 13px;
-      color: color-mix(in oklch, var(--ink), transparent 30%);
-      font-weight: 400;
-    }
-    .bloom .mc-breath .dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: color-mix(in oklch, var(--ink), transparent 70%);
-      transition: background 0.3s;
-    }
-    .bloom .mc-breath .dot.active { background: var(--accent); }
-    .bloom .mc-stats {
-      display: flex;
-      justify-content: space-around;
-      padding-top: 16px;
-      border-top: 1px solid color-mix(in oklch, var(--ink), transparent 92%);
-    }
-    .bloom .mc-stat { text-align: center; }
-    .bloom .mc-stat .num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--ink);
-    }
-    .bloom .mc-stat .lbl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: color-mix(in oklch, var(--ink), transparent 55%);
-      margin-top: 2px;
-    }
-
-    /* ── Soft ambient glow behind hero visual ── */
-    .bloom .hero-visual {
-      position: relative;
-    }
-    .bloom .hero-visual::before {
-      content: '';
-      position: absolute;
-      top: -10%; left: 5%;
-      width: 90%; height: 120%;
-      background: radial-gradient(ellipse at center, color-mix(in oklch, var(--accent), transparent 92%) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .bloom .hero-visual > * { position: relative; z-index: 1; }
-
-    /* ── Features Grid ── */
-    .bloom .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-    @media (max-width: 768px) { .bloom .features-grid { grid-template-columns: 1fr; } }
-    .bloom .feature-card {
-      background: color-mix(in oklch, var(--paper), white 5%);
-      border: 1px solid color-mix(in oklch, var(--ink), transparent 90%);
-      border-radius: var(--radius-card);
-      padding: 32px 28px;
-      transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(.16,1,.3,1);
-    }
-    .bloom .feature-card:hover {
-      box-shadow:
-        0 12px 32px -10px color-mix(in oklch, var(--ink), transparent 78%),
-        0 4px 12px -4px color-mix(in oklch, var(--ink), transparent 85%);
-      transform: translateY(-4px);
-    }
-    .bloom .feature-card .icon-ring {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: color-mix(in oklch, var(--accent), transparent 90%);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 18px;
-      font-size: 20px;
-    }
-    .bloom .feature-card h4 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--ink);
-    }
-    .bloom .feature-card p {
-      font-size: 13px;
-      line-height: 1.7;
-      color: color-mix(in oklch, var(--ink), transparent 40%);
-    }
-    .bloom .feature-card .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-top: 14px;
-      display: inline-block;
-    }
-
-    /* ── CTA Strip ── */
-    .bloom .cta-strip {
-      background: var(--ink);
-      color: var(--paper);
-      border-radius: var(--radius-card);
-      padding: 56px 48px;
-      text-align: center;
-      margin-top: 48px;
-      position: relative;
-      overflow: hidden;
-    }
-    .bloom .cta-strip::before {
-      content: '';
-      position: absolute;
-      top: -40%; right: -10%;
-      width: 60%; height: 80%;
-      background: radial-gradient(ellipse, color-mix(in oklch, var(--accent), transparent 80%) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .bloom .cta-strip h3 {
-      font-size: clamp(22px, 3vw, 34px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
-      position: relative;
-    }
-    .bloom .cta-strip p {
-      font-size: 14px;
-      opacity: .55;
-      max-width: 480px;
-      margin: 0 auto 28px;
-      position: relative;
-    }
-    .bloom .cta-strip .pill-primary {
-      background: var(--accent);
-      color: var(--ink);
-      position: relative;
-    }
-    .bloom .cta-strip .pill-primary:hover { filter: brightness(1.15); }
-
-    /* ── Tagline / micro ── */
-    .bloom .tagline {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: color-mix(in oklch, var(--ink), transparent 60%);
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
+    .masthead__brand { font-family: var(--font-display); font-size: 1.1rem; text-transform: none; letter-spacing: -0.01em; color: var(--color-ink); }
+    .hero { margin-block-end: var(--space-2xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 400; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); font-style: italic; }
+    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms var(--ease-out); }
+    .btn--primary { background: var(--color-accent); color: var(--color-paper); border: none; }
+    .btn--primary:hover { transform: translateY(-2px); }
+    .btn--outline { background: transparent; color: var(--color-ink); border: 1.5px solid var(--color-ink); }
+    .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
+    .card { padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: 10px; background: var(--color-paper-2); }
+    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
+    .card p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
+    .colophon a:hover { color: var(--color-accent); }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <nav class="page-header">
-    <a href="../index.html">Gallery</a>
-    <span class="sep">/</span>
-    <span class="current">19 Bloom</span>
-  </nav>
-
-  <!-- ═══════════ 19. BLOOM ═══════════ -->
-  <section class="section bloom" id="bloom">
-    <div class="content">
-
-      <div class="section-header">
-        <div class="badge">Style 19</div>
-        <h2>Bloom</h2>
-        <p class="subhead">Warm off-white paper · Geist sans · restrained terracotta accent. A mindful wellness companion — calm, airy, and generous with space.</p>
-      </div>
-
-      <!-- Hero -->
-      <div class="hero-layout">
-        <div class="hero-left">
-          <h1>Your daily practice, <em>blooming</em> at your own pace.</h1>
-          <p>Bloom is a gentle wellness companion for guided meditation, mood reflection, and restorative sleep stories — designed to feel like a warm pause in your day.</p>
-          <div class="hero-cta">
-            <button class="pill pill-primary">Begin your practice &rarr;</button>
-            <button class="pill pill-ghost">Explore</button>
-          </div>
-          <div style="margin-top: 22px;">
-            <span class="tagline">Free for 30 days &middot; No commitment</span>
-          </div>
-        </div>
-
-        <!-- Meditation Visual -->
-        <div class="hero-visual">
-          <div class="meditation-card">
-            <div class="mc-top">
-              <span class="mc-label">Live Session</span>
-              <span class="mc-status">&bull; Inhaling</span>
-            </div>
-            <div class="mc-circle">
-              <div class="mc-circle-inner">
-                <div class="mc-time">4:32</div>
-                <div class="mc-phase">Breath</div>
-              </div>
-            </div>
-            <div class="mc-breath">
-              <span class="dot active"></span>
-              <span>Breathe in&hellip; 4 counts</span>
-            </div>
-            <div class="mc-stats">
-              <div class="mc-stat"><div class="num">12</div><div class="lbl">Sessions</div></div>
-              <div class="mc-stat"><div class="num">47</div><div class="lbl">Day Streak</div></div>
-              <div class="mc-stat"><div class="num">6</div><div class="lbl">Friends</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Features -->
-      <div style="margin-top: 80px;">
-        <div style="text-align: center; margin-bottom: 40px;">
-          <div class="badge" style="display:inline-block;">Features</div>
-          <h2 style="text-align:center; max-width:100%;">Nurture your mind, every day</h2>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="icon-ring">&#127793;</div>
-            <h4>Guided Sessions</h4>
-            <p>From 3-minute resets to deep 30-minute immersions. Voice-guided meditations with adaptive breath pacing that responds to your rhythm.</p>
-            <span class="tag">140+ sessions</span>
-          </div>
-          <div class="feature-card">
-            <div class="icon-ring">&#9789;</div>
-            <h4>Mood Tracking</h4>
-            <p>A gentle nightly check-in. Plot your emotional landscape over weeks and months with rich, privacy-first journaling and pattern insights.</p>
-            <span class="tag">Private by design</span>
-          </div>
-          <div class="feature-card">
-            <div class="icon-ring">&#127770;</div>
-            <h4>Sleep Stories</h4>
-            <p>Wind down with narrated tales woven from field recordings, soft music, and calm narration. New stories added each full moon.</p>
-            <span class="tag">48 stories</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="cta-strip">
-        <h3>Ready to bloom?</h3>
-        <p>Join 86,000 people who take a mindful pause each day. Your first month is on us.</p>
-        <button class="pill pill-primary">Start your free month &rarr;</button>
-      </div>
-
-    </div>
-  </section>
+  <main class="page">
+    <header class="masthead"><span class="masthead__brand">Petiole</span><span>botanical design · Lisbon</span></header>
+    <section class="hero">
+      <p class="hero__label">Cultivated since 2020</p>
+      <h1 class="hero__title">From seed to specimen.</h1>
+      <p class="hero__desc">A botanical design studio working at the intersection of horticulture, architecture, and ecology. We design gardens, build living installations, and tend the spaces between.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--primary">View our work</a><a href="#" class="btn btn--outline">Get in touch</a></div>
+    </section>
+    <section aria-labelledby="serv-h">
+      <h2 class="section-head" id="serv-h">What we do</h2>
+      <ul class="grid-3">
+        <li class="card"><h3>Garden design</h3><p>Residential and commercial gardens built for the local climate. Native plants, responsible irrigation, year-round interest.</p></li>
+        <li class="card"><h3>Floral installation</h3><p>Events, galleries, and editorial. Seasonal arrangements that follow the bloom &mdash; not a catalogue.</p></li>
+        <li class="card"><h3>Workshops</h3><p>Propagation, pressing, and botanical drawing. Small groups, slow pace, hands-on. Open to all skill levels.</p></li>
+      </ul>
+    </section>
+    <footer class="colophon"><span>Petiole · Rua das Gaivotas 12 · Lisbon</span><span><a href="mailto:hello@petiole.studio">hello@petiole.studio</a></span></footer>
+  </main>
 </body>
 </html>

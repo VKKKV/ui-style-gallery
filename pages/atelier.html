@@ -1,101 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>11 — Atelier</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alma — textile atelier</title>
+  <meta name="description" content="A Lisbon textile atelier working with hand-loomed fabrics, natural dyes, and made-to-order garments." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
-    /* Hallmark · theme: atelier · pre-emit: P4 H4 E5 S4 R5 V4 */
     :root {
-      --accent: oklch(22% 0.060 40);
-      --paper: oklch(94% 0.005 60);
-      --paper-2: oklch(91% 0.006 60);
-      --ink: oklch(12% 0.024 40);
-      --muted: oklch(46% 0.010 50);
-      --rule: oklch(78% 0.006 55);
-      --radius-card: 0;
+      --color-paper: oklch(94% 0.005 60); --color-paper-2: oklch(91% 0.006 60);
+      --color-ink: oklch(12% 0.024 40); --color-ink-soft: oklch(46% 0.010 50);
+      --color-rule: oklch(78% 0.006 55); --color-accent: oklch(22% 0.060 40);
+      --font-display: "Playfair Display", Georgia, serif;
+      --font-body: "Inter", sans-serif; --font-mono: "JetBrains Mono", monospace;
+      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
     }
-    body { margin: 0; }
-    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
-    .content { max-width: 1100px; margin: 0 auto; width: 100%; }
-    .section-header { margin-bottom: 40px; max-width: 680px; }
-    .section-header .badge { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; background: var(--ink); color: var(--paper); margin-bottom: 16px; }
-    .section-header h2 { font-size: clamp(24px, 4vw, 46px); line-height: 1.0; margin-bottom: 12px; font-weight: 400; letter-spacing: -.018em; color: var(--ink); }
-    .section-header p { font-size: 14px; color: var(--muted); max-width: 480px; line-height: 1.7; font-weight: 400; }
-    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
-    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-    }
-    /* ===== ATELIER ===== */
-.atelier{background:var(--paper);color:var(--ink);font-family:'Inter','Geist',sans-serif}
-.atelier h2{font-family:'Playfair Display',Georgia,serif;font-weight:900}
-.atelier .display{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(21px,3vw,38px);letter-spacing:-.012em;line-height:1.0;color:var(--ink)}
-.atelier .deck{font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(16px,2vw,24px);font-style:italic;color:var(--muted);line-height:1.3;margin-bottom:24px}
-.atelier .card{border:0;padding:24px 0;border-bottom:1px solid var(--rule)}
-.atelier .card:last-child{border-bottom:none}
-.atelier .card h4{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;color:var(--ink);letter-spacing:-.008em;margin-bottom:4px}
-.atelier .card p{font-size:12px;color:var(--muted);line-height:1.6;max-width:400px}
-.atelier .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule);margin:24px 0}
-.atelier .grid-3 > div{padding:20px 0;border-bottom:1px solid var(--rule)}
-.atelier .grid-3 > div .num{font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;color:var(--accent);display:block;margin-bottom:4px}
-.atelier .grid-3 > div .lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-.atelier .btn{background:transparent;color:var(--ink);border:1px solid var(--ink);padding:10px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
-.atelier .btn:hover{background:var(--ink);color:var(--paper)}
-.atelier .hairline{height:.5px;background:var(--rule);width:100%;margin:0}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 56rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
+    .masthead__brand { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; text-transform: none; letter-spacing: -0.01em; color: var(--color-ink); }
+    .hero { margin-block-end: var(--space-2xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-sm); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 900; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.9; letter-spacing: -0.025em; color: var(--color-ink); }
+    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.6em 1.4em; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; cursor: pointer; border: 1px solid var(--color-ink); background: transparent; color: var(--color-ink); transition: background 120ms ease; }
+    .btn:hover { background: var(--color-ink); color: var(--color-paper); }
+    .btn--solid { background: var(--color-ink); color: var(--color-paper); }
+    .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); list-style: none; padding: 0; margin: 0; }
+    .card { border-block-start: 1px solid var(--color-rule); padding-block-start: var(--space-md); }
+    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); font-style: italic; }
+    .card p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
+    .colophon a:hover { color: var(--color-ink); }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <nav class="page-header">
-    <a href="../index.html">Gallery</a>
-    <span class="sep">/</span>
-    <span class="current">11 Atelier</span>
-  </nav>
-<section class="section atelier" id="atelier">
-  <div class="content">
-    <div class="section-header">
-      <div class="badge">Atelier Trianon</div>
-      <h2>Made to measure. Made to last.</h2>
-      <p>An independent atelier in the 7th arrondissement. Couture, tailoring, and the preservation of craft.</p>
-    </div>
-
-    <div class="deck">Each garment begins with a conversation — fabric, form, intention. Then the slow work of making begins.</div>
-
-    <div class="grid-3">
-      <div><span class="num">03</span><span class="lbl">collections / year</span></div>
-      <div><span class="num">14</span><span class="lbl">artisans in house</span></div>
-      <div><span class="num">6&ndash;8</span><span class="lbl">weeks per commission</span></div>
-    </div>
-
-    <div class="layout-2col">
-      <div>
-        <div class="card">
-          <h4>Couture Collection</h4>
-          <p>Bespoke evening and day wear. Each piece is hand-drafted, cut, and finished in our studio. One client, one pattern, one garment.</p>
-        </div>
-        <div class="card">
-          <h4>Fabric Archive</h4>
-          <p>Silk from Lyon, wool from Loro Piana, linen from Ulster. Our archive spans four centuries of European textile craft.</p>
-        </div>
-        <div class="card">
-          <h4>Restoration</h4>
-          <p>We restore and preserve heirloom garments — restitching, reweaving, and returning them to wearability without erasing their history.</p>
-        </div>
-      </div>
-      <div>
-        <div style="border:1px solid var(--rule);padding:24px">
-          <div style="font-family:'Playfair Display',Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Visit the atelier</div>
-          <div style="font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:12px">7 Rue de Bourgogne<br>Paris, 75007</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.7">Tuesday to Saturday<br>10:00 – 19:00</div>
-          <div class="hairline" style="margin:16px 0"></div>
-          <button class="btn">Request an appointment</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <main class="page">
+    <header class="masthead"><span class="masthead__brand">Alma</span><span>textile atelier · Lisbon</span></header>
+    <section class="hero">
+      <p class="hero__label">Hand-loomed · natural dye · made-to-order</p>
+      <h1 class="hero__title">Cloth before cut.</h1>
+      <p class="hero__desc">We design and weave our own fabrics in Lisbon. Natural fibres, plant-based dyes, and garments made to order &mdash; nothing leaves the studio until it fits the person who commissioned it.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--solid">Visit the studio</a><a href="#" class="btn">Our process</a></div>
+    </section>
+    <section aria-labelledby="pract-h">
+      <h2 class="section-head" id="pract-h">Our practice</h2>
+      <ul class="grid-3">
+        <li class="card"><h3>Hand-loomed weaving</h3><p>Every metre of fabric is woven on hand-operated looms. We control the tension, the thread count, and the handfeel. Yardage is produced in small runs &mdash; twenty metres, never two hundred.</p></li>
+        <li class="card"><h3>Natural dye studio</h3><p>Indigo, madder, weld, walnut. We grow some of our dye plants and forage the rest. The colour of each batch varies with the season &mdash; that&rsquo;s the point.</p></li>
+        <li class="card"><h3>Made-to-order</h3><p>No ready-to-wear. Every piece is cut from your measurements, sewn by one person, and fitted in person. A garment takes three to four weeks and lasts a decade.</p></li>
+      </ul>
+    </section>
+    <footer class="colophon"><span>Alma · Rua do Alecrim 45 · Lisbon</span><span><a href="mailto:ola@alma.atelier">ola@alma.atelier</a></span></footer>
+  </main>
 </body>
 </html>
