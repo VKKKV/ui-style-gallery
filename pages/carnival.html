@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12 — Carnival</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: carnival · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root { --accent: #FFD700; }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 12. CARNIVAL ===== */
+.carnival{background:#f7efe6;color:#2d1418;font-family:'DM Sans',sans-serif;position:relative}
+.carnival .badge{background:#2d1418;color:#f7efe6;border-radius:0;text-transform:uppercase;letter-spacing:2px}
+.carnival h2{font-family:'Big Shoulders Display','DM Sans',sans-serif;font-weight:800;font-size:clamp(28px,5vw,52px);letter-spacing:-.01em;color:#2d1418;line-height:.92}
+.carnival .sub{font-size:15px;color:#6b3a42;line-height:1.6;max-width:480px}
+.carnival .deck{font-family:'Big Shoulders Display','DM Sans',sans-serif;font-weight:700;font-size:clamp(20px,3vw,36px);letter-spacing:-.005em;color:#2d1418}
+.carnival .card{border:2px solid #2d1418;border-radius:8px;padding:24px;background:#f7efe6;box-shadow:4px 4px 0 #2d1418;transition:transform .15s,box-shadow .15s}
+.carnival .card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #2d1418}
+.carnival .card .label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#6b3a42;margin-bottom:6px}
+.carnival .card h4{font-family:'Big Shoulders Display','DM Sans',sans-serif;font-weight:700;font-size:20px;color:#2d1418;letter-spacing:-.005em;margin-bottom:4px}
+.carnival .card p{font-size:13px;color:#6b3a42;line-height:1.5}
+.carnival .accent-yellow{color:#D4A017;font-weight:600}
+.carnival .accent-oxblood{color:#7a1a1a;font-weight:600}
+.carnival .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:768px){.carnival .grid-3{grid-template-columns:1fr}}
+.carnival .pill{display:inline-block;background:#2d1418;color:#f7efe6;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;border-radius:0;margin-right:4px}
+.carnival .track-list{display:flex;flex-direction:column;gap:0;border:2px solid #2d1418;box-shadow:4px 4px 0 #2d1418}
+.carnival .track-item{display:flex;align-items:center;padding:12px 16px;border-bottom:2px solid #2d1418;font-size:13px;gap:12px}
+.carnival .track-item:last-child{border-bottom:none}
+.carnival .track-item .num{font-family:'Big Shoulders Display','DM Sans',sans-serif;font-weight:700;font-size:18px;color:#D4A017;min-width:28px}
+.carnival .track-item .title{flex:1;font-weight:500}
+.carnival .track-item .dur{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b3a42}
+.carnival .action-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.carnival .btn-ghost{background:transparent;color:#2d1418;border:2px solid #2d1418;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.1s;box-shadow:3px 3px 0 #2d1418;border-radius:0}
+.carnival .btn-ghost:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #2d1418}
+.carnival .btn-solid{background:#D4A017;color:#2d1418;border:2px solid #2d1418;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.1s;box-shadow:3px 3px 0 #2d1418;border-radius:0}
+.carnival .btn-solid:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #2d1418}
+.carnival .divider{height:2px;background:#2d1418;margin:24px 0;width:100%}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">12 Carnival</span>
+  </nav>
+  <!-- ============ 12. CARNIVAL ============ -->
+<section class="section carnival" id="carnival">
+  <div class="content">
+    <div class="section-header">
+      <div class="badge">Style 12</div>
+      <h2>CARNIVAL // MAXIMALIST</h2>
+      <p>Warm cream paper · oxblood ink · mustard accents · 2px chunky rules. Hard-offset shadows, Big Shoulders Display, record-label energy.</p>
+    </div>
+
+    <div class="deck" style="margin-bottom:24px">COLD SNAP — a six-track EP from <span class="accent-yellow">Brickyard Tapes</span>. Out now.</div>
+
+    <div class="grid-3" style="margin-bottom:28px">
+      <div class="card">
+        <div class="label">Artist</div>
+        <h4>June Belmont</h4>
+        <p>Detroit synth-pop. Writes hooks the way the sun writes shadows — long, sloping, impossible to ignore.</p>
+      </div>
+      <div class="card">
+        <div class="label">Artist</div>
+        <h4>Wax Theatre</h4>
+        <p>Four-piece post-punk from Glasgow. Angular guitars, deadpan vox, a rhythm section that knows when to hold back.</p>
+      </div>
+      <div class="card">
+        <div class="label">Artist</div>
+        <h4>Margot Half-Step</h4>
+        <p>Lo-fi folk from a bedroom in Portland. Four-track warmth, accidental genius, songs about trains and dogs.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px">
+      <div>
+        <div style="font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:clamp(18px,2.5vw,28px);margin-bottom:12px;color:#2d1418">SIX TRACKS <span class="accent-oxblood">// 18:42</span></div>
+        <div class="track-list">
+          <div class="track-item"><span class="num">01</span><span class="title">Copper Line</span><span class="dur">2:48</span></div>
+          <div class="track-item"><span class="num">02</span><span class="title">Midnight Service</span><span class="dur">3:12</span></div>
+          <div class="track-item"><span class="num">03</span><span class="title">Coyote, Don't</span><span class="dur">3:05</span></div>
+          <div class="track-item"><span class="num">04</span><span class="title">Soft Collision</span><span class="dur">2:56</span></div>
+          <div class="track-item"><span class="num">05</span><span class="title">Anchor Point</span><span class="dur">3:22</span></div>
+          <div class="track-item"><span class="num">06</span><span class="title">Last Call, Eastern</span><span class="dur">3:19</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:clamp(18px,2.5vw,28px);margin-bottom:12px;color:#2d1418">FORMATS <span class="accent-yellow">// PICK YOURS</span></div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="label">Vinyl 12"</div>
+          <h4>Pressed at Third Man</h4>
+          <p>180g black wax, gatefold sleeve, lyric insert. Limited run of 500.</p>
+          <button class="btn-ghost" style="margin-top:10px;padding:6px 16px;font-size:11px">Pre-order vinyl →</button>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="label">Cassette</div>
+          <h4>Chrome Type II</h4>
+          <p>High-bias chrome tape. J-card with risograph-printed artwork.</p>
+          <button class="btn-ghost" style="margin-top:10px;padding:6px 16px;font-size:11px">Pre-order tape →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6b3a42;margin-bottom:4px">Brickyard Tapes · Catalog № BYT-024</div>
+        <div style="font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:20px;color:#2d1418;letter-spacing:-.005em">Independent. Detroit-based. Since 2018.</div>
+      </div>
+      <div class="action-row" style="margin-top:0">
+        <button class="btn-solid">Listen now</button>
+        <button class="btn-ghost">Catalog</button>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

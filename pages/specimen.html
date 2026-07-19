@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specimen — Editorial Design Workshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300;9..144,340;9..144,400;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    /* Hallmark · theme: specimen · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root {
+      --paper: oklch(96% 0.018 80);
+      --ink:   oklch(18% 0.014 60);
+      --accent: #FC4C02;
+      --accent-dim: oklch(60% 0.18 40);
+      --ink-light: oklch(55% 0.01 60);
+      --ink-faint: oklch(78% 0.006 60);
+
+      --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+      --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 6rem;
+      --space-xxl: 10rem;
+
+      --rule: 1px solid var(--ink-faint);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    /* ─── Typography ─── */
+
+    h1, h2, h3, h4, h5 {
+      font-family: var(--font-display);
+      font-weight: 340;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 300;
+      font-variation-settings: 'SOFT' 100;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-variation-settings: 'SOFT' 80;
+    }
+
+    h3 {
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      font-weight: 400;
+      font-variation-settings: 'SOFT' 60;
+    }
+
+    .display-number {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 300;
+      font-variation-settings: 'SOFT' 100;
+      line-height: 1;
+      color: var(--ink-faint);
+      letter-spacing: -0.04em;
+    }
+
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.675rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--ink-light);
+    }
+
+    .label-accent {
+      color: var(--accent);
+    }
+
+    p {
+      max-width: 65ch;
+      margin-bottom: var(--space-sm);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      transition: color 0.2s;
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+
+    /* ─── Layout ─── */
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .container--narrow {
+      max-width: 800px;
+    }
+
+    section {
+      padding: var(--space-xl) 0;
+      border-top: var(--rule);
+    }
+
+    section:first-of-type {
+      border-top: none;
+    }
+
+    /* ─── Header / Nav ─── */
+
+    .site-header {
+      padding: var(--space-md) 0;
+      border-bottom: var(--rule);
+    }
+
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 340;
+      font-variation-settings: 'SOFT' 60;
+      letter-spacing: -0.01em;
+      border: 0;
+    }
+
+    .site-title:hover {
+      color: var(--ink);
+    }
+
+    .site-nav {
+      display: flex;
+      gap: var(--space-md);
+      align-items: center;
+    }
+
+    .site-nav a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 0;
+      color: var(--ink-light);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .site-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .site-nav a:hover::after {
+      width: 100%;
+    }
+
+    .site-nav a:hover {
+      color: var(--ink);
+    }
+
+    /* ─── Hero ─── */
+
+    .hero {
+      padding: var(--space-xxl) 0 var(--space-xl);
+      border-bottom: var(--rule);
+    }
+
+    .hero__sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-md);
+    }
+
+    .hero__desc {
+      font-size: 1.125rem;
+      max-width: 55ch;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+
+    /* ─── Type Specimen Showcase ─── */
+
+    .specimen-wall {
+      margin-top: var(--space-lg);
+    }
+
+    .specimen-wall__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-bottom: var(--space-sm);
+      border-bottom: var(--rule);
+      margin-bottom: var(--space-lg);
+    }
+
+    .specimen-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr 1px 1fr;
+      border-top: var(--rule);
+      border-bottom: var(--rule);
+    }
+
+    .specimen-grid__rule {
+      background: var(--ink-faint);
+      width: 1px;
+      height: 100%;
+    }
+
+    .specimen-card {
+      padding: var(--space-lg) var(--space-md);
+      text-align: center;
+    }
+
+    .specimen-card__glyph {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 10vw, 8rem);
+      font-weight: 300;
+      font-variation-settings: 'SOFT' 100;
+      line-height: 1;
+      display: block;
+      margin-bottom: var(--space-sm);
+      color: var(--ink);
+    }
+
+    .specimen-card__name {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-light);
+      margin-bottom: var(--space-xs);
+    }
+
+    .specimen-card__meta {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--ink-faint);
+    }
+
+    /* ─── Weights Row ─── */
+
+    .weights-row {
+      display: flex;
+      gap: 0;
+      border-bottom: var(--rule);
+      overflow: hidden;
+    }
+
+    .weights-row__item {
+      flex: 1;
+      padding: var(--space-md) var(--space-sm);
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      line-height: 1;
+      position: relative;
+    }
+
+    .weights-row__item + .weights-row__item {
+      border-left: var(--rule);
+    }
+
+    .weights-row__item--light  { font-weight: 300; font-variation-settings: 'SOFT' 100; }
+    .weights-row__item--book   { font-weight: 340; font-variation-settings: 'SOFT' 80; }
+    .weights-row__item--regular { font-weight: 400; font-variation-settings: 'SOFT' 60; }
+    .weights-row__item--bold   { font-weight: 700; font-variation-settings: 'SOFT' 0; }
+
+    .weights-row__label {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+
+    /* ─── Letter Stacks ─── */
+
+    .letter-stacks {
+      display: flex;
+      gap: var(--space-md);
+      justify-content: center;
+      padding: var(--space-lg) 0;
+      flex-wrap: wrap;
+    }
+
+    .letter-stack {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 340;
+      font-variation-settings: 'SOFT' 80;
+      line-height: 1.1;
+      text-align: center;
+      min-width: 3ch;
+    }
+
+    .letter-stack small {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      margin-top: var(--space-xs);
+    }
+
+    /* ─── Feature Grid (Workshops / Type Design / Editorial) ─── */
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-top: var(--rule);
+    }
+
+    .feature {
+      padding: var(--space-lg) var(--space-md);
+      border-right: var(--rule);
+    }
+
+    .feature:last-child {
+      border-right: none;
+    }
+
+    .feature__icon {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      font-variation-settings: 'SOFT' 100;
+      line-height: 1;
+      margin-bottom: var(--space-sm);
+      color: var(--ink-faint);
+    }
+
+    .feature h3 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .feature p {
+      font-size: 0.9375rem;
+      color: var(--ink-light);
+      max-width: 100%;
+    }
+
+    .feature__cta {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      margin-top: var(--space-sm);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .feature__cta:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* ─── Stats Bar ─── */
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: var(--rule);
+      border-bottom: var(--rule);
+    }
+
+    .stat {
+      padding: var(--space-lg) var(--space-md);
+      text-align: center;
+      border-right: var(--rule);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat__number {
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 4vw, 3.5rem);
+      font-weight: 300;
+      font-variation-settings: 'SOFT' 100;
+      line-height: 1;
+      margin-bottom: var(--space-xs);
+    }
+
+    .stat__label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-light);
+    }
+
+    /* ─── Editorial Layout Showcase ─── */
+
+    .layout-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: var(--rule);
+    }
+
+    .layout-showcase__panel {
+      padding: var(--space-lg) var(--space-md);
+      border-right: var(--rule);
+    }
+
+    .layout-showcase__panel:last-child {
+      border-right: none;
+    }
+
+    .layout-showcase__meta {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+      margin-bottom: var(--space-sm);
+    }
+
+    .layout-block {
+      background: var(--ink);
+      height: 3px;
+      width: 100%;
+      margin-bottom: var(--space-sm);
+    }
+
+    .layout-block--accent {
+      background: var(--accent);
+    }
+
+    .layout-block--thin {
+      height: 1px;
+    }
+
+    .layout-block--half {
+      width: 60%;
+    }
+
+    .layout-block--third {
+      width: 40%;
+    }
+
+    .layout-block--quarter {
+      width: 25%;
+    }
+
+    .layout-grid-preview {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      border: var(--rule);
+      margin-top: var(--space-md);
+    }
+
+    .layout-grid-preview__cell {
+      padding: var(--space-sm);
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--ink-light);
+    }
+
+    .layout-grid-preview__cell--accent {
+      color: var(--accent);
+    }
+
+    .layout-grid-preview__rule {
+      background: var(--ink-faint);
+      width: 1px;
+    }
+
+    /* ─── Workshops Schedule ─── */
+
+    .schedule {
+      border-top: var(--rule);
+    }
+
+    .schedule__item {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      gap: var(--space-md);
+      padding: var(--space-md) 0;
+      border-bottom: var(--rule);
+      align-items: baseline;
+    }
+
+    .schedule__item:last-child {
+      border-bottom: none;
+    }
+
+    .schedule__date {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--ink-faint);
+    }
+
+    .schedule__title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-variation-settings: 'SOFT' 60;
+      font-size: 1.125rem;
+    }
+
+    .schedule__desc {
+      font-size: 0.875rem;
+      color: var(--ink-light);
+      margin-top: var(--space-xs);
+    }
+
+    /* ─── Footer ─── */
+
+    .site-footer {
+      padding: var(--space-lg) 0 var(--space-xl);
+      border-top: var(--rule);
+    }
+
+    .site-footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .site-footer__colophon {
+      font-size: 0.8125rem;
+      color: var(--ink-light);
+    }
+
+    .site-footer__colophon span {
+      font-family: var(--font-display);
+      font-weight: 340;
+      font-variation-settings: 'SOFT' 60;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .footer-nav a {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-light);
+      border-bottom: 0;
+    }
+
+    .footer-nav a:hover {
+      color: var(--accent);
+    }
+
+    /* ─── Responsive ─── */
+
+    @media (max-width: 768px) {
+      .specimen-grid {
+        grid-template-columns: 1fr;
+      }
+      .specimen-grid__rule {
+        display: none;
+      }
+      .specimen-card + .specimen-card {
+        border-top: var(--rule);
+      }
+      .features {
+        grid-template-columns: 1fr;
+      }
+      .feature {
+        border-right: none;
+        border-bottom: var(--rule);
+      }
+      .feature:last-child {
+        border-bottom: none;
+      }
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .stat:nth-child(even) {
+        border-right: none;
+      }
+      .stat:nth-child(1),
+      .stat:nth-child(2) {
+        border-bottom: var(--rule);
+      }
+      .layout-showcase {
+        grid-template-columns: 1fr;
+      }
+      .layout-showcase__panel {
+        border-right: none;
+        border-bottom: var(--rule);
+      }
+      .layout-showcase__panel:last-child {
+        border-bottom: none;
+      }
+      .weights-row {
+        flex-wrap: wrap;
+      }
+      .weights-row__item {
+        flex: 1 1 50%;
+      }
+      .weights-row__item:nth-child(2) {
+        border-right: var(--rule);
+      }
+      .site-nav {
+        display: none;
+      }
+      .schedule__item {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+      }
+      .hero {
+        padding: var(--space-xl) 0 var(--space-lg);
+      }
+      section {
+        padding: var(--space-lg) 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+      .stat {
+        border-right: none;
+        border-bottom: var(--rule);
+      }
+      .stat:last-child {
+        border-bottom: none;
+      }
+      .weights-row__item {
+        flex: 1 1 100%;
+      }
+      .weights-row__item:nth-child(2) {
+        border-right: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ Header ═══ -->
+  <header class="site-header">
+    <div class="container">
+      <a href="#" class="site-title">Specimen</a>
+      <nav class="site-nav">
+        <a href="#">Workshops</a>
+        <a href="#">Typefaces</a>
+        <a href="#">Editorial</a>
+        <a href="#">Studio</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══ Hero ═══ -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero__sub">Editorial Design Workshop</p>
+      <h1>
+        Where letterforms<br>
+        find their voice
+      </h1>
+      <p class="hero__desc">
+        Specimen is a letterpress &amp; typographic studio crafting editorial
+        experiences&thinsp;—&thinsp;from bespoke typefaces to printed matter.
+        We teach the craft of letters, one character at a time.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ Type Specimen Showcase ═══ -->
+  <section>
+    <div class="container">
+      <div class="specimen-wall__header">
+        <h2>Type Specimen</h2>
+        <span class="label">Fraunces &middot; Variable</span>
+      </div>
+    </div>
+
+    <!-- Glyph Wall -->
+    <div class="container container--narrow">
+      <div class="letter-stacks">
+        <div class="letter-stack">
+          A<br>a<br><small>cap / lc</small>
+        </div>
+        <div class="letter-stack">
+          G<br>g<br><small>cap / lc</small>
+        </div>
+        <div class="letter-stack">
+          H<br>h<br><small>cap / lc</small>
+        </div>
+        <div class="letter-stack">
+          R<br>r<br><small>cap / lc</small>
+        </div>
+        <div class="letter-stack">
+          Q<br>q<br><small>cap / lc</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three-column glyph grid -->
+    <div class="container">
+      <div class="specimen-grid">
+        <div class="specimen-card">
+          <span class="specimen-card__glyph">Aa</span>
+          <p class="specimen-card__name">Regular</p>
+          <p class="specimen-card__meta">Weight 400 &middot; SOFT 60</p>
+        </div>
+        <div class="specimen-grid__rule"></div>
+        <div class="specimen-card">
+          <span class="specimen-card__glyph" style="font-weight:340;font-variation-settings:'SOFT' 80">Aa</span>
+          <p class="specimen-card__name">Book</p>
+          <p class="specimen-card__meta">Weight 340 &middot; SOFT 80</p>
+        </div>
+        <div class="specimen-grid__rule"></div>
+        <div class="specimen-card">
+          <span class="specimen-card__glyph" style="font-weight:700;font-variation-settings:'SOFT' 0">Aa</span>
+          <p class="specimen-card__name">Bold</p>
+          <p class="specimen-card__meta">Weight 700 &middot; SOFT 0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weight row -->
+    <div class="container">
+      <div class="weights-row">
+        <div class="weights-row__item weights-row__item--light">
+          <span class="weights-row__label">Light 300</span>
+          Sphinx
+        </div>
+        <div class="weights-row__item weights-row__item--book">
+          <span class="weights-row__label">Book 340</span>
+          Sphinx
+        </div>
+        <div class="weights-row__item weights-row__item--regular">
+          <span class="weights-row__label">Regular 400</span>
+          Sphinx
+        </div>
+        <div class="weights-row__item weights-row__item--bold">
+          <span class="weights-row__label">Bold 700</span>
+          Sphinx
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Stats ═══ -->
+  <section style="padding-top:0;padding-bottom:0;">
+    <div class="container">
+      <div class="stats-bar">
+        <div class="stat">
+          <p class="stat__number">14</p>
+          <p class="stat__label">Typefaces Cast</p>
+        </div>
+        <div class="stat">
+          <p class="stat__number">37</p>
+          <p class="stat__label">Workshops Held</p>
+        </div>
+        <div class="stat">
+          <p class="stat__number">200+</p>
+          <p class="stat__label">Students Taught</p>
+        </div>
+        <div class="stat">
+          <p class="stat__number">12</p>
+          <p class="stat__label">Awards Won</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Features: Workshops / Type Design / Editorial ═══ -->
+  <section>
+    <div class="container">
+      <div class="specimen-wall__header">
+        <h2>Our Practice</h2>
+        <span class="label">Three Pillars</span>
+      </div>
+    </div>
+    <div class="container">
+      <div class="features">
+        <div class="feature">
+          <div class="feature__icon">W</div>
+          <h3>Workshops</h3>
+          <p>
+            Hands-on letterpress and type design intensives for all levels. 
+            From punchcutting fundamentals to digital type production&thinsp;—&thinsp;
+            every student sets, proofs, and refines their own letterforms.
+          </p>
+          <a href="#" class="feature__cta">View programme</a>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">T</div>
+          <h3>Type Design</h3>
+          <p>
+            Bespoke type development for publishers, brands, and institutions. 
+            We draw display faces, text families, and custom lettering with 
+            a deep reverence for historical form and contemporary rigour.
+          </p>
+          <a href="#" class="feature__cta">See portfolio</a>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">E</div>
+          <h3>Editorial Layout</h3>
+          <p>
+            Grid systems, page architecture, and typographic colour for
+            books, journals, and catalogues. Every spread treated as an 
+            artefact — composition, hierarchy, and white space in concert.
+          </p>
+          <a href="#" class="feature__cta">Review work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Editorial Layout Showcase ═══ -->
+  <section>
+    <div class="container">
+      <div class="specimen-wall__header">
+        <h2>Editorial Layout</h2>
+        <span class="label">Grid &amp; Hierarchy</span>
+      </div>
+    </div>
+    <div class="container">
+      <div class="layout-showcase">
+        <div class="layout-showcase__panel">
+          <p class="layout-showcase__meta">Grid System</p>
+          <h3>Modular proportion</h3>
+          <p style="font-size:0.9375rem;color:var(--ink-light);margin-top:var(--space-sm);">
+            A five-column baseline grid governs every spread. Headings hang from
+            the cap line; body text sits on a 10&hairsp;pt leading. Marginalia,
+            folios, and notes occupy the outer column.
+          </p>
+          <div class="layout-grid-preview" style="margin-top:var(--space-md);">
+            <div class="layout-grid-preview__cell layout-grid-preview__cell--accent">
+              Headline<br>
+              <span style="color:var(--ink-faint);">2 rows</span>
+            </div>
+            <div class="layout-grid-preview__rule"></div>
+            <div class="layout-grid-preview__cell">
+              Body text<br>
+              <span style="color:var(--ink-faint);">6 rows</span>
+            </div>
+          </div>
+        </div>
+        <div class="layout-showcase__panel">
+          <p class="layout-showcase__meta">Typographic Colour</p>
+          <h3>Rhythm &amp; texture</h3>
+          <p style="font-size:0.9375rem;color:var(--ink-light);margin-top:var(--space-sm);">
+            Type colour is managed through leading, measure, and optical
+            margin alignment. Widows and orphans are banished. Every page
+            break is a considered turn.
+          </p>
+          <div style="margin-top:var(--space-md);">
+            <div class="layout-block layout-block--accent" style="width:85%;"></div>
+            <div class="layout-block" style="width:70%;"></div>
+            <div class="layout-block layout-block--thin" style="width:55%;"></div>
+            <div class="layout-block layout-block--accent layout-block--thin" style="width:40%;"></div>
+            <div class="layout-block" style="width:30%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Workshops Schedule ═══ -->
+  <section>
+    <div class="container">
+      <div class="specimen-wall__header">
+        <h2>Upcoming Workshops</h2>
+        <span class="label">2026 Season</span>
+      </div>
+    </div>
+    <div class="container container--narrow">
+      <div class="schedule">
+        <div class="schedule__item">
+          <span class="schedule__date">Sep 12</span>
+          <div>
+            <p class="schedule__title">Punchcutting Fundamentals</p>
+            <p class="schedule__desc">
+              A two-day intensive in steel type cutting. Participants leave with
+              a finished punch and a set of hand tools.
+            </p>
+          </div>
+        </div>
+        <div class="schedule__item">
+          <span class="schedule__date">Oct 3</span>
+          <div>
+            <p class="schedule__title">Editorial Grid Systems</p>
+            <p class="schedule__desc">
+              Building modular grids for books and journals. Bring a manuscript;
+              leave with a full typographic spec.
+            </p>
+          </div>
+        </div>
+        <div class="schedule__item">
+          <span class="schedule__date">Nov 7</span>
+          <div>
+            <p class="schedule__title">Variable Type in Print</p>
+            <p class="schedule__desc">
+              Designing with variable fonts for editorial use. Optical size,
+              weight, and softness as expressive parameters.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Footer ═══ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__colophon">
+        &copy; 2026 <span>Specimen</span> &mdash; Editorial Design Workshop<br>
+        Set in Fraunces, Inter &amp; JetBrains Mono
+      </div>
+      <nav class="footer-nav">
+        <a href="#">Instagram</a>
+        <a href="#">Are.na</a>
+        <a href="#">GitHub</a>
+        <a href="#">RSS</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

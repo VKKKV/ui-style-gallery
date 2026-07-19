@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 — Relay Terminal</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: terminal · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root {
+      --paper: oklch(11% 0.018 145);
+      --ink: oklch(86% 0.160 138);
+      --accent: oklch(78% 0.190 138);
+      --dim: oklch(40% 0.040 138);
+      --faint: oklch(22% 0.025 138);
+    }
+    body { margin: 0; background: var(--paper); }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+
+    /* ===== RELAY — Server Monitoring / CLI Tool ===== */
+    .relay {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      position: relative;
+      border-radius: 0;
+    }
+
+    /* CRT scanline overlay */
+    .relay::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Grid background */
+    .relay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .relay .badge {
+      background: rgba(255,255,255,0.04);
+      color: var(--ink);
+      border: 1px solid var(--faint);
+      border-radius: 0;
+    }
+
+    .relay h2 {
+      color: var(--ink);
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.5px;
+    }
+
+    .relay h2 .cursor-blink {
+      display: inline-block;
+      width: 10px;
+      height: 1em;
+      background: var(--ink);
+      animation: blink 1s step-end infinite;
+      vertical-align: baseline;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ── Terminal Dashboard ── */
+    .relay .dashboard {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--faint);
+      border-radius: 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .relay .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--faint);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .relay .dash-header .dash-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .relay .dash-header .dash-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 0;
+      display: block;
+    }
+
+    .relay .dash-header .dash-dots .dot-red { background: oklch(55% 0.18 29); }
+    .relay .dash-header .dash-dots .dot-yellow { background: oklch(75% 0.16 85); }
+    .relay .dash-header .dash-dots .dot-green { background: var(--ink); }
+
+    .relay .dash-body {
+      padding: 20px;
+    }
+
+    .relay .dash-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .relay .dash-title .prompt {
+      color: var(--accent);
+    }
+
+    .relay .dash-title .path {
+      color: var(--ink);
+    }
+
+    /* ── Metrics Grid ── */
+    .relay .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--faint);
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .relay .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .relay .metric-cell {
+      background: rgba(0,0,0,0.5);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .relay .metric-cell .num {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .relay .metric-cell .num .unit {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--dim);
+      letter-spacing: 0;
+    }
+
+    .relay .metric-cell .lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--dim);
+      margin-top: 6px;
+    }
+
+    .relay .metric-cell .spark {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 2px;
+      height: 20px;
+      margin-top: 8px;
+    }
+
+    .relay .metric-cell .spark span {
+      width: 3px;
+      background: var(--ink);
+      opacity: 0.3;
+      border-radius: 0;
+    }
+
+    .relay .metric-cell .spark .active { opacity: 0.8; }
+
+    /* ── Progress Bars ── */
+    .relay .sys-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-size: 11px;
+    }
+
+    .relay .sys-row:last-child { border-bottom: none; }
+
+    .relay .sys-row .label {
+      color: var(--dim);
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+
+    .relay .sys-row .bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.04);
+      margin: 0 12px;
+      border-radius: 0;
+      overflow: hidden;
+    }
+
+    .relay .sys-row .bar-fill {
+      height: 100%;
+      background: var(--ink);
+      transition: width 0.6s ease;
+      border-radius: 0;
+    }
+
+    .relay .sys-row .bar-fill.accent { background: var(--accent); }
+
+    .relay .sys-row .val {
+      color: var(--ink);
+      font-weight: 500;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ── Log Stream ── */
+    .relay .log-stream {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--faint);
+      border-radius: 0;
+      padding: 14px;
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .relay .log-stream .log-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--dim);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .relay .log-stream .log-label .log-status {
+      color: var(--ink);
+    }
+
+    .relay .log-line {
+      font-size: 11px;
+      line-height: 1.7;
+      display: flex;
+      gap: 10px;
+      opacity: 0.7;
+      font-weight: 300;
+    }
+
+    .relay .log-line .ts {
+      color: var(--dim);
+      flex-shrink: 0;
+    }
+
+    .relay .log-line .level {
+      flex-shrink: 0;
+      width: 48px;
+      text-transform: uppercase;
+    }
+
+    .relay .log-line .level.info { color: var(--ink); }
+    .relay .log-line .level.warn { color: oklch(75% 0.16 85); }
+    .relay .log-line .level.err { color: oklch(55% 0.18 29); }
+    .relay .log-line .level.ok { color: var(--accent); }
+
+    .relay .log-line .msg { color: rgba(255,255,255,0.5); }
+
+    /* ── Feature Cards ── */
+    .relay .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--faint);
+      margin-top: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      .relay .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    .relay .feature-card {
+      background: rgba(0,0,0,0.5);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .relay .feature-card .icon-wrap {
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .relay .feature-card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .relay .feature-card p {
+      font-size: 11px;
+      color: var(--dim);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ── Command Prompts ── */
+    .relay .cmd-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .relay .cmd-line .prompt-sym {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .relay .cmd-line input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--faint);
+      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 6px 0;
+      flex: 1;
+      outline: none;
+      border-radius: 0;
+    }
+
+    .relay .cmd-line input::placeholder {
+      color: var(--dim);
+      font-weight: 300;
+    }
+
+    .relay .cmd-line input:focus {
+      border-bottom-color: var(--ink);
+    }
+
+    /* ── Buttons ── */
+    .relay .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .relay .btn {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--faint);
+      padding: 8px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border-radius: 0;
+      font-weight: 500;
+    }
+
+    .relay .btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    .relay .btn-accent {
+      background: var(--accent);
+      color: var(--paper);
+      border-color: var(--accent);
+    }
+
+    .relay .btn-accent:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .relay .btn .key-hint {
+      color: var(--dim);
+      margin-right: 6px;
+    }
+
+    .relay .btn-accent .key-hint {
+      color: rgba(0,0,0,0.3);
+    }
+
+    .relay .btn-accent:hover .key-hint {
+      color: var(--dim);
+    }
+
+    /* ── Status Bar ── */
+    .relay .status-bar {
+      margin-top: 24px;
+      border-top: 1px solid var(--faint);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .relay .status-bar .status-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--ink);
+      margin-right: 4px;
+      border-radius: 0;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .relay .status-bar .right {
+      color: var(--faint);
+    }
+
+    /* ── Ascii art ── */
+    .relay .ascii-art {
+      font-size: 7px;
+      line-height: 1.2;
+      color: rgba(255,255,255,0.03);
+      position: absolute;
+      right: 20px;
+      top: 40px;
+      pointer-events: none;
+      z-index: 0;
+      white-space: pre;
+    }
+
+    /* ── CRT flicker (subtle) ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .relay .crt-flicker {
+        animation: flicker 0.15s infinite;
+      }
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.999; }
+      50% { opacity: 1; }
+      100% { opacity: 0.999; }
+    }
+
+    /* ── Typing animation for hero ── */
+    .relay .typing {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--ink);
+      animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+      display: inline-block;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: var(--ink); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header" style="--accent:oklch(78% 0.190 138)">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">10 Relay Terminal</span>
+  </nav>
+
+  <!-- ============ RELAY TERMINAL ============ -->
+  <section class="section relay" id="relay">
+    <div class="content" style="position:relative;z-index:1">
+      <div class="section-header">
+        <div class="badge">Style 10 // $RELAY</div>
+        <h2>RELAY&nbsp;SERVER&nbsp;MONITOR<span class="cursor-blink"></span></h2>
+        <p>Phosphor CRT terminal dashboard — real-time server metrics, log streaming, and incident response. Zero radius, pure monospace, green-on-black fidelity.</p>
+      </div>
+
+      <div class="layout-2col">
+        <!-- LEFT COL: Terminal Dashboard -->
+        <div>
+          <div class="dashboard">
+            <div class="dash-header">
+              <div class="dash-dots">
+                <span class="dot-red"></span>
+                <span class="dot-yellow"></span>
+                <span class="dot-green"></span>
+              </div>
+              <span>relay@monitor ~ /dashboard</span>
+              <span>UPTIME 183d 11h 42m</span>
+            </div>
+            <div class="dash-body">
+              <div class="dash-title">
+                <span class="prompt">$</span>
+                <span class="path">./metrics --live --interval 1s</span>
+              </div>
+
+              <div class="metric-grid">
+                <div class="metric-cell">
+                  <div class="num">1,847<span class="unit">/s</span></div>
+                  <div class="lbl">Requests</div>
+                  <div class="spark">
+                    <span style="height:8px"></span>
+                    <span style="height:12px" class="active"></span>
+                    <span style="height:6px"></span>
+                    <span style="height:16px"></span>
+                    <span style="height:10px" class="active"></span>
+                    <span style="height:18px" class="active"></span>
+                    <span style="height:14px"></span>
+                    <span style="height:9px"></span>
+                  </div>
+                </div>
+                <div class="metric-cell">
+                  <div class="num">99.98<span class="unit">%</span></div>
+                  <div class="lbl">Uptime</div>
+                  <div class="spark">
+                    <span style="height:14px" class="active"></span>
+                    <span style="height:18px" class="active"></span>
+                    <span style="height:16px" class="active"></span>
+                    <span style="height:14px" class="active"></span>
+                    <span style="height:12px" class="active"></span>
+                    <span style="height:16px" class="active"></span>
+                    <span style="height:18px" class="active"></span>
+                    <span style="height:15px" class="active"></span>
+                  </div>
+                </div>
+                <div class="metric-cell">
+                  <div class="num">42<span class="unit"></span></div>
+                  <div class="lbl">Active Nodes</div>
+                  <div class="spark">
+                    <span style="height:6px"></span>
+                    <span style="height:10px"></span>
+                    <span style="height:14px" class="active"></span>
+                    <span style="height:18px" class="active"></span>
+                    <span style="height:16px" class="active"></span>
+                    <span style="height:12px"></span>
+                    <span style="height:8px"></span>
+                    <span style="height:10px"></span>
+                  </div>
+                </div>
+                <div class="metric-cell">
+                  <div class="num">8<span class="unit">ms</span></div>
+                  <div class="lbl">p50 Latency</div>
+                  <div class="spark">
+                    <span style="height:18px" class="active"></span>
+                    <span style="height:14px" class="active"></span>
+                    <span style="height:10px" class="active"></span>
+                    <span style="height:6px"></span>
+                    <span style="height:12px" class="active"></span>
+                    <span style="height:8px"></span>
+                    <span style="height:4px"></span>
+                    <span style="height:10px" class="active"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="sys-row">
+                  <span class="label">CPU</span>
+                  <div class="bar-wrap"><div class="bar-fill" style="width:34%"></div></div>
+                  <span class="val">34.2%</span>
+                </div>
+                <div class="sys-row">
+                  <span class="label">MEMORY</span>
+                  <div class="bar-wrap"><div class="bar-fill" style="width:62%"></div></div>
+                  <span class="val">9.8 / 16 GB</span>
+                </div>
+                <div class="sys-row">
+                  <span class="label">DISK</span>
+                  <div class="bar-wrap"><div class="bar-fill accent" style="width:78%"></div></div>
+                  <span class="val">389 / 512 GB</span>
+                </div>
+                <div class="sys-row">
+                  <span class="label">NETWORK</span>
+                  <div class="bar-wrap"><div class="bar-fill" style="width:23%"></div></div>
+                  <span class="val">1.4 Gbps</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-stream">
+            <div class="log-label">
+              <span>> /var/log/relay/events.log</span>
+              <span class="log-status">LIVE <span class="status-dot" style="animation:pulse 1.5s ease-in-out infinite;display:inline-block;width:5px;height:5px;background:var(--ink);margin-left:4px;border-radius:0"></span></span>
+            </div>
+            <div class="log-line"><span class="ts">[19:42:03]</span><span class="level ok">OK</span><span class="msg">Health check pass — node us-east-1a</span></div>
+            <div class="log-line"><span class="ts">[19:41:58]</span><span class="level info">INFO</span><span class="msg">Replica 7/12 scaled up — deployment web-v3.2</span></div>
+            <div class="log-line"><span class="ts">[19:41:42]</span><span class="level warn">WARN</span><span class="msg">Memory threshold >80% on node eu-west-2c</span></div>
+            <div class="log-line"><span class="ts">[19:41:30]</span><span class="level info">INFO</span><span class="msg">Cache miss ratio 0.04 — below threshold</span></div>
+            <div class="log-line"><span class="ts">[19:41:12]</span><span class="level ok">OK</span><span class="msg">Certificate renewal — 23d until expiry</span></div>
+            <div class="log-line"><span class="ts">[19:40:55]</span><span class="level err">ERR</span><span class="msg">Connection timeout — redis-cache-02 (auto-retry)</span></div>
+            <div class="log-line"><span class="ts">[19:40:40]</span><span class="level info">INFO</span><span class="msg">Log rotation complete — 1.2 GB reclaimed</span></div>
+          </div>
+        </div>
+
+        <!-- RIGHT COL: Features + Commands -->
+        <div>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="icon-wrap">&gt;_</div>
+              <h4>Uptime Monitoring</h4>
+              <p>Multi-region heartbeat checks with configurable intervals. Alert on drift, track SLA in real-time.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon-wrap">~$</div>
+              <h4>Log Streaming</h4>
+              <p>Tail logs across all nodes simultaneously. Filter, grep, and pipe without leaving the terminal.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon-wrap">!&gt;</div>
+              <h4>Incident Response</h4>
+              <p>One-command runbooks, automated rollback triggers, and on-call escalation from the CLI.</p>
+            </div>
+          </div>
+
+          <div class="cmd-line">
+            <span class="prompt-sym">$</span>
+            <input type="text" placeholder="relay deploy --target prod --canary 20" value="relay monitor --live --region all">
+          </div>
+
+          <div class="btn-group">
+            <button class="btn"><span class="key-hint">[1]</span> Dashboard</button>
+            <button class="btn btn-accent"><span class="key-hint">[2]</span> Live Tail</button>
+            <button class="btn"><span class="key-hint">[3]</span> Runbook</button>
+            <button class="btn"><span class="key-hint">[4]</span> Incidents</button>
+            <button class="btn"><span class="key-hint">[5]</span> Config</button>
+          </div>
+
+          <div class="status-bar">
+            <div><span class="status-dot"></span> ALL SYSTEMS NOMINAL — 42/42 NODES ONLINE</div>
+            <div class="right">relay v3.7.1 / aes-256-gcm</div>
+          </div>
+
+          <div style="margin-top:20px;font-size:9px;color:var(--faint);letter-spacing:1.5px;text-align:center;position:relative;z-index:1">
+            SECURE CONNECTION ESTABLISHED // PROTOCOL: SSH-2.0-RELAY
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

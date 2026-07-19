@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12 — Newsprint</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Crimson+Pro:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: newsprint · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root { --accent: oklch(32% 0.10 28); }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 12. NEWSPRINT — THE EVENING STANDARD ===== */
+    .newsprint {
+      background: oklch(92% 0.045 50);
+      color: oklch(15% 0.030 25);
+      font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+      position: relative;
+    }
+    /* ── Masthead ── */
+    .newsprint .masthead {
+      text-align: center;
+      border-bottom: 2px solid oklch(32% 0.10 28);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    .newsprint .masthead .date {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+      margin-bottom: 4px;
+    }
+    .newsprint .masthead h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(36px, 7vw, 64px);
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      color: oklch(15% 0.030 25);
+      margin-bottom: 4px;
+    }
+    .newsprint .masthead .tagline {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: oklch(40% 0.06 30);
+    }
+
+    /* ── Hairline helpers ── */
+    .newsprint .hr-hairline {
+      height: 0;
+      border: none;
+      border-top: 1px solid oklch(55% 0.06 35 / 0.4);
+      margin: 16px 0;
+    }
+    .newsprint .hr-medium {
+      height: 0;
+      border: none;
+      border-top: 2px solid oklch(32% 0.10 28);
+      margin: 20px 0;
+    }
+
+    /* ─── Hero story / Front page ─── */
+    .newsprint .hero-story {
+      margin-bottom: 24px;
+    }
+    .newsprint .hero-story .section-label {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+      margin-bottom: 6px;
+    }
+    .newsprint .hero-story h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      color: oklch(15% 0.030 25);
+      margin-bottom: 10px;
+    }
+    .newsprint .hero-story .byline {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: oklch(32% 0.10 28);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .newsprint .hero-story .lede {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.55;
+      color: oklch(25% 0.04 28);
+      max-width: 640px;
+      margin-bottom: 8px;
+    }
+    .newsprint .hero-story .continue {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+    }
+    .newsprint .hero-story .continue::after {
+      content: ' →';
+    }
+
+    /* ── Story cards ── */
+    .newsprint .story-card {
+      border-top: 1px solid oklch(55% 0.06 35 / 0.4);
+      padding: 16px 0;
+    }
+    .newsprint .story-card:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+    .newsprint .story-card .tag {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+      margin-bottom: 4px;
+    }
+    .newsprint .story-card h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      font-size: 17px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: oklch(15% 0.030 25);
+      margin-bottom: 4px;
+    }
+    .newsprint .story-card p {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: oklch(30% 0.04 28);
+    }
+
+    /* ── Column layouts ── */
+    .newsprint .col-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 700px) {
+      .newsprint .col-2 { grid-template-columns: 1fr; }
+    }
+
+    .newsprint .col-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 800px) {
+      .newsprint .col-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
+      .newsprint .col-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Section headers inside paper ── */
+    .newsprint .section-head {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: oklch(15% 0.030 25);
+      margin-bottom: 12px;
+    }
+    .newsprint .section-head .sub {
+      display: block;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+      margin-bottom: 4px;
+    }
+    .newsprint .section-head .hr-deco {
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: oklch(32% 0.10 28);
+      margin-top: 8px;
+    }
+
+    /* ── Stats / data table ── */
+    .newsprint .data-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+    }
+    .newsprint .data-table th {
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+      text-align: left;
+      padding: 8px 0;
+      border-bottom: 1px solid oklch(55% 0.06 35 / 0.4);
+    }
+    .newsprint .data-table td {
+      padding: 8px 0;
+      border-bottom: 1px solid oklch(55% 0.06 35 / 0.3);
+      color: oklch(20% 0.04 28);
+    }
+    .newsprint .data-table td:last-child {
+      text-align: right;
+      font-weight: 500;
+    }
+
+    /* ── byline block ── */
+    .newsprint .byline-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      color: oklch(40% 0.06 30);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .newsprint .byline-block .author {
+      font-weight: 600;
+      color: oklch(32% 0.10 28);
+    }
+    .newsprint .byline-block .sep {
+      width: 1px;
+      height: 12px;
+      background: oklch(55% 0.06 35 / 0.4);
+    }
+
+    /* ── Pull quote ── */
+    .newsprint .pullquote {
+      border-left: 2px solid oklch(32% 0.10 28);
+      padding: 12px 20px;
+      margin: 16px 0;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.35;
+      color: oklch(20% 0.05 28);
+    }
+    .newsprint .pullquote .attrib {
+      display: block;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 9px;
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: oklch(32% 0.10 28);
+      margin-top: 8px;
+    }
+
+    /* ── Buttons ── */
+    .newsprint .btn {
+      background: transparent;
+      color: oklch(32% 0.10 28);
+      border: 1px solid oklch(32% 0.10 28);
+      padding: 8px 20px;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background .15s, color .15s;
+    }
+    .newsprint .btn:hover {
+      background: oklch(32% 0.10 28);
+      color: oklch(92% 0.045 50);
+    }
+    .newsprint .btn-solid {
+      background: oklch(32% 0.10 28);
+      color: oklch(92% 0.045 50);
+      border: 1px solid oklch(32% 0.10 28);
+    }
+    .newsprint .btn-solid:hover {
+      background: oklch(38% 0.12 28);
+    }
+
+    /* ── Footer bar ── */
+    .newsprint .footer-bar {
+      border-top: 2px solid oklch(32% 0.10 28);
+      margin-top: 32px;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: oklch(40% 0.06 30);
+    }
+    .newsprint .footer-bar strong {
+      font-weight: 600;
+      color: oklch(32% 0.10 28);
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">12 Newsprint</span>
+  </nav>
+  <!-- ============ 12. NEWSPRINT ============ -->
+<section class="section newsprint" id="newsprint">
+  <div class="content">
+
+    <!-- ─── MASTHEAD ─── -->
+    <header class="masthead">
+      <div class="date">Monday, 19 July 2026 · No. 12,741</div>
+      <h1>The Evening Standard</h1>
+      <div class="tagline">Founded 1874 · London's Daily Journal of Record</div>
+    </header>
+
+    <!-- ─── HERO: FRONT PAGE LEAD ─── -->
+    <div class="hero-story">
+      <div class="section-label">Front Page · Exclusive</div>
+      <h2>Inside the Quiet Revolution Reshaping<br>How Britain Reads the News</h2>
+      <div class="byline">By Helena Cross · Investigations Editor</div>
+      <p class="lede">
+        For a century and a half, the broadsheet has been the bedrock of daily discourse — 
+        a tangible record of power, culture, and consequence. Now, as newsrooms confront an 
+        age of algorithmic attention, a quiet counter-movement is rediscovering the value 
+        of longform reporting, deliberate typography, and the craft of the printed page 
+        in a digital world.
+      </p>
+      <span class="continue">Continue reading</span>
+    </div>
+
+    <hr class="hr-hairline">
+
+    <!-- ─── LONGFORM / INVESTIGATIONS / CULTURE ─── -->
+    <div class="col-3" style="margin-bottom:20px">
+      <div>
+        <div class="story-card">
+          <div class="tag">Longform</div>
+          <h3>The Lost Art of the Parliamentary Sketch</h3>
+          <p>A once-venerable tradition of political observation is making an unlikely return, one newsletter at a time.</p>
+        </div>
+        <div class="story-card">
+          <div class="tag">Longform</div>
+          <h3>How the Typewriter Won the War</h3>
+          <p>The untold story of the machines that shaped modern diplomacy — and the writers who operated them under fire.</p>
+        </div>
+      </div>
+      <div>
+        <div class="story-card">
+          <div class="tag">Investigation</div>
+          <h3>Pipeline, Paper, Power: Tracing the Money</h3>
+          <p>Our investigation into the financing behind Britain's largest infrastructure project reveals a web of offshore holdings and undeclared interests.</p>
+        </div>
+        <div class="story-card">
+          <div class="tag">Investigation</div>
+          <h3>The Algorithm That Ate the High Street</h3>
+          <p>Dynamic pricing, digital rent extraction, and the hollowing-out of independent retail — a data-driven reckoning.</p>
+        </div>
+      </div>
+      <div>
+        <div class="story-card">
+          <div class="tag">Culture</div>
+          <h3>The Renaissance of Letterpress</h3>
+          <p>From Shoreditch to Edinburgh, a new generation of printers is rejecting the screen in favour of ink and lead type.</p>
+        </div>
+        <div class="story-card">
+          <div class="tag">Culture</div>
+          <h3>Review: A Return to Form</h3>
+          <p>A new exhibition at the V&amp;A argues that modernism's best ideas were never about novelty — they were about clarity.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="hr-medium">
+
+    <!-- ─── SECONDARY FEATURE WITH STATS ─── -->
+    <div class="col-2" style="margin-bottom:20px">
+      <div>
+        <div class="section-head">
+          <span class="sub">Data &amp; Analysis</span>
+          The State of Print
+          <span class="hr-deco"></span>
+        </div>
+        <p style="font-size:14px;line-height:1.55;color:oklch(25% 0.04 28);margin-bottom:14px">
+          Despite a decade of obituaries for print journalism, investment in longform 
+          editorial design and premium weekly editions is surging. Readers are paying 
+          for depth, for curation, and for the tactile experience of a well-made page — 
+          even when that page is digital.
+        </p>
+        <div class="pullquote">
+          “The greatest asset a newspaper has is its readers' attention — not their clicks.”
+          <span class="attrib">— M. T. Hargreaves, City University</span>
+        </div>
+      </div>
+      <div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Metric</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Weekly print circulation (2026)</td><td>+4.2% YoY</td></tr>
+            <tr><td>Digital longform subscriptions</td><td>+18.7%</td></tr>
+            <tr><td>Average time on page (longform)</td><td>12m 34s</td></tr>
+            <tr><td>Newsletter open rate</td><td>67.3%</td></tr>
+            <tr><td>Readers aged 18–34 (print)</td><td>+8.1%</td></tr>
+            <tr><td>Editorial staff hired (2025–26)</td><td>243</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="hr-hairline">
+
+    <!-- ─── CULTURE HALF ─── -->
+    <div style="margin-bottom:16px">
+      <div class="section-head">
+        <span class="sub">Critic's Corner</span>
+        Books &amp; Arts
+        <span class="hr-deco"></span>
+      </div>
+    </div>
+    <div class="col-2">
+      <div>
+        <div class="story-card" style="border-top:none;padding-top:0">
+          <h3 style="font-size:19px">The Unfurling Page</h3>
+          <div class="byline-block" style="margin-bottom:8px">
+            <span class="author">Laura Whiting</span>
+            <span class="sep"></span>
+            <span>Book Review</span>
+            <span class="sep"></span>
+            <span>4 min read</span>
+          </div>
+          <p style="font-size:14px;line-height:1.55">
+            In her new collection of essays on book design, the critic Alice Rawsthorn 
+            argues that the physical book never died — it just learned to breathe again. 
+            From the revival of cloth bindings to the resurgence of woodcut 
+            illustration, the case for the object as vessel is made with quiet, 
+            unimpeachable authority.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="story-card" style="border-top:none;padding-top:0">
+          <h3 style="font-size:19px">At the Gallery: Ink &amp; Evidence</h3>
+          <div class="byline-block" style="margin-bottom:8px">
+            <span class="author">James Okafor</span>
+            <span class="sep"></span>
+            <span>Exhibition</span>
+            <span class="sep"></span>
+            <span>3 min read</span>
+          </div>
+          <p style="font-size:14px;line-height:1.55">
+            A landmark survey of forensic typography at the Design Museum traces how 
+            letterforms have been used — and forged — to shape public truth. From 
+            wartime propaganda posters to modern disinformation, the show is a 
+            bracing reminder that type is never neutral.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="hr-hairline">
+
+    <!-- ─── CTA ─── -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0">
+      <button class="btn btn-solid">Subscribe for £1/week</button>
+      <button class="btn">View all sections →</button>
+    </div>
+
+    <!-- ─── FOOTER ─── -->
+    <div class="footer-bar">
+      <span><strong>The Evening Standard</strong> · 12 — Newsprint</span>
+      <span>Salmon-pink paper · Playfair Display + Crimson Pro + Inter · Hairline rules · Burgundy accent</span>
+      <span>oklch tokens · 0px radius</span>
+    </div>
+
+  </div>
+</section>
+</body>
+</html>

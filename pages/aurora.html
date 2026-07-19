@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15 — Aurora</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: aurora · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root {
+      --paper: oklch(11% 0.025 200);
+      --ink: oklch(96% 0.010 200);
+      --accent: oklch(72% 0.170 200);
+      --accent-2: oklch(64% 0.150 175);
+    }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+
+    /* ===== 15. AURORA ===== */
+    .aurora {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background glow layers */
+    .aurora::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -15%;
+      width: 65%;
+      height: 90%;
+      background: radial-gradient(ellipse, oklch(72% 0.170 200 / 0.07), transparent 70%);
+      pointer-events: none;
+    }
+    .aurora::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 50%;
+      height: 60%;
+      background: radial-gradient(ellipse, oklch(64% 0.150 175 / 0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    .aurora .badge {
+      background: oklch(72% 0.170 200 / 0.12);
+      color: var(--accent);
+      border: 1px solid oklch(72% 0.170 200 / 0.2);
+      backdrop-filter: blur(4px);
+    }
+
+    .aurora h2 {
+      font-weight: 600;
+      font-size: clamp(28px, 5vw, 52px);
+      line-height: 1.05;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+    }
+
+    .aurora h2 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .aurora .sub {
+      font-size: 14px;
+      color: oklch(70% 0.02 200);
+      line-height: 1.65;
+      max-width: 480px;
+    }
+
+    .aurora .code-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: oklch(60% 0.03 200);
+      margin-bottom: 8px;
+    }
+
+    /* ——— Orbit Visualization ——— */
+    .aurora .orbit-viz {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2/1;
+      min-height: 240px;
+      background: oklch(8% 0.02 200);
+      border: 1px solid oklch(72% 0.170 200 / 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .aurora .orbit-viz::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      height: 60%;
+      transform: translate(-50%, -50%);
+      border: 1px solid oklch(72% 0.170 200 / 0.08);
+      border-radius: 50%;
+    }
+
+    .aurora .orbit-viz::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 85%;
+      height: 85%;
+      transform: translate(-50%, -50%);
+      border: 1px solid oklch(64% 0.150 175 / 0.06);
+      border-radius: 50%;
+    }
+
+    .aurora .orbit-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+      width: calc(40% + var(--w) * 20%);
+      height: calc(40% + var(--w) * 20%);
+      border: 1px solid oklch(72% 0.170 200 / 0.1);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .aurora .orbit-ring:nth-child(1) { --r: 15deg; --w: 1; }
+    .aurora .orbit-ring:nth-child(2) { --r: -10deg; --w: 2; }
+    .aurora .orbit-ring:nth-child(3) { --r: 30deg; --w: 3; border-color: oklch(64% 0.150 175 / 0.08); }
+    .aurora .orbit-ring:nth-child(4) { --r: -20deg; --w: 0; border-color: oklch(64% 0.150 175 / 0.06); }
+
+    .aurora .debris-dot {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent), 0 0 12px oklch(72% 0.170 200 / 0.3);
+      pointer-events: none;
+    }
+
+    .aurora .sat-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 8px var(--accent-2), 0 0 16px oklch(64% 0.150 175 / 0.3);
+      pointer-events: none;
+    }
+
+    .aurora .earth-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 48px;
+      height: 48px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, oklch(30% 0.04 200), oklch(15% 0.03 200));
+      border: 1px solid oklch(72% 0.170 200 / 0.15);
+      box-shadow: 0 0 30px oklch(72% 0.170 200 / 0.1);
+      pointer-events: none;
+    }
+
+    .aurora .viz-overlay {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      display: flex;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: oklch(60% 0.03 200);
+      letter-spacing: 0.5px;
+    }
+
+    .aurora .viz-overlay span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .aurora .viz-overlay .dot-accent {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); display: inline-block;
+    }
+
+    .aurora .viz-overlay .dot-teal {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent-2); display: inline-block;
+    }
+
+    /* ——— Cards ——— */
+    .aurora .card {
+      background: oklch(15% 0.02 200);
+      border: 1px solid oklch(40% 0.03 200 / 0.15);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aurora .card:hover {
+      border-color: oklch(72% 0.170 200 / 0.25);
+      transform: translateY(-3px);
+    }
+
+    .aurora .card::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      right: -30%;
+      width: 70%;
+      height: 100%;
+      background: radial-gradient(ellipse, oklch(72% 0.170 200 / 0.04), transparent 60%);
+      pointer-events: none;
+    }
+
+    .aurora .card > * { position: relative; z-index: 1; }
+
+    .aurora .card .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: oklch(60% 0.03 200); margin-bottom: 8px;
+    }
+
+    .aurora .card h4 {
+      font-weight: 600; font-size: 16px;
+      color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+
+    .aurora .card p {
+      font-size: 13px; color: oklch(65% 0.02 200); line-height: 1.55;
+    }
+
+    .aurora .card .stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px; font-weight: 500; color: var(--accent); margin-top: 12px;
+    }
+
+    .aurora .card .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: oklch(55% 0.03 200);
+    }
+
+    /* ——— Glow Box ——— */
+    .aurora .glow-box {
+      position: relative;
+      background: oklch(15% 0.02 200);
+      border: 1px solid oklch(72% 0.170 200 / 0.15);
+      border-radius: 12px;
+      padding: 20px 24px;
+      overflow: hidden;
+    }
+
+    .aurora .glow-box::before {
+      content: '';
+      position: absolute;
+      top: -80%;
+      left: 20%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(ellipse, oklch(72% 0.170 200 / 0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .aurora .glow-box > * { position: relative; z-index: 1; }
+
+    /* ——— Metric Rows ——— */
+    .aurora .metric-row {
+      display: flex; justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid oklch(40% 0.03 200 / 0.1);
+      font-size: 12px; font-family: 'JetBrains Mono', monospace; letter-spacing: -0.005em;
+    }
+    .aurora .metric-row:last-child { border-bottom: none; }
+    .aurora .metric-row .val { color: var(--accent); font-weight: 500; }
+    .aurora .metric-row .val-teal { color: var(--accent-2); font-weight: 500; }
+
+    /* ——— Buttons ——— */
+    .aurora .btn-primary {
+      background: var(--accent);
+      color: var(--paper);
+      border: none; padding: 10px 24px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      border-radius: 999px; cursor: pointer; transition: 0.2s; letter-spacing: -0.005em;
+    }
+    .aurora .btn-primary:hover {
+      background: oklch(78% 0.170 200);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px oklch(72% 0.170 200 / 0.3);
+    }
+    .aurora .btn-ghost {
+      background: transparent; color: var(--ink);
+      border: 1px solid oklch(40% 0.03 200 / 0.2);
+      padding: 10px 24px; font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 500; border-radius: 999px;
+      cursor: pointer; transition: 0.2s; letter-spacing: -0.005em;
+    }
+    .aurora .btn-ghost:hover {
+      background: oklch(20% 0.02 200);
+      border-color: oklch(40% 0.03 200 / 0.35);
+    }
+
+    /* ——— Pills / Chips ——— */
+    .aurora .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .aurora .chip {
+      background: oklch(72% 0.170 200 / 0.08);
+      color: var(--accent);
+      border: 1px solid oklch(72% 0.170 200 / 0.15);
+      padding: 4px 12px; border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px;
+    }
+    .aurora .chip-teal {
+      background: oklch(64% 0.150 175 / 0.08);
+      color: var(--accent-2);
+      border-color: oklch(64% 0.150 175 / 0.15);
+    }
+
+    /* ——— Alert Pill ——— */
+    .aurora .alert-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1px; padding: 4px 12px; border-radius: 999px;
+      background: oklch(64% 0.150 175 / 0.1);
+      color: var(--accent-2);
+      border: 1px solid oklch(64% 0.150 175 / 0.15);
+    }
+
+    /* ——— Stats Grid ——— */
+    .aurora .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+    .aurora .stat-item {
+      text-align: center; padding: 16px;
+      background: oklch(15% 0.02 200);
+      border: 1px solid oklch(40% 0.03 200 / 0.1);
+      border-radius: 12px; position: relative; overflow: hidden;
+    }
+    .aurora .stat-item::before {
+      content: '';
+      position: absolute; top: -40%; left: 10%; width: 80%; height: 80%;
+      background: radial-gradient(ellipse, oklch(72% 0.170 200 / 0.04), transparent 60%);
+      pointer-events: none;
+    }
+    .aurora .stat-item > * { position: relative; z-index: 1; }
+    .aurora .stat-item .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; font-weight: 500; color: var(--accent);
+    }
+    .aurora .stat-item .num-teal { color: var(--accent-2); }
+    .aurora .stat-item .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: oklch(55% 0.03 200); margin-top: 4px;
+    }
+
+    /* ——— Feature Grid ——— */
+    .aurora .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 768px) { .aurora .feature-grid { grid-template-columns: 1fr; } }
+
+    /* ——— Data Table ——— */
+    .aurora .data-table {
+      width: 100%; border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    }
+    .aurora .data-table th {
+      text-align: left; padding: 10px 12px;
+      color: oklch(55% 0.03 200); font-weight: 500;
+      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+      border-bottom: 1px solid oklch(40% 0.03 200 / 0.1);
+    }
+    .aurora .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid oklch(40% 0.03 200 / 0.06);
+      color: oklch(70% 0.02 200);
+    }
+    .aurora .data-table tr:hover td { background: oklch(18% 0.02 200); }
+    .aurora .data-table .status-active { color: var(--accent); }
+    .aurora .data-table .status-warning { color: oklch(75% 0.15 80); }
+    .aurora .data-table .status-critical { color: oklch(70% 0.15 30); }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">15 Aurora</span>
+  </nav>
+
+  <!-- ============ 15. AURORA ============ -->
+  <section class="section aurora" id="aurora">
+    <div class="content">
+
+      <!-- Header -->
+      <div class="section-header">
+        <div class="badge">Style 15 · SPACE SITUATIONAL AWARENESS</div>
+        <h2>Tracking debris in <em>real time</em>.</h2>
+        <p class="sub">Aurora monitors the orbital environment — cataloging debris, predicting collisions, and safeguarding satellite health across LEO, MEO, and GEO.</p>
+      </div>
+
+      <!-- Orbit Visualization -->
+      <div class="orbit-viz" style="margin-bottom:28px">
+        <div class="earth-dot"></div>
+        <div class="orbit-ring"></div>
+        <div class="orbit-ring"></div>
+        <div class="orbit-ring"></div>
+        <div class="orbit-ring"></div>
+        <div class="debris-dot" style="top:28%;left:35%"></div>
+        <div class="debris-dot" style="top:45%;left:72%"></div>
+        <div class="debris-dot" style="top:62%;left:22%"></div>
+        <div class="debris-dot" style="top:18%;left:58%"></div>
+        <div class="debris-dot" style="top:75%;left:68%"></div>
+        <div class="debris-dot" style="top:35%;left:82%"></div>
+        <div class="debris-dot" style="top:55%;left:12%"></div>
+        <div class="debris-dot" style="top:80%;left:40%"></div>
+        <div class="sat-dot" style="top:30%;left:50%"></div>
+        <div class="sat-dot" style="top:60%;left:30%"></div>
+        <div class="sat-dot" style="top:40%;left:15%"></div>
+        <div class="sat-dot" style="top:22%;left:75%"></div>
+        <div class="viz-overlay">
+          <span><span class="dot-accent"></span> DEBRIS</span>
+          <span><span class="dot-teal"></span> SATELLITE</span>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stat-grid" style="margin-bottom:32px">
+        <div class="stat-item">
+          <div class="num">47,832</div>
+          <div class="label">Tracked Objects</div>
+        </div>
+        <div class="stat-item">
+          <div class="num num-teal">1,243</div>
+          <div class="label">Active Satellites</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">12</div>
+          <div class="label">Collision Alerts</div>
+        </div>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="feature-grid">
+        <div class="card">
+          <div class="label">a · debris catalog</div>
+          <h4>Orbital Object Registry</h4>
+          <p>Comprehensive catalog of all tracked debris objects across every orbital regime. Enriched with RCS, apogee, perigee, and inclination data.</p>
+          <div class="stat">38,400+</div>
+          <div class="stat-label">Cataloged Debris &gt; 10cm</div>
+          <div class="chip-row">
+            <span class="chip">LEO</span>
+            <span class="chip">MEO</span>
+            <span class="chip">GEO</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="label">b · collision prediction</div>
+          <h4>Conjunction Analysis Engine</h4>
+          <p>Probabilistic collision assessment using Monte Carlo covariance propagation. Alerts issued when conjunction probability exceeds 1 in 10,000.</p>
+          <div class="stat"><span class="alert-pill" style="font-size:10px;margin-top:8px">⚠ 3 HIGH-RISK EVENTS</span></div>
+          <div class="chip-row">
+            <span class="chip chip-teal">Next: 14h 22m</span>
+            <span class="chip chip-teal">Confidence 98.7%</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="label">c · satellite health</div>
+          <h4>Fleet Telemetry Monitor</h4>
+          <p>Real-time health tracking for satellite constellations. Monitors power, thermal, attitude control, and communication link status across operators.</p>
+          <div class="stat" style="color:var(--accent-2)">98.6%</div>
+          <div class="stat-label">Overall Fleet Uptime</div>
+          <div class="chip-row">
+            <span class="chip chip-teal">1,243 Online</span>
+            <span class="chip">17 Degraded</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live TLE Feed Table -->
+      <div class="glow-box" style="margin-bottom:20px">
+        <div class="code-label">Live TLE Feed · Last Updated 23s ago</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Object</th>
+              <th>NORAD ID</th>
+              <th>Orbit</th>
+              <th>Altitude (km)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ISS (ZARYA)</td>
+              <td>25544</td>
+              <td>LEO</td>
+              <td>422</td>
+              <td class="status-active">● Active</td>
+            </tr>
+            <tr>
+              <td>SL-16 R/B</td>
+              <td>22982</td>
+              <td>LEO</td>
+              <td>843</td>
+              <td class="status-critical">● Decaying</td>
+            </tr>
+            <tr>
+              <td>IRIDIUM 101</td>
+              <td>45110</td>
+              <td>LEO</td>
+              <td>781</td>
+              <td class="status-active">● Active</td>
+            </tr>
+            <tr>
+              <td>FENGYUN 1C DEB</td>
+              <td>31793</td>
+              <td>LEO</td>
+              <td>894</td>
+              <td class="status-warning">● Fragmented</td>
+            </tr>
+            <tr>
+              <td>GPS BIIR-11</td>
+              <td>26605</td>
+              <td>MEO</td>
+              <td>20,200</td>
+              <td class="status-active">● Active</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid oklch(40% 0.03 200 / 0.1);padding-top:20px">
+        <div style="font-size:14px;color:oklch(60% 0.03 200)">
+          Track any object · API access for operators
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn-primary">Launch Dashboard</button>
+          <button class="btn-ghost">API Docs →</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</body>
+</html>

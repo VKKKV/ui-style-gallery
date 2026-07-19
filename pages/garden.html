@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 — Garden</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: garden · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root { --accent: oklch(47% 0.13 140); }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== 10. GARDEN — Hollowback Apiary ===== */
+.garden{background:oklch(95.5% 0.022 92);color:oklch(24% 0.052 152);font-family:'Inter','Geist',sans-serif;position:relative;overflow:hidden}
+.garden::before{content:'';position:absolute;top:-20%;right:-10%;width:50%;height:70%;background:radial-gradient(ellipse,oklch(54% 0.14 46 / 0.06),transparent 70%);pointer-events:none}
+.garden::after{content:'';position:absolute;bottom:-10%;left:-5%;width:40%;height:50%;background:radial-gradient(ellipse,oklch(47% 0.13 140 / 0.04),transparent 60%);pointer-events:none}
+.garden .badge{background:oklch(47% 0.13 140 / 0.1);color:oklch(47% 0.13 140);border:1px solid oklch(47% 0.13 140 / 0.15);backdrop-filter:blur(4px)}
+.garden h2{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:clamp(32px,5.5vw,56px);line-height:1;color:oklch(24% 0.052 152);letter-spacing:-.02em;font-variation-settings:'opsz' 72}
+.garden h2 em{font-style:italic;color:oklch(54% 0.14 46)}
+.garden .sub{font-size:14px;color:oklch(37% 0.06 145);line-height:1.65;max-width:480px;font-weight:400}
+.garden .code-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:oklch(37% 0.06 145);margin-bottom:8px}
+.garden .card{background:oklch(97% 0.015 90);border:1px solid oklch(47% 0.13 140 / 0.12);border-radius:10px;padding:24px;transition:border-color .25s,transform .25s;position:relative}
+.garden .card:hover{border-color:oklch(47% 0.13 140 / 0.35);transform:translateY(-3px)}
+.garden .card .label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:oklch(47% 0.13 140);margin-bottom:8px}
+.garden .card h4{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:17px;color:oklch(24% 0.052 152);margin-bottom:6px;letter-spacing:-.01em;font-variation-settings:'opsz' 36}
+.garden .card p{font-size:13px;color:oklch(37% 0.06 145);line-height:1.55}
+.garden .hero-card{background:oklch(97% 0.015 90);border:1px solid oklch(47% 0.13 140 / 0.15);border-radius:10px;padding:32px;position:relative;overflow:hidden}
+.garden .hero-card::before{content:'';position:absolute;top:-60%;right:-10%;width:50%;height:200%;background:radial-gradient(ellipse,oklch(54% 0.14 46 / 0.06),transparent 60%);pointer-events:none}
+.garden .hero-card > *{position:relative;z-index:1}
+.garden .hero-card .hero-title{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(22px,3vw,32px);color:oklch(24% 0.052 152);line-height:1.1;letter-spacing:-.015em;font-variation-settings:'opsz' 72;margin-bottom:12px}
+.garden .hero-card .hero-body{font-size:14px;color:oklch(37% 0.06 145);line-height:1.6;margin-bottom:20px;max-width:520px}
+.garden .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:768px){.garden .grid-3{grid-template-columns:1fr}}
+.garden .pill{display:inline-block;padding:4px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:oklch(47% 0.13 140 / 0.08);color:oklch(47% 0.13 140);border:1px solid oklch(47% 0.13 140 / 0.15);margin-right:4px;margin-bottom:4px}
+.garden .pill-warm{background:oklch(54% 0.14 46 / 0.1);color:oklch(46% 0.14 48);border:1px solid oklch(54% 0.14 46 / 0.2)}
+.garden .btn-primary{background:oklch(47% 0.13 140);color:oklch(97% 0.015 90);border:none;padding:10px 24px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;border-radius:8px;cursor:pointer;transition:.2s;letter-spacing:-.005em}
+.garden .btn-primary:hover{background:oklch(42% 0.13 140);transform:translateY(-1px);box-shadow:0 4px 16px oklch(47% 0.13 140 / 0.25)}
+.garden .btn-ghost{background:transparent;color:oklch(24% 0.052 152);border:1px solid oklch(47% 0.13 140 / 0.2);padding:10px 24px;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;border-radius:8px;cursor:pointer;transition:.2s;letter-spacing:-.005em}
+.garden .btn-ghost:hover{background:oklch(47% 0.13 140 / 0.06);border-color:oklch(47% 0.13 140 / 0.35)}
+.garden .spec-list{display:flex;flex-direction:column;gap:0}
+.garden .spec-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid oklch(47% 0.13 140 / 0.08);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:-.005em}
+.garden .spec-item:last-child{border-bottom:none}
+.garden .spec-item .key{color:oklch(37% 0.06 145)}
+.garden .spec-item .val{color:oklch(24% 0.052 152);font-weight:500}
+.garden .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:768px){.garden .stat-grid{grid-template-columns:1fr}}
+.garden .stat-item{text-align:center;padding:16px 12px;background:oklch(97% 0.015 90);border:1px solid oklch(47% 0.13 140 / 0.1);border-radius:10px}
+.garden .stat-item .num{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:600;color:oklch(54% 0.14 46);font-variation-settings:'opsz' 36}
+.garden .stat-item .label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:oklch(37% 0.06 145);margin-top:4px}
+.garden .divider{height:1px;background:linear-gradient(90deg,transparent,oklch(47% 0.13 140 / 0.15),transparent);margin:28px 0}
+.garden .accent-warm{color:oklch(54% 0.14 46)}
+.garden .signoff{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:16px;color:oklch(37% 0.06 145);letter-spacing:-.005em;font-variation-settings:'opsz' 36}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">10 Garden</span>
+  </nav>
+  <!-- ============ 10. GARDEN — Hollowback Apiary ============ -->
+<section class="section garden" id="garden">
+  <div class="content">
+    <div class="section-header">
+      <div class="badge">Style 10 · Hollowback Apiary</div>
+      <h2>Harvest from the <em>hollowback</em>.</h2>
+      <p>Warm oat-cream paper · Fraunces serif · leaf-green + clay accents. Small-batch honey farm, botanical register — every jar tells the season's story.</p>
+    </div>
+
+    <!-- Hero: Honey Harvest -->
+    <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:28px">
+      <div style="flex:2;min-width:300px">
+        <div class="hero-card">
+          <div class="code-label">2025 Harvest · Now Available</div>
+          <div class="hero-title">Spring wildflower &mdash; first draw</div>
+          <div class="hero-body">
+            Cold-extracted from hives set deep in the Klamath-Siskiyou corridor. Light amber, finishing with notes of madrone bark and wild clover. Unfiltered, unpasteurized — exactly as the bees made it.
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn-primary">Order a jar</button>
+            <button class="btn-ghost">Read the harvest notes &rarr;</button>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div class="stat-grid" style="margin:0">
+          <div class="stat-item"><div class="num">185</div><div class="label">Hives</div></div>
+          <div class="stat-item"><div class="num">6</div><div class="label">Varietals</div></div>
+          <div class="stat-item"><div class="num">12&nbsp;oz</div><div class="label">Per jar</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seasonal Varietals + Bee-Friendly Practices -->
+    <div class="layout-2col" style="margin-bottom:20px">
+      <div class="card">
+        <div class="label">a · seasonal varietals</div>
+        <h4>Four seasons, four honeys</h4>
+        <p>Each varietal follows the nectar flow. Spring wildflower (light, floral) &rarr; summer blackberry (bold, fruity) &rarr; autumn goldenrod (earthy, robust) &rarr; winter fir honeydew (dark, resinous). Every jar dated and trackable to source hives.</p>
+        <div style="margin-top:12px">
+          <span class="pill">Spring wildflower</span>
+          <span class="pill">Summer blackberry</span>
+          <span class="pill">Autumn goldenrod</span>
+          <span class="pill pill-warm">Winter fir honeydew</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">b · bee-friendly practices</div>
+        <h4>No chemicals, no shortcuts</h4>
+        <p>Treatment-free management since 2017. Each hive inspected by hand, never fumigated. We plant 2 acres of native wildflower meadow for every 10 hives &mdash; aster, goldenrod, phacelia, and California poppy. No migratory pollination. The bees stay home.</p>
+        <div style="margin-top:12px">
+          <span class="pill pill-warm">Treatment-free</span>
+          <span class="pill">Native meadow</span>
+          <span class="pill pill-warm">No migration</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasting Notes + Spec -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px">
+      <div class="hero-card" style="padding:24px">
+        <div class="code-label">c · tasting notes</div>
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:20px;color:oklch(24% 0.052 152);margin-bottom:8px;letter-spacing:-.01em;font-variation-settings:'opsz' 36">Spring Wildflower <span style="font-weight:400;font-size:14px;color:oklch(37% 0.06 145);font-family:'Inter',sans-serif">— 2025</span></div>
+        <p style="font-size:13px;color:oklch(37% 0.06 145);line-height:1.6;margin-bottom:14px">
+          <span class="accent-warm">Color:</span> Light amber, crystal-clear.<br>
+          <span class="accent-warm">Aroma:</span> Wild clover, orange blossom, a hint of fresh hay.<br>
+          <span class="accent-warm">Palate:</span> Clean entry, mid-palate opens into warm vanilla and madrone bark. Finishes long with a delicate floral bitterness that demands another taste.<br>
+          <span class="accent-warm">Pairing:</span> Goat cheese, green tea, warm sourdough.
+        </p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="pill">Light amber</span>
+          <span class="pill">Floral</span>
+          <span class="pill">Madrone finish</span>
+          <span class="pill pill-warm">Pair with chèvre</span>
+        </div>
+      </div>
+      <div>
+        <div class="hero-card" style="padding:24px">
+          <div class="code-label">Apiary Specification</div>
+          <div class="spec-list">
+            <div class="spec-item"><span class="key">LOCATION</span><span class="val">Klamath-Siskiyou, OR</span></div>
+            <div class="spec-item"><span class="key">ELEVATION</span><span class="val">2,400 ft</span></div>
+            <div class="spec-item"><span class="key">HIVES</span><span class="val">185 (Langstroth)</span></div>
+            <div class="spec-item"><span class="key">QUEENS</span><span class="val">Carniolan · Italian</span></div>
+            <div class="spec-item"><span class="key">YIELD</span><span class="val">4,200 lbs / year</span></div>
+            <div class="spec-item"><span class="key">METHOD</span><span class="val">Cold-extract · unfiltered</span></div>
+            <div class="spec-item"><span class="key">CERTIFIED</span><span class="val">True Source Honey</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign-off footer -->
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+      <div class="signoff">From our hives to your table &mdash; every jar a sense of place.</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-ghost" style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 16px">Visit the apiary</button>
+        <button class="btn-primary" style="padding:6px 16px;font-size:11px">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

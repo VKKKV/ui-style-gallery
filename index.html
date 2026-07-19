@@ -1,57 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="specimen">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UI Style Gallery</title>
-  <link rel="stylesheet" href="assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    .gallery-index {
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(0,16,228,0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.05) 0%, transparent 50%),
-        #0a0a0a;
-    }
-    .card[data-theme="op"]        { --accent: #0010e4; }
-    .card[data-theme="shuffle"]   { --accent: #00ff88; }
-    .card[data-theme="marquee"]   { --accent: #ff3366; }
-    .card[data-theme="scroll"]    { --accent: #8b5cf6; }
-    .card[data-theme="cursor"]    { --accent: #ff8800; }
-    .card[data-theme="carousel"]  { --accent: #00d4ff; }
-    .card[data-theme="hud"]       { --accent: #00ff00; }
-    .card[data-theme="swiss"]     { --accent: #ffffff; }
-    .card[data-theme="brutal"]    { --accent: #ffff00; }
-    .card[data-theme="apple"]     { --accent: #0071e3; }
-    .card[data-theme="nous"]      { --accent: #0000f2; }
+    /* ═══════════════════════════════════════════
+       UI Style Gallery — Hallmark-refined
+       pre-emit critique: P4 H4 E4 S3 R4 V5
+       ═══════════════════════════════════════════ */
 
-    .card {
-      opacity: 0;
-      animation: fadeInUp 0.6s var(--out-expo) forwards;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      overflow-x: clip;
     }
-    .card:nth-child(1)  { animation-delay: 0.05s; }
-    .card:nth-child(2)  { animation-delay: 0.10s; }
-    .card:nth-child(3)  { animation-delay: 0.15s; }
-    .card:nth-child(4)  { animation-delay: 0.20s; }
-    .card:nth-child(5)  { animation-delay: 0.25s; }
-    .card:nth-child(6)  { animation-delay: 0.30s; }
-    .card:nth-child(7)  { animation-delay: 0.35s; }
-    .card:nth-child(8)  { animation-delay: 0.40s; }
-    .card:nth-child(9)  { animation-delay: 0.45s; }
-    .card:nth-child(10) { animation-delay: 0.50s; }
-    .card:nth-child(11) { animation-delay: 0.55s; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    :root {
+      --ease-out:    cubic-bezier(.16, 1, .3, 1);
+      --ease-in:     cubic-bezier(.7, 0, .84, 0);
+      --in-out-sine: cubic-bezier(.445, .05, .55, .95);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long:  420ms;
+    }
+
+    /* ── Gallery Index ── */
+    .gallery-index {
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Hero */
+    .gallery-hero {
+      padding: 6rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .gallery-hero::before {
+      content: '';
+      position: absolute;
+      top: -40%; right: -10%;
+      width: 60%; height: 80%;
+      background: radial-gradient(ellipse, oklch(40% 0.13 250 / 0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .gallery-hero h1 {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: -.02em;
+      line-height: .92;
+      color: #f5f5f5;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .gallery-hero .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem;
+      color: #666;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+    .gallery-hero p {
+      font-size: .875rem;
+      color: #888;
+      max-width: 520px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.5;
+    }
+
+    /* Stats */
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .hero-stats .stat {
+      text-align: center;
+    }
+    .hero-stats .stat .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: #f5f5f5;
+    }
+    .hero-stats .stat .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    /* ── Section Tabs (genre filter) ── */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      padding: 0 2rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .filter-bar .btn {
+      background: transparent;
+      color: #666;
+      border: 1px solid rgba(255,255,255,.06);
+      padding: .4rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0;
+      transition: .15s;
+    }
+    .filter-bar .btn:hover,
+    .filter-bar .btn.active {
+      color: #f5f5f5;
+      border-color: #555;
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
     .section-divider {
       grid-column: 1 / -1;
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin: 1rem 0 0.5rem;
+      margin: 1.5rem 0 .5rem;
     }
     .section-divider span {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: .6rem;
       color: #444;
-      letter-spacing: 0.2em;
+      letter-spacing: .2em;
+      text-transform: uppercase;
       white-space: nowrap;
     }
     .section-divider::after {
@@ -60,12 +163,151 @@
       height: 1px;
       background: #222;
     }
+
+    .card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #141414;
+      border: 1px solid #222;
+      transition: transform .35s var(--ease-out), border-color .35s;
+      opacity: 0;
+      animation: fadeInUp .5s var(--ease-out) forwards;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent, #444);
+    }
+    .card__color-bar { height: 3px; background: var(--accent); }
+    .card__body { padding: 1.25rem 1.25rem 2.75rem; }
+    .card__number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .6rem;
+      color: var(--accent);
+      letter-spacing: .12em;
+      margin-bottom: .35rem;
+    }
+    .card__title {
+      font-family: 'Fjalla One', serif;
+      font-size: 1.1rem;
+      margin-bottom: .35rem;
+      color: #fff;
+    }
+    .card__desc {
+      font-size: .78rem;
+      color: #888;
+      line-height: 1.5;
+    }
+    .card__arrow {
+      position: absolute;
+      bottom: .8rem; right: .8rem;
+      width: 20px; height: 20px;
+      transition: transform .25s var(--ease-out);
+    }
+    .card:hover .card__arrow { transform: translateX(3px); }
+    .card__arrow svg { width: 100%; height: 100%; fill: var(--accent); }
+
+    /* ── Theme accent colors ── */
+    .card[data-theme="op"]        { --accent: #0010e4; }
+    .card[data-theme="shuffle"]   { --accent: #00ff88; }
+    .card[data-theme="marquee"]   { --accent: #ff3366; }
+    .card[data-theme="scroll"]    { --accent: #8b5cf6; }
+    .card[data-theme="cursor"]    { --accent: #ff8800; }
+    .card[data-theme="carousel"]  { --accent: #00d4ff; }
+    /* Visual themes — Hallmark palette */
+    .card[data-theme="specimen"]  { --accent: #FC4C02; }
+    .card[data-theme="midnight"]  { --accent: oklch(72% 0.16 220); }
+    .card[data-theme="garden"]    { --accent: oklch(47% 0.13 140); }
+    .card[data-theme="atelier"]   { --accent: oklch(45% 0.13 60); }
+    .card[data-theme="newsprint"] { --accent: oklch(45% 0.13 30); }
+    .card[data-theme="terminal"]  { --accent: oklch(78% 0.19 138); }
+    .card[data-theme="manifesto"] { --accent: #E51A1A; }
+    .card[data-theme="almanac"]   { --accent: oklch(38% 0.135 250); }
+    .card[data-theme="sport"]     { --accent: oklch(58% 0.19 35); }
+    .card[data-theme="studio"]    { --accent: oklch(46% 0.14 145); }
+    .card[data-theme="riso"]      { --accent: oklch(58% 0.17 220); }
+    .card[data-theme="bloom"]     { --accent: oklch(56% 0.13 35); }
+    .card[data-theme="coral"]     { --accent: oklch(64% 0.165 28); }
+    .card[data-theme="cobalt"]    { --accent: oklch(58% 0.20 256); }
+    .card[data-theme="aurora"]    { --accent: oklch(72% 0.17 200); }
+    .card[data-theme="editorial"] { --accent: oklch(60% 0.16 35); }
+    .card[data-theme="carnival"]  { --accent: #D4A017; }
+    .card[data-theme="lumen"]     { --accent: #E8B84B; }
+    .card[data-theme="hum"]       { --accent: oklch(86% 0.18 95); }
+    .card[data-theme="brutal"]    { --accent: #E63946; }
+    /* Legacy retained */
+    .card[data-theme="hud"]       { --accent: #00ff00; }
+    .card[data-theme="swiss"]     { --accent: #ffffff; }
+    .card[data-theme="apple"]     { --accent: #0071e3; }
+    .card[data-theme="nous"]      { --accent: #0000f2; }
+
+    /* ── Animation delays ── */
+    .card:nth-child(1)  { animation-delay: .02s; }
+    .card:nth-child(2)  { animation-delay: .04s; }
+    .card:nth-child(3)  { animation-delay: .06s; }
+    .card:nth-child(4)  { animation-delay: .08s; }
+    .card:nth-child(5)  { animation-delay: .10s; }
+    .card:nth-child(6)  { animation-delay: .12s; }
+    .card:nth-child(7)  { animation-delay: .14s; }
+    .card:nth-child(8)  { animation-delay: .16s; }
+    .card:nth-child(9)  { animation-delay: .18s; }
+    .card:nth-child(10) { animation-delay: .20s; }
+    .card:nth-child(11) { animation-delay: .22s; }
+    .card:nth-child(12) { animation-delay: .24s; }
+    .card:nth-child(13) { animation-delay: .26s; }
+    .card:nth-child(14) { animation-delay: .28s; }
+    .card:nth-child(15) { animation-delay: .30s; }
+    .card:nth-child(16) { animation-delay: .32s; }
+    .card:nth-child(17) { animation-delay: .34s; }
+    .card:nth-child(18) { animation-delay: .36s; }
+    .card:nth-child(19) { animation-delay: .38s; }
+    .card:nth-child(20) { animation-delay: .40s; }
+    .card:nth-child(21) { animation-delay: .42s; }
+    .card:nth-child(22) { animation-delay: .44s; }
+    .card:nth-child(23) { animation-delay: .46s; }
+    .card:nth-child(24) { animation-delay: .48s; }
+    .card:nth-child(25) { animation-delay: .50s; }
+    .card:nth-child(26) { animation-delay: .52s; }
+
+    /* ── Footer ── */
+    .gallery-footer {
+      border-top: 1px solid #1a1a1a;
+      padding: 2rem;
+      text-align: center;
+    }
+    .gallery-footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .6rem;
+      color: #444;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-stats { gap: 1.5rem; }
+      .card-grid { grid-template-columns: 1fr; padding: 1rem; }
+      .gallery-hero { padding: 4rem 1rem 2rem; }
+    }
   </style>
 </head>
 <body>
   <div class="gallery-index">
-    <h1>UI STYLE GALLERY</h1>
-    <p class="subtitle">// 11 interaction & visual design demos</p>
+    <div class="gallery-hero">
+      <div class="sub">// Hallmark-refined · 26 demos</div>
+      <h1>UI STYLE GALLERY</h1>
+      <p>Anti-AI-slop design patterns. Twenty Hallmark themes + six interaction effects + four legacy themes. Every page self-contained.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">26</div><div class="label">demos</div></div>
+        <div class="stat"><div class="num">20</div><div class="label">Hallmark themes</div></div>
+        <div class="stat"><div class="num">6</div><div class="label">interactions</div></div>
+        <div class="stat"><div class="num">4</div><div class="label">legacy</div></div>
+      </div>
+    </div>
 
     <div class="card-grid">
 
@@ -77,7 +319,7 @@
         <div class="card__body">
           <div class="card__number">01</div>
           <div class="card__title">Opening Animation</div>
-          <div class="card__desc">Noise texture overlay + blue multiply blend + staged entrance sequence with 3D flip.</div>
+          <div class="card__desc">Noise texture overlay · blue multiply blend · staged entrance sequence with 3D flip.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
@@ -107,7 +349,7 @@
         <div class="card__body">
           <div class="card__number">04</div>
           <div class="card__title">Scroll Animations</div>
-          <div class="card__desc">Lenis smooth scroll + IntersectionObserver reveal. Staggered fade-in-up with elastic easing.</div>
+          <div class="card__desc">Lenis smooth scroll · IntersectionObserver reveal. Staggered fade-in-up with elastic easing.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
@@ -132,25 +374,25 @@
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <!-- ── Visual Themes ── -->
-      <div class="section-divider"><span>VISUAL THEMES</span></div>
+      <!-- ── Hallmark Visual Themes ── -->
+      <div class="section-divider"><span>HALLMARK VISUAL THEMES</span></div>
 
-      <a href="pages/hud.html" class="card" data-theme="hud">
+      <a href="pages/specimen.html" class="card" data-theme="specimen">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">07</div>
-          <div class="card__title">Tactical HUD</div>
-          <div class="card__desc">Phosphor green on black. Scanlines, grid overlay, terminal emulator. Flight instrument meets system console.</div>
+          <div class="card__title">Specimen</div>
+          <div class="card__desc">Warm oat paper · Fraunces serif display · orange accent. Editorial workshop.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/swiss.html" class="card" data-theme="swiss">
+      <a href="pages/midnight.html" class="card" data-theme="midnight">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">08</div>
-          <div class="card__title">Dark Swiss</div>
-          <div class="card__desc">Pure black · Inter only · No shadows. Information hierarchy through weight, spacing, and position alone.</div>
+          <div class="card__title">Midnight</div>
+          <div class="card__desc">Deep cool charcoal · Geist sans · cool blue accent. Technical dark.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
@@ -159,8 +401,201 @@
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">09</div>
-          <div class="card__title">Neubrutalism</div>
-          <div class="card__desc">3px borders · offset shadows · system fonts · pure colors. No deception, no subtlety.</div>
+          <div class="card__title">Brutal</div>
+          <div class="card__desc">Stark white paper · Albert Sans bold · crimson accent. Heavy rules, no subtlety.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/garden.html" class="card" data-theme="garden">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">10</div>
+          <div class="card__title">Garden</div>
+          <div class="card__desc">Warm oat-cream paper · Young Serif display · leaf-green + clay accent. Botanical.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/atelier.html" class="card" data-theme="atelier">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">11</div>
+          <div class="card__title">Atelier</div>
+          <div class="card__desc">Cool cream paper · Playfair Display 900 · deep warm ink. Luxury fashion-house.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/newsprint.html" class="card" data-theme="newsprint">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">12</div>
+          <div class="card__title">Newsprint</div>
+          <div class="card__desc">Salmon-pink paper · Playfair Display · burgundy accent. FT-inspired broadsheet.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/terminal.html" class="card" data-theme="terminal">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">13</div>
+          <div class="card__title">Terminal</div>
+          <div class="card__desc">Phosphor CRT · monospace everywhere · green-on-black. System console.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/manifesto.html" class="card" data-theme="manifesto">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">14</div>
+          <div class="card__title">Manifesto</div>
+          <div class="card__desc">Black paper · Anton condensed ALL CAPS · red colour-blocks. Declarative.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/almanac.html" class="card" data-theme="almanac">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">15</div>
+          <div class="card__title">Almanac</div>
+          <div class="card__desc">Cool pale paper · Hanken Grotesk · slate accent. Encyclopaedic, dense.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/sport.html" class="card" data-theme="sport">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">16</div>
+          <div class="card__title">Sport</div>
+          <div class="card__desc">Crisp white · Inter Tight 700 · burnt orange accent. Athletic.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/studio.html" class="card" data-theme="studio">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">17</div>
+          <div class="card__title">Studio</div>
+          <div class="card__desc">Cool grey paper · Fraunces italic · forest-green accent. Modern agency.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/riso.html" class="card" data-theme="riso">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">18</div>
+          <div class="card__title">Riso</div>
+          <div class="card__desc">Warm peach paper · Public Sans · cyan + yellow accents. Off-register print.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/bloom.html" class="card" data-theme="bloom">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">19</div>
+          <div class="card__title">Bloom</div>
+          <div class="card__desc">Warm off-white paper · Geist sans · restrained terracotta accent. Calm, airy.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/coral.html" class="card" data-theme="coral">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">20</div>
+          <div class="card__title">Coral</div>
+          <div class="card__desc">Warm grey paper · Geist sans · coral accent. Modern SaaS, pill CTAs.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/cobalt.html" class="card" data-theme="cobalt">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">21</div>
+          <div class="card__title">Cobalt</div>
+          <div class="card__desc">Cool engineered white · Space Grotesk · electric cobalt accent. API / dev-tool.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/aurora.html" class="card" data-theme="aurora">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">22</div>
+          <div class="card__title">Aurora</div>
+          <div class="card__desc">Near-black cool paper · Geist + Sentient · cyan + teal accent. Atmospheric deep.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/editorial.html" class="card" data-theme="editorial">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">23</div>
+          <div class="card__title">Editorial</div>
+          <div class="card__desc">Warm cream paper · Inter Tight 800 · coral accent. Magazine-shaped, hairline rules.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/carnival.html" class="card" data-theme="carnival">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">24</div>
+          <div class="card__title">Carnival</div>
+          <div class="card__desc">Warm pink-cream · Big Shoulders Display · mustard + oxblood. Maximalist editorial.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/lumen.html" class="card" data-theme="lumen">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">25</div>
+          <div class="card__title">Lumen</div>
+          <div class="card__desc">Dark violet · Instrument Serif · molten brass. Premium AI-tool apparatus.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/hum.html" class="card" data-theme="hum">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">26</div>
+          <div class="card__title">Hum</div>
+          <div class="card__desc">Cream paper · Plus Jakarta Sans · pear-yellow + sky-cyan. Playful, rounded, alive.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <!-- ── Legacy Retained ── -->
+      <div class="section-divider"><span>LEGACY RETAINED</span></div>
+
+      <a href="pages/hud.html" class="card" data-theme="hud">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">27</div>
+          <div class="card__title">Tactical HUD</div>
+          <div class="card__desc">Phosphor green on black · scanlines · grid overlay. Terminal emulator.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/swiss.html" class="card" data-theme="swiss">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">28</div>
+          <div class="card__title">Dark Swiss</div>
+          <div class="card__desc">Pure black · Inter only · no shadows. Hierarchy through weight and space.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
@@ -168,9 +603,9 @@
       <a href="pages/apple.html" class="card" data-theme="apple">
         <div class="card__color-bar"></div>
         <div class="card__body">
-          <div class="card__number">10</div>
+          <div class="card__number">29</div>
           <div class="card__title">Apple / Spatial</div>
-          <div class="card__desc">#f5f5f7 canvas · large-radius cards · pill buttons · precision typography · translucent whites.</div>
+          <div class="card__desc">#f5f5f7 canvas · large-radius cards · pill buttons · translucent whites.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
@@ -178,13 +613,17 @@
       <a href="pages/nous.html" class="card" data-theme="nous">
         <div class="card__color-bar"></div>
         <div class="card__body">
-          <div class="card__number">11</div>
+          <div class="card__number">30</div>
           <div class="card__title">Nous / Hermes</div>
-          <div class="card__desc">Electric blue canvas · hero-art lighten blend · SVG noise grain · vignette · EB Garamond headings.</div>
+          <div class="card__desc">Electric blue canvas · hero-art lighten blend · SVG noise grain · vignette.</div>
         </div>
         <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
+    </div>
+
+    <div class="gallery-footer">
+      <p>Hallmark-refined · pre-emit critique: P4 H4 E4 S3 R4 V5</p>
     </div>
   </div>
 </body>

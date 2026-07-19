@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 — Coral · Float</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: coral · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root {
+      --paper: oklch(96.5% 0.005 50);
+      --ink: oklch(20% 0.010 35);
+      --accent: oklch(64% 0.165 28);
+      --radius-card: 8px;
+      --radius-pill: 999px;
+    }
+    body { margin: 0; background: var(--paper); color: var(--ink); }
+    .page-header { background: color-mix(in oklch, var(--paper), black 4%); border-bottom-color: color-mix(in oklch, var(--paper), black 8%); }
+    .page-header .current { color: var(--accent); }
+
+    .section {
+      padding: 60px 32px;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 720px; }
+    .section-header .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
+    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+
+    /* ===== CORAL · FLOAT ===== */
+    .coral {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .coral .badge {
+      background: color-mix(in oklch, var(--accent), transparent 88%);
+      color: var(--accent);
+    }
+    .coral h2 { font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+    .coral .subhead { font-size: 15px; color: color-mix(in oklch, var(--ink), transparent 40%); line-height: 1.6; }
+
+    /* ── Hero ── */
+    .coral .hero-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: center; }
+    @media (max-width: 860px) { .coral .hero-layout { grid-template-columns: 1fr; gap: 32px; } }
+    .coral .hero-left h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+    .coral .hero-left h1 em { font-style: normal; color: var(--accent); }
+    .coral .hero-left p { font-size: 15px; line-height: 1.7; color: color-mix(in oklch, var(--ink), transparent 40%); margin-bottom: 28px; max-width: 440px; }
+    .coral .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ── Pills ── */
+    .coral .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      line-height: 1;
+    }
+    .coral .pill-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .coral .pill-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .coral .pill-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid color-mix(in oklch, var(--ink), transparent 80%);
+    }
+    .coral .pill-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Dashboard Preview ── */
+    .coral .dashboard {
+      background: color-mix(in oklch, var(--paper), white 5%);
+      border: 1px solid color-mix(in oklch, var(--ink), transparent 88%);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      box-shadow: 0 12px 40px -8px color-mix(in oklch, var(--ink), transparent 85%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .coral .db-header { display: flex; justify-content: space-between; align-items: center; }
+    .coral .db-header .logo {
+      font-weight: 700; font-size: 14px; letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .coral .db-header .logo span { color: var(--accent); }
+    .coral .db-header .db-nav { display: flex; gap: 16px; }
+    .coral .db-header .db-nav a { font-size: 11px; font-weight: 500; color: color-mix(in oklch, var(--ink), transparent 50%); text-decoration: none; }
+    .coral .db-header .db-nav a:hover { color: var(--accent); }
+    .coral .db-balance { text-align: center; padding: 16px 0; }
+    .coral .db-balance .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; color: color-mix(in oklch, var(--ink), transparent 50%); margin-bottom: 4px; }
+    .coral .db-balance .amount { font-size: 36px; font-weight: 700; letter-spacing: -0.04em; color: var(--ink); }
+    .coral .db-balance .amount .decimal { font-size: 20px; color: color-mix(in oklch, var(--ink), transparent 50%); }
+    .coral .db-balance .change { font-size: 12px; font-weight: 600; color: #22a67e; margin-top: 4px; }
+    .coral .db-chart {
+      display: flex; align-items: flex-end; gap: 8px; height: 80px;
+      padding: 0 8px;
+    }
+    .coral .db-chart .bar {
+      flex: 1; border-radius: 4px 4px 0 0;
+      background: color-mix(in oklch, var(--accent), transparent 70%);
+      min-height: 12px;
+      transition: background 0.3s;
+    }
+    .coral .db-chart .bar.active { background: var(--accent); }
+    .coral .db-chart .bar:nth-child(1) { height: 32px; }
+    .coral .db-chart .bar:nth-child(2) { height: 52px; }
+    .coral .db-chart .bar:nth-child(3) { height: 68px; }
+    .coral .db-chart .bar:nth-child(4) { height: 44px; }
+    .coral .db-chart .bar:nth-child(5) { height: 76px; }
+    .coral .db-chart .bar:nth-child(6) { height: 56px; }
+    .coral .db-chart .bar:nth-child(7) { height: 28px; }
+    .coral .db-chart .bar:nth-child(8) { height: 60px; }
+    .coral .db-chart .bar:nth-child(9) { height: 40px; }
+    .coral .db-chart .bar:nth-child(10) { height: 70px; }
+    .coral .db-chart .bar:nth-child(11) { height: 48px; }
+    .coral .db-chart .bar:nth-child(12) { height: 62px; }
+    .coral .db-footer { display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid color-mix(in oklch, var(--ink), transparent 90%); }
+    .coral .db-footer .stat { text-align: center; }
+    .coral .db-footer .stat .num { font-size: 16px; font-weight: 700; color: var(--ink); }
+    .coral .db-footer .stat .lbl { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; color: color-mix(in oklch, var(--ink), transparent 50%); }
+
+    /* ── Features Grid ── */
+    .coral .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 768px) { .coral .features-grid { grid-template-columns: 1fr; } }
+    .coral .feature-card {
+      background: color-mix(in oklch, var(--paper), white 5%);
+      border: 1px solid color-mix(in oklch, var(--ink), transparent 88%);
+      border-radius: var(--radius-card);
+      padding: 28px 24px;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .coral .feature-card:hover {
+      box-shadow: 0 8px 24px -6px color-mix(in oklch, var(--ink), transparent 82%);
+      transform: translateY(-3px);
+    }
+    .coral .feature-card .icon {
+      width: 40px; height: 40px; border-radius: var(--radius-card);
+      background: color-mix(in oklch, var(--accent), transparent 88%);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px; font-size: 18px;
+    }
+    .coral .feature-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+    .coral .feature-card p { font-size: 13px; line-height: 1.65; color: color-mix(in oklch, var(--ink), transparent 40%); }
+
+    /* ── CTA Strip ── */
+    .coral .cta-strip {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: var(--radius-card);
+      padding: 48px 40px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .coral .cta-strip h3 { font-size: clamp(22px, 3vw, 32px); font-weight: 600; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .coral .cta-strip p { font-size: 14px; opacity: .6; max-width: 480px; margin: 0 auto 24px; }
+    .coral .cta-strip .pill-primary { background: var(--accent); color: var(--ink); }
+    .coral .cta-strip .pill-primary:hover { filter: brightness(1.15); }
+
+    /* ── Tagline ── */
+    .coral .tagline { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--ink), transparent 60%); }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">10 Coral · Float</span>
+  </nav>
+
+  <!-- ===== CORAL · FLOAT ===== -->
+  <section class="section coral" id="coral">
+    <div class="content">
+      <div class="section-header">
+        <div class="badge">Style 10</div>
+        <h2>CORAL · FLOAT</h2>
+        <p class="subhead">Warm grey paper, coral accent, pill CTAs. A modern expense management SaaS — smart receipts, team budgets, multi-currency.</p>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero-layout">
+        <div class="hero-left">
+          <h1>Expense management that lets you <em>float</em>.</h1>
+          <p>Stop drowning in spreadsheets. Float automates receipts, budgets, and multi-currency expenses so your team can focus on what matters.</p>
+          <div class="hero-cta">
+            <button class="pill pill-primary">Start free trial &rarr;</button>
+            <button class="pill pill-ghost">Watch demo</button>
+          </div>
+          <div style="margin-top: 20px;">
+            <span class="tagline">No credit card required &middot; 14-day trial</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Preview -->
+        <div class="dashboard">
+          <div class="db-header">
+            <div class="logo"><span>◆</span>float</div>
+            <div class="db-nav">
+              <a href="#">Dashboard</a>
+              <a href="#">Expenses</a>
+              <a href="#">Budgets</a>
+            </div>
+          </div>
+          <div class="db-balance">
+            <div class="label">Total Spending &mdash; This Month</div>
+            <div class="amount">$12,480<span class="decimal">.50</span></div>
+            <div class="change">&darr; 8.2% from last month</div>
+          </div>
+          <div class="db-chart">
+            <div class="bar"></div>
+            <div class="bar active"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar active"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar active"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar active"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="db-footer">
+            <div class="stat"><div class="num">243</div><div class="lbl">Receipts</div></div>
+            <div class="stat"><div class="num">12</div><div class="lbl">Team members</div></div>
+            <div class="stat"><div class="num">6</div><div class="lbl">Currencies</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div style="margin-top: 80px;">
+        <div style="text-align: center; margin-bottom: 36px;">
+          <div class="badge" style="display:inline-block;">Why Float</div>
+          <h2 style="text-align:center; max-width:100%;">Built for modern finance teams</h2>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">&#128203;</div>
+            <h4>Smart Receipts</h4>
+            <p>Snap a photo. Float extracts amounts, vendors, categories, and tax — no manual entry needed. Works in 30+ languages.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#128202;</div>
+            <h4>Team Budgets</h4>
+            <p>Set per-department budgets with real-time alerts. Managers see burn rates instantly. No surprises at month end.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#127758;</div>
+            <h4>Multi-Currency</h4>
+            <p>Native multi-currency support with live FX rates. Reconciled automatically across USD, EUR, GBP, JPY, and more.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-strip">
+        <h3>Ready to float above the admin?</h3>
+        <p>Join 4,200+ teams that have cut expense processing time by 73%.</p>
+        <button class="pill pill-primary">Get started &rarr;</button>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

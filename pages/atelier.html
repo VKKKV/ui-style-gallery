@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11 — Atelier</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hallmark · theme: atelier · pre-emit: P4 H4 E5 S4 R5 V4 */
+    :root {
+      --accent: oklch(22% 0.060 40);
+      --paper: oklch(94% 0.005 60);
+      --paper-2: oklch(91% 0.006 60);
+      --ink: oklch(12% 0.024 40);
+      --muted: oklch(46% 0.010 50);
+      --rule: oklch(78% 0.006 55);
+      --radius-card: 0;
+    }
+    body { margin: 0; }
+    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .content { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .section-header { margin-bottom: 40px; max-width: 680px; }
+    .section-header .badge { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; background: var(--ink); color: var(--paper); margin-bottom: 16px; }
+    .section-header h2 { font-size: clamp(24px, 4vw, 46px); line-height: 1.0; margin-bottom: 12px; font-weight: 400; letter-spacing: -.018em; color: var(--ink); }
+    .section-header p { font-size: 14px; color: var(--muted); max-width: 480px; line-height: 1.7; font-weight: 400; }
+    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    /* ===== ATELIER ===== */
+.atelier{background:var(--paper);color:var(--ink);font-family:'Inter','Geist',sans-serif}
+.atelier h2{font-family:'Playfair Display',Georgia,serif;font-weight:900}
+.atelier .display{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(21px,3vw,38px);letter-spacing:-.012em;line-height:1.0;color:var(--ink)}
+.atelier .deck{font-family:'Playfair Display',Georgia,serif;font-weight:400;font-size:clamp(16px,2vw,24px);font-style:italic;color:var(--muted);line-height:1.3;margin-bottom:24px}
+.atelier .card{border:0;padding:24px 0;border-bottom:1px solid var(--rule)}
+.atelier .card:last-child{border-bottom:none}
+.atelier .card h4{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:15px;color:var(--ink);letter-spacing:-.008em;margin-bottom:4px}
+.atelier .card p{font-size:12px;color:var(--muted);line-height:1.6;max-width:400px}
+.atelier .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule);margin:24px 0}
+.atelier .grid-3 > div{padding:20px 0;border-bottom:1px solid var(--rule)}
+.atelier .grid-3 > div .num{font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;color:var(--accent);display:block;margin-bottom:4px}
+.atelier .grid-3 > div .lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.atelier .btn{background:transparent;color:var(--ink);border:1px solid var(--ink);padding:10px 28px;font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
+.atelier .btn:hover{background:var(--ink);color:var(--paper)}
+.atelier .hairline{height:.5px;background:var(--rule);width:100%;margin:0}
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">11 Atelier</span>
+  </nav>
+<section class="section atelier" id="atelier">
+  <div class="content">
+    <div class="section-header">
+      <div class="badge">Atelier Trianon</div>
+      <h2>Made to measure. Made to last.</h2>
+      <p>An independent atelier in the 7th arrondissement. Couture, tailoring, and the preservation of craft.</p>
+    </div>
+
+    <div class="deck">Each garment begins with a conversation — fabric, form, intention. Then the slow work of making begins.</div>
+
+    <div class="grid-3">
+      <div><span class="num">03</span><span class="lbl">collections / year</span></div>
+      <div><span class="num">14</span><span class="lbl">artisans in house</span></div>
+      <div><span class="num">6&ndash;8</span><span class="lbl">weeks per commission</span></div>
+    </div>
+
+    <div class="layout-2col">
+      <div>
+        <div class="card">
+          <h4>Couture Collection</h4>
+          <p>Bespoke evening and day wear. Each piece is hand-drafted, cut, and finished in our studio. One client, one pattern, one garment.</p>
+        </div>
+        <div class="card">
+          <h4>Fabric Archive</h4>
+          <p>Silk from Lyon, wool from Loro Piana, linen from Ulster. Our archive spans four centuries of European textile craft.</p>
+        </div>
+        <div class="card">
+          <h4>Restoration</h4>
+          <p>We restore and preserve heirloom garments — restitching, reweaving, and returning them to wearability without erasing their history.</p>
+        </div>
+      </div>
+      <div>
+        <div style="border:1px solid var(--rule);padding:24px">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Visit the atelier</div>
+          <div style="font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:12px">7 Rue de Bourgogne<br>Paris, 75007</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.7">Tuesday to Saturday<br>10:00 – 19:00</div>
+          <div class="hairline" style="margin:16px 0"></div>
+          <button class="btn">Request an appointment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

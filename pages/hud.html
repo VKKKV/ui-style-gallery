@@ -6,9 +6,15 @@
   <title>07 — Tactical HUD</title>
   <link rel="stylesheet" href="../assets/css/base.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
+
   <style>
-    :root { --accent: #00ff00; }
+    :root {
+      --paper: oklch(8% 0.01 145);
+      --ink: oklch(86% 0.16 138);
+      --accent: oklch(78% 0.19 138);
+      --dim: oklch(50% 0.01 145);
+      --faint: oklch(18% 0.02 145);
+    }
     body { margin: 0; }
     .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
     .content { max-width: 1200px; margin: 0 auto; width: 100%; }
@@ -21,31 +27,141 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     }
-    /* ===== 1. TACTICAL HUD ===== */
-.hud{background:#000;color:#0f0;font-family:'JetBrains Mono',monospace;position:relative}
-.hud::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,0,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,0,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
-.hud .badge{background:rgba(0,255,0,.12);color:#0f0;border:1px solid rgba(0,255,0,.25)}
-.hud h2{color:#0f0;text-shadow:0 0 15px rgba(0,255,0,.4)}
-.hud .card{background:rgba(0,255,0,.03);border:1px solid rgba(0,255,0,.12);border-radius:0;padding:20px;position:relative}
-.hud .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#0f0,transparent)}
-.hud .metric{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(0,255,0,.07);font-size:12px;letter-spacing:.3px}
-.hud .metric .val{color:#0f0;font-weight:500}
-.hud .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:16px 0}
-.hud .stat-box{background:rgba(0,255,0,.04);border:1px solid rgba(0,255,0,.1);padding:14px;text-align:center}
-.hud .stat-box .num{font-size:24px;font-weight:600;color:#0f0}
-.hud .stat-box .label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;opacity:.45;margin-top:4px}
-.hud .btn{background:transparent;color:#0f0;border:1px solid #0f0;padding:8px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:.15s;text-transform:uppercase;letter-spacing:1.5px}
-.hud .btn:hover{background:#0f0;color:#000;box-shadow:0 0 18px rgba(0,255,0,.25)}
-.hud .scanline{position:relative;overflow:hidden}
-@media (prefers-reduced-motion: no-preference) {
-  .hud .scanline::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:rgba(0,255,0,.06);animation:scanline 4s linear infinite;pointer-events:none}
-}
-@keyframes scanline{0%{top:0}100%{top:100%}}
-.hud .blink-cursor{display:inline-block;width:7px;height:14px;background:#0f0;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:3px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hud .term-line{font-size:13px;line-height:1.8}
-.hud .term-line .p{color:#555}
-.hud .term-line .c{color:#0f0}
+
+    /* ===== TACTICAL HUD ===== */
+    .hud {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      position: relative;
+    }
+    .hud::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(oklch(86% 0.16 138 / 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, oklch(86% 0.16 138 / 0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .hud .badge {
+      background: oklch(86% 0.16 138 / 0.12);
+      color: var(--ink);
+      border: 1px solid oklch(86% 0.16 138 / 0.25);
+    }
+    .hud h2 {
+      color: var(--ink);
+      text-shadow: 0 0 15px oklch(86% 0.16 138 / 0.4);
+    }
+    .hud .card {
+      background: oklch(86% 0.16 138 / 0.03);
+      border: 1px solid var(--faint);
+      border-radius: 0;
+      padding: 20px;
+      position: relative;
+    }
+    .hud .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ink), transparent);
+    }
+    .hud .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid oklch(86% 0.16 138 / 0.07);
+      font-size: 12px;
+      letter-spacing: .3px;
+    }
+    .hud .metric .val {
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .hud .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .hud .stat-box {
+      background: oklch(86% 0.16 138 / 0.04);
+      border: 1px solid var(--faint);
+      padding: 14px;
+      text-align: center;
+    }
+    .hud .stat-box .num {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .hud .stat-box .label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: .45;
+      margin-top: 4px;
+    }
+    .hud .btn {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+      padding: 8px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: .15s;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .hud .btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+      box-shadow: 0 0 18px oklch(86% 0.16 138 / 0.25);
+    }
+    .hud .scanline { position: relative; overflow: hidden; }
+    @media (prefers-reduced-motion: no-preference) {
+      .hud .scanline::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: oklch(86% 0.16 138 / 0.06);
+        animation: scanline 4s linear infinite;
+        pointer-events: none;
+      }
+    }
+    @keyframes scanline { 0% { top: 0; } 100% { top: 100%; } }
+    .hud .blink-cursor {
+      display: inline-block;
+      width: 7px;
+      height: 14px;
+      background: var(--ink);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 3px;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .hud .term-line { font-size: 13px; line-height: 1.8; }
+    .hud .term-line .p { color: var(--dim); }
+    .hud .term-line .c { color: var(--ink); }
+
+    /* ── Pre-emit Stamp ── */
+    .hud .pre-emit {
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      line-height: 1.4;
+      color: var(--accent);
+      opacity: 0.35;
+      border: 1px dashed var(--accent);
+      padding: 3px 7px;
+      transform: rotate(-2deg);
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -58,9 +174,14 @@
 <section class="section hud scanline" id="hud">
   <div class="content" style="position:relative;z-index:1">
     <div class="section-header">
-      <div class="badge">Style 01</div>
-      <h2>TACTICAL HUD // COMMAND CENTER</h2>
-      <p>Pure black #000 + phosphor green #0f0 + scanlines + grid overlay. Flight instrument meets system console.</p>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+        <div>
+          <div class="badge">Style 01</div>
+          <h2>TACTICAL HUD // COMMAND CENTER</h2>
+        </div>
+        <div class="pre-emit">FIRMWARE v2.4.1<br>BUILD 20260719</div>
+      </div>
+      <p>Dark tactical interface — OKLCH paper on ink grid. Scanline CRT effect, phosphor readouts, and command-line terminal.</p>
     </div>
     <div class="layout-2col">
       <div>
@@ -88,10 +209,10 @@
         <div class="card" style="margin-bottom:16px">
           <div style="font-size:10px;letter-spacing:2px;opacity:.35;margin-bottom:12px">TERMINAL // SESSION 0x4F3A</div>
           <div class="term-line"><span class="p">root@hq ~ $</span> <span class="c">deploy --target prod --region us-east</span></div>
-          <div style="font-size:13px;line-height:1.8;color:#555;padding-left:14px">  building container image...</div>
-          <div style="font-size:13px;line-height:1.8;color:#555;padding-left:14px">  pushing to registry.ecr.us-east-1</div>
-          <div style="font-size:13px;line-height:1.8;color:#555;padding-left:14px">  deploying 4 service replicas</div>
-          <div style="font-size:13px;line-height:1.8;color:#0f0;padding-left:14px">  ✓ deploy complete (12.4s)</div>
+          <div style="font-size:13px;line-height:1.8;color:var(--dim);padding-left:14px">  building container image...</div>
+          <div style="font-size:13px;line-height:1.8;color:var(--dim);padding-left:14px">  pushing to registry.ecr.us-east-1</div>
+          <div style="font-size:13px;line-height:1.8;color:var(--dim);padding-left:14px">  deploying 4 service replicas</div>
+          <div style="font-size:13px;line-height:1.8;color:var(--ink);padding-left:14px">  ✓ deploy complete (12.4s)</div>
           <div class="term-line" style="margin-top:4px"><span class="p">root@hq ~ $</span> <span class="blink-cursor"></span></div>
         </div>
         <div style="display:flex;gap:10px">

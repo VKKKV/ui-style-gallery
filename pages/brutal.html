@@ -3,80 +3,296 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>09 — Neubrutalism</title>
+  <title>NOVA — Brutal</title>
   <link rel="stylesheet" href="../assets/css/base.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
-    :root { --accent: #ffff00; }
-    body { margin: 0; }
-    .section { padding: 60px 32px; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
-    .content { max-width: 1200px; margin: 0 auto; width: 100%; }
-    .section-header { margin-bottom: 40px; max-width: 720px; }
-    .section-header .badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
-    .section-header h2 { font-size: clamp(24px, 4vw, 48px); line-height: 1.05; margin-bottom: 10px; font-weight: 700; }
-    .section-header p { font-size: 14px; opacity: .65; max-width: 540px; line-height: 1.6; }
-    .layout-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    /* Hallmark · theme: brutal · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    :root { 
+      --paper: oklch(98% 0.001 0);
+      --ink: oklch(8% 0.005 0);
+      --accent: #E63946;
+      --font-display: 'Albert Sans', sans-serif;
+      --font-body: 'Albert Sans', sans-serif;
+      --font-label: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; }
+    body { 
+      margin: 0; 
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+    .section { 
+      padding: 80px 32px; 
+      min-height: 80vh; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+    }
+    .content { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      width: 100%; 
+    }
+    .section-header { 
+      margin-bottom: 48px; 
+      max-width: 720px; 
+    }
+    .section-header .badge { 
+      display: inline-block; 
+      font-family: var(--font-label);
+      font-size: 11px; 
+      font-weight: 500; 
+      letter-spacing: 2px; 
+      text-transform: uppercase; 
+      padding: 6px 14px; 
+      margin-bottom: 16px; 
+      border: 2px solid var(--ink);
+      color: var(--paper);
+      background: var(--ink);
+    }
+    .section-header h2 { 
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 72px); 
+      line-height: 0.92; 
+      margin-bottom: 12px; 
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+    }
+    .section-header p { 
+      font-size: 15px; 
+      opacity: .7; 
+      max-width: 540px; 
+      line-height: 1.6; 
+      font-weight: 300;
+    }
+    .layout-2col { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 32px; 
+      align-items: start; 
+    }
     @media (max-width: 768px) { .layout-2col { grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     }
-    /* ===== 3. NEUBRUTALISM ===== */
-.brutal{background:#fff;color:#000;font-family:system-ui,sans-serif}
-.brutal .badge{background:#000;color:#fff;border-radius:0;border:2px solid #000}
-.brutal h2{font-weight:900;font-size:clamp(28px,5vw,52px);text-transform:uppercase;letter-spacing:-1px}
-.brutal .card{border:3px solid #000;border-radius:0;padding:20px;box-shadow:5px 5px 0 #000;margin-bottom:12px}
-.brutal .card h4{font-size:16px;font-weight:800;margin-bottom:6px;text-transform:uppercase}
-.brutal .card p{font-size:13px;color:#333;line-height:1.5}
-.brutal .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.brutal .metric-card{padding:16px;text-align:center;border:3px solid #000;box-shadow:5px 5px 0 #000}
-.brutal .metric-card .num{font-size:32px;font-weight:900}
-.brutal .metric-card .lbl{font-size:10px;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-top:2px}
-.brutal .btn{background:#000;color:#fff;border:3px solid #000;padding:10px 24px;font-family:system-ui,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:4px 4px 0 #000;transition:box-shadow .1s,transform .1s;border-radius:0}
-.brutal .btn:hover{box-shadow:6px 6px 0 #000;transform:translate(-2px,-2px)}
-.brutal .btn-outline{background:#fff;color:#000}
-.brutal .tag{display:inline-block;background:#ff0;color:#000;padding:2px 8px;font-size:10px;font-weight:700;text-transform:uppercase;border:2px solid #000}
-.brutal .hr{height:3px;background:#000;margin:20px 0;border:none}
+    /* ===== BRUTAL ===== */
+    .brutal { 
+      background: var(--paper); 
+      color: var(--ink); 
+      font-family: var(--font-body);
+    }
+    .brutal .badge {
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 0;
+    }
+    .brutal h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(36px, 6vw, 80px);
+      text-transform: uppercase;
+      letter-spacing: -2px;
+      line-height: 0.92;
+    }
+    .brutal .card {
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      padding: 24px;
+      margin-bottom: 12px;
+    }
+    .brutal .card h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+    .brutal .card p {
+      font-size: 14px;
+      color: var(--ink);
+      opacity: 0.75;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+    .brutal .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .brutal .metric-card {
+      padding: 20px;
+      text-align: center;
+      border: 2px solid var(--ink);
+    }
+    .brutal .metric-card .num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+    .brutal .metric-card .lbl {
+      font-family: var(--font-label);
+      font-size: 9px;
+      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+      opacity: 0.7;
+    }
+    .brutal .btn {
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+      padding: 12px 28px;
+      font-family: var(--font-label);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: none;
+      border-radius: 0;
+    }
+    .brutal .btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .brutal .btn-outline {
+      background: transparent;
+      color: var(--ink);
+    }
+    .brutal .btn-outline:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .brutal .tag {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--paper);
+      padding: 3px 10px;
+      font-family: var(--font-label);
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border: 2px solid var(--ink);
+    }
+    .brutal .hr {
+      height: 2px;
+      background: var(--ink);
+      margin: 24px 0;
+      border: none;
+    }
+    .product-line {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .product-card {
+      border: 2px solid var(--ink);
+      padding: 20px;
+      text-align: center;
+    }
+    .product-card .icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+    .product-card h4 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+    .product-card .lbl {
+      font-family: var(--font-label);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.6;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 8vw, 120px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -3px;
+      line-height: 0.88;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-family: var(--font-label);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.6;
+      margin-bottom: 24px;
+    }
+    .rule-2px {
+      height: 2px;
+      background: var(--ink);
+      border: none;
+      margin: 16px 0;
+    }
   </style>
 </head>
 <body>
   <nav class="page-header">
     <a href="../index.html">Gallery</a>
     <span class="sep">/</span>
-    <span class="current">09 Neubrutalism</span>
+    <span class="current">NOVA — Brutal</span>
   </nav>
-  <!-- ============ 3. NEUBRUTALISM ============ -->
+  <!-- ============ BRUTAL ============ -->
 <section class="section brutal" id="brutal">
   <div class="content">
     <div class="section-header">
-      <div class="badge">Style 03</div>
-      <h2>NEUBRUTALISM</h2>
-      <p>3px borders · offset shadows · system fonts · pure colors. What you see is exactly what it is. No deception, no subtlety.</p>
+      <div class="badge">Heavy Machinery</div>
+      <h2 class="hero-title">NOVA</h2>
+      <p class="hero-sub">Built to work. Engineered to last.</p>
+      <p>Industrial-grade equipment for the toughest jobs on earth. No frills. No nonsense. Just raw power and precision engineering.</p>
     </div>
+    <hr class="rule-2px">
     <div class="layout-2col">
       <div>
-        <div class="card">
-          <span class="tag">Hot take</span>
-          <h4>We don't do subtle</h4>
-          <p>Every pixel earns its place. If it doesn't communicate, it doesn't exist. Bold borders, raw colors, no gradients, no blur, no apologies.</p>
+        <div class="product-line">
+          <div class="product-card">
+            <div class="icon">⛰️</div>
+            <h4>Excavator</h4>
+            <div class="lbl">300–800 HP · 45–90 ton</div>
+          </div>
+          <div class="product-card">
+            <div class="icon">🏗️</div>
+            <h4>Loader</h4>
+            <div class="lbl">250–650 HP · 8–35 yd³</div>
+          </div>
         </div>
-        <div class="card" style="background:#ff0;box-shadow:5px 5px 0 #000">
-          <h4 style="font-size:13px">Notice</h4>
-          <p style="font-size:12px;color:#333;margin-top:6px">This is not a design trend. This is an ethic.</p>
+        <div class="card" style="margin-top:12px">
+          <span class="tag">Reliability</span>
+          <h4>24/7 Service</h4>
+          <p>Global parts network · 4-hour dispatch · 5-year structural warranty. When seconds count, NOVA delivers.</p>
         </div>
       </div>
       <div>
         <div class="metric-grid">
-          <div class="metric-card" style="background:#fff"><div class="num">84%</div><div class="lbl">faster load</div></div>
-          <div class="metric-card" style="background:#0f0;color:#000"><div class="num">2.3x</div><div class="lbl">conversion</div></div>
-          <div class="metric-card" style="background:#00f;color:#fff"><div class="num">Zero</div><div class="lbl">dependencies</div></div>
-          <div class="metric-card" style="background:#f00;color:#fff"><div class="num">100%</div><div class="lbl">honest</div></div>
+          <div class="metric-card"><div class="num">18K</div><div class="lbl">units deployed</div></div>
+          <div class="metric-card" style="background:var(--accent);color:var(--paper);border-color:var(--accent)"><div class="num">99.7%</div><div class="lbl">uptime rate</div></div>
+          <div class="metric-card"><div class="num">50+</div><div class="lbl">countries served</div></div>
+          <div class="metric-card" style="background:var(--ink);color:var(--paper)"><div class="num">15yr</div><div class="lbl">service life</div></div>
         </div>
         <hr class="hr">
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn">Get started</button>
-          <button class="btn btn-outline">Learn more</button>
-          <button class="btn" style="background:#f00">Danger</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn">View lineup</button>
+          <button class="btn btn-outline">Request quote</button>
+          <button class="btn" style="background:var(--accent);border-color:var(--accent)">Emergency support</button>
         </div>
       </div>
     </div>

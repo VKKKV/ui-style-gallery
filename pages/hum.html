@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campfire — Learn Creative Skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    /* Hallmark · theme: hum · pre-emit: P4 H4 E4 S4 R4 V4 */
+    
+    /* ── Design tokens ── */
+    :root {
+      --paper: oklch(97% 0.012 95);
+      --ink: oklch(20% 0.012 250);
+      --accent: oklch(86% 0.18 95);
+      --accent-2: oklch(66% 0.18 235);
+      --accent-3: oklch(68% 0.24 18);
+      --radius-card: 20px;
+      --radius-pill: 999px;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --shadow-sm: 0 2px 8px oklch(0% 0 0 / 0.06);
+      --shadow-md: 0 8px 24px oklch(0% 0 0 / 0.08);
+      --shadow-lg: 0 20px 48px oklch(0% 0 0 / 0.10);
+      --transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Utilities ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .pill--accent {
+      background: var(--accent);
+      color: var(--ink);
+    }
+    .pill--accent-2 {
+      background: var(--accent-2);
+      color: #fff;
+    }
+    .pill--accent-3 {
+      background: var(--accent-3);
+      color: #fff;
+    }
+    .pill--ghost {
+      background: transparent;
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      text-decoration: none;
+    }
+    .btn:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: var(--ink);
+      box-shadow: 0 4px 14px oklch(86% 0.18 95 / 0.4);
+    }
+    .btn--primary:hover {
+      box-shadow: 0 8px 24px oklch(86% 0.18 95 / 0.5);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+    }
+
+    .btn--icon {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.2rem;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: oklch(97% 0.012 95 / 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid oklch(0% 0 0 / 0.04);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav__logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: transform var(--transition), border-radius var(--transition);
+    }
+    .nav__logo:hover .nav__logo-icon {
+      transform: rotate(-8deg) scale(1.08);
+      border-radius: 40%;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav__links a:hover::after { width: 100%; }
+
+    .nav__cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 140px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, oklch(86% 0.18 95 / 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, oklch(66% 0.18 235 / 0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero__pills {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hero__title {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .hero__title .highlight {
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero__desc {
+      font-size: 1.1rem;
+      opacity: 0.75;
+      max-width: 480px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    /* ── Search / Course discovery ── */
+    .hero__search {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: #fff;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-md);
+      padding: 4px;
+      max-width: 480px;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .hero__search:focus-within {
+      box-shadow: 0 0 0 3px oklch(86% 0.18 95 / 0.3), var(--shadow-lg);
+      transform: scale(1.01);
+    }
+
+    .hero__search-icon {
+      padding-left: 16px;
+      font-size: 1.1rem;
+      opacity: 0.4;
+    }
+    .hero__search input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 14px 12px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      outline: none;
+      color: var(--ink);
+    }
+    .hero__search input::placeholder { color: oklch(20% 0.012 250 / 0.35); }
+    .hero__search button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--accent);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .hero__search button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px oklch(86% 0.18 95 / 0.4);
+    }
+
+    /* ── Hero visual ── */
+    .hero__visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero__card-stack {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 4 / 3;
+    }
+
+    .hero__card {
+      position: absolute;
+      width: 80%;
+      padding: 24px;
+      border-radius: var(--radius-card);
+      background: #fff;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .hero__card:hover {
+      transform: translateY(-4px) rotate(0deg) !important;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero__card--1 {
+      top: 0;
+      left: 0;
+      transform: rotate(-4deg);
+      z-index: 3;
+    }
+    .hero__card--2 {
+      top: 30%;
+      right: 0;
+      transform: rotate(3deg);
+      z-index: 2;
+    }
+    .hero__card--3 {
+      bottom: 0;
+      left: 10%;
+      transform: rotate(-2deg);
+      z-index: 1;
+    }
+
+    .hero__card .label {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.6rem;
+      margin-bottom: 10px;
+    }
+    .hero__card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .hero__card p {
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+    .hero__card .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 0.75rem;
+    }
+    .hero__card .avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .hero__stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .hero__stat strong {
+      font-size: 1.6rem;
+      font-weight: 800;
+      display: block;
+      line-height: 1.2;
+    }
+    .hero__stat span {
+      font-size: 0.82rem;
+      opacity: 0.55;
+      font-weight: 500;
+    }
+
+    /* ── Features ── */
+    .features {
+      padding: 80px 0;
+    }
+
+    .features__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .features__header h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .features__header p {
+      max-width: 520px;
+      margin: 0 auto;
+      opacity: 0.65;
+      font-size: 1rem;
+    }
+
+    .features__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: #fff;
+      border-radius: var(--radius-card);
+      padding: 36px 28px;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    .feature-card:hover::before { transform: scaleX(1); }
+    .feature-card:nth-child(1)::before { background: var(--accent); }
+    .feature-card:nth-child(2)::before { background: var(--accent-2); }
+    .feature-card:nth-child(3)::before { background: var(--accent-3); }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .feature-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      transition: transform var(--transition), border-radius var(--transition);
+    }
+    .feature-card:hover .feature-card__icon {
+      transform: scale(1.1) rotate(-4deg);
+      border-radius: 40%;
+    }
+
+    .feature-card:nth-child(1) .feature-card__icon {
+      background: oklch(86% 0.18 95 / 0.2);
+    }
+    .feature-card:nth-child(2) .feature-card__icon {
+      background: oklch(66% 0.18 235 / 0.15);
+    }
+    .feature-card:nth-child(3) .feature-card__icon {
+      background: oklch(68% 0.24 18 / 0.15);
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      opacity: 0.65;
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .feature-card__link {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.3s ease;
+    }
+    .feature-card__link:hover { gap: 12px; }
+    .feature-card:nth-child(1) .feature-card__link { color: var(--accent); }
+    .feature-card:nth-child(2) .feature-card__link { color: var(--accent-2); }
+    .feature-card:nth-child(3) .feature-card__link { color: var(--accent-3); }
+
+    /* ── Courses ── */
+    .courses {
+      padding: 80px 0;
+    }
+
+    .courses__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .courses__header h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+    }
+    .courses__header p {
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    .courses__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .course-card {
+      background: #fff;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .course-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .course-card__thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .course-card__thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
+      transition: opacity 0.4s ease;
+    }
+    .course-card:hover .course-card__thumb::after { opacity: 0.25; }
+
+    .course-card__body {
+      padding: 20px 24px 24px;
+    }
+
+    .course-card__body .pill {
+      margin-bottom: 12px;
+    }
+
+    .course-card__body h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .course-card__body > p {
+      font-size: 0.83rem;
+      opacity: 0.6;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .course-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid oklch(0% 0 0 / 0.06);
+    }
+
+    .course-card__author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .course-card__author .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .course-card__author .name {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .course-card__author .handle {
+      font-size: 0.7rem;
+      opacity: 0.45;
+      font-family: var(--font-mono);
+    }
+
+    .course-card__price {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .course-card__price small {
+      font-weight: 400;
+      font-size: 0.7rem;
+      opacity: 0.45;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      padding: 80px 0 100px;
+    }
+
+    .cta__box {
+      background: linear-gradient(135deg, oklch(86% 0.18 95 / 0.15), oklch(66% 0.18 235 / 0.08));
+      border-radius: 28px;
+      padding: 64px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta__box::before {
+      content: '🔥';
+      position: absolute;
+      top: -20px;
+      right: 40px;
+      font-size: 6rem;
+      opacity: 0.12;
+      transform: rotate(15deg);
+    }
+    .cta__box::after {
+      content: '✨';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      font-size: 4rem;
+      opacity: 0.10;
+    }
+
+    .cta__box h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .cta__box p {
+      max-width: 480px;
+      margin: 0 auto 28px;
+      opacity: 0.7;
+    }
+
+    .cta__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 40px 0 48px;
+      border-top: 1px solid oklch(0% 0 0 / 0.06);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer__links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.85rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .footer__links a:hover { opacity: 1; }
+
+    .footer__copy {
+      font-size: 0.8rem;
+      opacity: 0.4;
+      font-family: var(--font-mono);
+    }
+
+    /* ── Animations ── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 oklch(86% 0.18 95 / 0.3); }
+      50% { box-shadow: 0 0 0 12px oklch(86% 0.18 95 / 0); }
+    }
+
+    .float { animation: float 4s ease-in-out infinite; }
+    .float-delayed { animation: float 5s ease-in-out 1s infinite; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero__grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero__visual { order: -1; }
+      .hero__card-stack { max-width: 340px; margin: 0 auto; }
+      .features__grid { grid-template-columns: 1fr; gap: 20px; }
+      .courses__grid { grid-template-columns: 1fr; gap: 20px; }
+      .cta__box { padding: 40px 24px; }
+      .nav__links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 120px 0 48px; }
+      .hero__stats { gap: 20px; flex-wrap: wrap; }
+      .hero__stat strong { font-size: 1.3rem; }
+      .features__header h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════ Nav ════════════════ -->
+  <nav class="nav">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo">
+        <span class="nav__logo-icon">🔥</span>
+        Campfire
+      </a>
+
+      <ul class="nav__links">
+        <li><a href="#">Explore</a></li>
+        <li><a href="#">Learn</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+
+      <div class="nav__cta">
+        <a href="#" class="btn btn--outline" style="padding: 8px 20px; font-size:0.82rem;">Sign In</a>
+        <a href="#" class="btn btn--primary" style="padding: 8px 20px; font-size:0.82rem;">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════════════ Hero ════════════════ -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <!-- Left -->
+      <div>
+        <div class="hero__pills">
+          <span class="pill pill--accent">🔥 New</span>
+          <span class="pill pill--ghost">2,400+ courses</span>
+          <span class="pill pill--ghost">50k creators</span>
+        </div>
+
+        <h1 class="hero__title">
+          Ignite your<br />
+          <span class="highlight">creative spark</span>
+        </h1>
+
+        <p class="hero__desc">
+          Discover hands-on courses taught by working creatives. From illustration
+          to animation, sound design to game dev — learn by making.
+        </p>
+
+        <div class="hero__actions">
+          <a href="#" class="btn btn--primary">Start Learning &nbsp;→</a>
+          <a href="#" class="btn btn--outline">Explore Courses</a>
+        </div>
+
+        <!-- Search — course discovery -->
+        <div class="hero__search">
+          <span class="hero__search-icon">🔍</span>
+          <input type="text" placeholder="Search courses, skills, or instructors…" />
+          <button>Search</button>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <strong>2,400+</strong>
+            <span>Courses</span>
+          </div>
+          <div class="hero__stat">
+            <strong>50K</strong>
+            <span>Creators</span>
+          </div>
+          <div class="hero__stat">
+            <strong>12K</strong>
+            <span>Reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — card stack visual -->
+      <div class="hero__visual">
+        <div class="hero__card-stack">
+          <div class="hero__card hero__card--1 float">
+            <span class="label pill pill--accent-2">🎨 Illustration</span>
+            <h4>Character Design Bootcamp</h4>
+            <p>From sketch to finish — 8 weeks</p>
+            <div class="meta">
+              <span class="avatar" style="background:var(--accent-3);">MK</span>
+              <span>Maya Kim</span>
+              <span>·</span>
+              <span>★ 4.9</span>
+            </div>
+          </div>
+
+          <div class="hero__card hero__card--2 float-delayed">
+            <span class="label pill pill--accent-3">🎵 Sound</span>
+            <h4>Electronic Music Production</h4>
+            <p>Synthesis, sampling &amp; mixing</p>
+            <div class="meta">
+              <span class="avatar" style="background:var(--accent-2);">JR</span>
+              <span>Jamie Rivera</span>
+              <span>·</span>
+              <span>★ 4.8</span>
+            </div>
+          </div>
+
+          <div class="hero__card hero__card--3 float" style="animation-delay:2s;">
+            <span class="label pill pill--accent">💻 Code</span>
+            <h4>Creative Coding with p5.js</h4>
+            <p>Generative art &amp; interactive visuals</p>
+            <div class="meta">
+              <span class="avatar" style="background:var(--accent);">AL</span>
+              <span>Alex Liu</span>
+              <span>·</span>
+              <span>★ 4.9</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ Features ════════════════ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features__header">
+        <div class="pill pill--accent" style="margin-bottom:16px;">Why Campfire</div>
+        <h2>Learn by doing, surrounded by <span style="color:var(--accent-3);">creatives</span></h2>
+        <p>Every course is built around projects, feedback, and community. No dead-end tutorials — just real skills that stick.</p>
+      </div>
+
+      <div class="features__grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">🎯</div>
+          <h3>Interactive Lessons</h3>
+          <p>
+            Step-by-step projects with instant feedback. Code along, sketch along,
+            mix along — every lesson ends with something you built.
+          </p>
+          <a href="#" class="feature-card__link">Explore lessons →</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">👁️</div>
+          <h3>Project Reviews</h3>
+          <p>
+            Get personal video feedback from instructors and peers. Share your work,
+            iterate, and grow with constructive critique.
+          </p>
+          <a href="#" class="feature-card__link">See how it works →</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">🔥</div>
+          <h3>Community</h3>
+          <p>
+            Join a global network of makers. Co-working sessions, challenges, jams &
+            feedback circles — you're never creating alone.
+          </p>
+          <a href="#" class="feature-card__link">Join the community →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ Courses ════════════════ -->
+  <section class="courses" id="courses">
+    <div class="container">
+      <div class="courses__header">
+        <div>
+          <h2>Trending courses <span style="color:var(--accent-3);">🔥</span></h2>
+          <p>What the Campfire community is learning right now</p>
+        </div>
+        <a href="#" class="btn btn--outline" style="font-size:0.82rem; padding:10px 22px;">View All →</a>
+      </div>
+
+      <div class="courses__grid">
+        <div class="course-card">
+          <div class="course-card__thumb" style="background: oklch(86% 0.18 95 / 0.15);">
+            🎨
+          </div>
+          <div class="course-card__body">
+            <span class="pill pill--accent">Illustration</span>
+            <h3>Character Design Workshop</h3>
+            <p>Design original characters from concept to polished turnaround sheets.</p>
+            <div class="course-card__footer">
+              <div class="course-card__author">
+                <span class="avatar" style="background:var(--accent-3);">MK</span>
+                <div>
+                  <div class="name">Maya Kim</div>
+                  <div class="handle">@mayakim</div>
+                </div>
+              </div>
+              <div class="course-card__price">
+                $49 <small>USD</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div class="course-card__thumb" style="background: oklch(66% 0.18 235 / 0.12);">
+            🎵
+          </div>
+          <div class="course-card__body">
+            <span class="pill pill--accent-2">Music</span>
+            <h3>Electronic Music Production</h3>
+            <p>Learn synthesis, sampling, arrangement, and mixing from scratch.</p>
+            <div class="course-card__footer">
+              <div class="course-card__author">
+                <span class="avatar" style="background:var(--accent-2);">JR</span>
+                <div>
+                  <div class="name">Jamie Rivera</div>
+                  <div class="handle">@jamierivera</div>
+                </div>
+              </div>
+              <div class="course-card__price">
+                $59 <small>USD</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div class="course-card__thumb" style="background: oklch(68% 0.24 18 / 0.12);">
+            💻
+          </div>
+          <div class="course-card__body">
+            <span class="pill pill--accent-3">Code</span>
+            <h3>Creative Coding: p5.js</h3>
+            <p>Generative art, interactive visuals, and data-driven design with code.</p>
+            <div class="course-card__footer">
+              <div class="course-card__author">
+                <span class="avatar" style="background:var(--accent);">AL</span>
+                <div>
+                  <div class="name">Alex Liu</div>
+                  <div class="handle">@alexliu</div>
+                </div>
+              </div>
+              <div class="course-card__price">
+                $39 <small>USD</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ CTA ════════════════ -->
+  <section class="cta" id="cta">
+    <div class="container">
+      <div class="cta__box">
+        <h2>Ready to make something <span style="color:var(--accent-3);">amazing</span>?</h2>
+        <p>Join 50,000+ creators learning together on Campfire. Your first course is on us.</p>
+        <div class="cta__actions">
+          <a href="#" class="btn btn--primary">Get Started Free</a>
+          <a href="#" class="btn btn--outline">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ Footer ════════════════ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span style="font-size:1.3rem;">🔥</span>
+        Campfire
+      </div>
+
+      <ul class="footer__links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+
+      <span class="footer__copy">© 2026 Campfire</span>
+    </div>
+  </footer>
+
+</body>
+</html>
