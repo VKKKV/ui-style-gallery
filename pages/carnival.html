@@ -4,216 +4,70 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cold Snap — Brickyard Tapes</title>
-  <meta name="description" content="Cold Snap Records presents Brickyard Tapes — six tracks of raw post-industrial noise recorded in a single frozen week." />
+  <meta name="description" content="An indie record label releasing raw, seasonal music." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: carnival · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(94% 0.018 72);
-      --color-paper-2: oklch(91% 0.020 72);
-      --color-ink: oklch(18% 0.025 20);
-      --color-ink-soft: oklch(42% 0.030 20);
-      --color-rule: oklch(22% 0.020 20);
-      --color-accent: oklch(68% 0.16 85);
-      --font-display: 'Big Shoulders Display', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
+    :root { --color-paper: oklch(94% 0.018 72); --color-paper-2: oklch(91% 0.020 72); --color-ink: oklch(18% 0.025 20); --color-ink-soft: oklch(42% 0.030 20); --color-rule: oklch(22% 0.020 20); --color-accent: oklch(68% 0.16 85); --font-display: "Big Shoulders Display", sans-serif; --font-body: "DM Sans", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--color-paper);
-      color: var(--color-ink);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      line-height: 1.5;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ─── Typography ─── */
-    h1, h2, h3 {
-      font-family: var(--font-display);
-      font-weight: 700;
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      color: var(--color-ink);
-    }
-    h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 900; letter-spacing: 0.04em; }
-    h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; }
-    h3 { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 700; }
-    p { max-width: 58ch; margin-bottom: 0.75rem; }
-    a { color: inherit; text-decoration: none; transition: color 0.2s; }
-    a:hover { color: var(--color-accent); }
-
-    /* ─── Layout ─── */
-    .page { max-width: 64rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-
-    /* ─── Masthead ─── */
-    .masthead {
-      display: flex; justify-content: space-between; align-items: center;
-      font-family: var(--font-mono); font-size: 0.75rem;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--color-ink-soft);
-      border-block-end: 2px solid var(--color-ink);
-      padding-block-end: 0.75rem; margin-block-end: 2.5rem;
-    }
-    .masthead__brand {
-      font-family: var(--font-display); font-size: 1.25rem;
-      font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--color-accent);
-    }
-
-    /* ─── Hero ─── */
-    .hero { margin-block-end: 3rem; }
-    .hero__label {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--color-accent); margin: 0 0 1rem;
-    }
-    .hero h1 { margin: 0 0 0.75rem; }
-    .hero__desc {
-      font-size: 1rem; color: var(--color-ink-soft);
-      max-width: 48ch; line-height: 1.6; margin: 0;
-    }
-
-    /* ─── Section common ─── */
-    .section { padding-block-start: 2.5rem; border-block-start: 2px solid var(--color-rule); margin-block-end: 2rem; }
-    .section__head {
-      font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--color-accent); margin: 0 0 1.5rem;
-    }
-
-    /* ─── Artists (3 cards) ─── */
-    .artist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .artist {
-      background: var(--color-paper-2);
-      padding: 1.5rem; border-left: 4px solid var(--color-accent);
-    }
-    .artist h3 { margin: 0 0 0.25rem; font-size: 1.5rem; }
-    .artist p { font-size: 0.875rem; color: var(--color-ink-soft); margin: 0; }
-
-    /* ─── Releases (tracklist) ─── */
-    .tracklist { list-style: none; }
-    .tracklist li {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: 0.75rem 0; border-block-end: 1px solid var(--color-rule);
-      font-size: 0.95rem;
-    }
-    .tracklist li:last-child { border-block-end: none; }
-    .tracklist__num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); margin-right: 1rem; }
-    .tracklist__title { font-weight: 500; }
-    .tracklist__duration { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink-soft); }
-
-    /* ─── Formats ─── */
-    .format-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .format {
-      background: var(--color-paper-2);
-      padding: 1.5rem; text-align: center;
-      border: 2px solid var(--color-ink);
-    }
-    .format__icon { font-size: 2rem; line-height: 1; margin-bottom: 0.75rem; }
-    .format h3 { font-size: 1.15rem; margin: 0 0 0.25rem; }
-    .format p { font-size: 0.8rem; color: var(--color-ink-soft); margin: 0; }
-
-    /* ─── Colophon ─── */
-    .colophon {
-      padding-block-start: 1.5rem;
-      border-block-start: 2px solid var(--color-rule);
-      display: flex; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem;
-      font-family: var(--font-mono); font-size: 0.75rem;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--color-ink-soft);
-    }
-
-    @media (max-width: 48rem) {
-      .artist-grid { grid-template-columns: 1fr; }
-      .format-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 2px solid var(--color-ink); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
+    .masthead__brand { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; text-transform: uppercase; letter-spacing: -0.01em; color: var(--color-ink); }
+    .hero { margin-block-end: var(--space-2xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 800; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.02em; color: var(--color-ink); }
+    .hero__title span { color: var(--color-accent); }
+    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 48ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; text-decoration: none; cursor: pointer; border: 2px solid var(--color-ink); background: transparent; color: var(--color-ink); transition: background 120ms ease, color 120ms ease; }
+    .btn:hover { background: var(--color-ink); color: var(--color-paper); }
+    .btn--solid { background: var(--color-accent); color: var(--color-ink); border-color: var(--color-accent); }
+    .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
+    .card { padding: var(--space-md); border: 2px solid var(--color-ink); background: var(--color-paper); }
+    .card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
+    .card p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .tracks { border: 2px solid var(--color-ink); margin-block: var(--space-xl); }
+    .track { display: flex; padding: var(--space-sm) var(--space-md); border-block-end: 1px solid var(--color-ink); font-size: 0.9rem; }
+    .track:last-child { border-block-end: none; }
+    .track .num { font-family: var(--font-display); font-weight: 700; color: var(--color-accent); min-width: 2em; }
+    .track .title { flex: 1; }
+    .track .dur { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-ink-soft); }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 2px solid var(--color-ink); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
+    .colophon a:hover { color: var(--color-accent); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead">
-      <span class="masthead__brand">Cold Snap</span>
-      <span>Brickyard Tapes · CS-026</span>
-    </header>
-
+    <header class="masthead"><span class="masthead__brand">COLD SNAP</span><span>Brickyard Tapes &middot; catalog BYT-024</span></header>
     <section class="hero">
-      <p class="hero__label">Indie record label · Est. 2019</p>
-      <h1>Six tracks. One&nbsp;season. No&nbsp;filler.</h1>
-      <p class="hero__desc">
-        Recorded in an unheated brickyard during the January deep freeze.
-        Guitar strings snapped. Amps hummed. The cold got on tape.
-      </p>
+      <p class="hero__label">Six-track EP &middot; out now</p>
+      <h1 class="hero__title">One season.<br><span>No filler</span>.</h1>
+      <p class="hero__desc">Cold Snap is a six-track EP from Brickyard Tapes. Detroit synth-pop meets Glasgow post-punk. Pressed on 180g vinyl and chrome cassette.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--solid">Listen now</a><a href="#" class="btn">Catalog</a></div>
     </section>
-
-    <section class="section" aria-labelledby="artists-h">
-      <h2 class="section__head" id="artists-h">Artists</h2>
-      <div class="artist-grid">
-        <article class="artist">
-          <h3>SILO</h3>
-          <p>Detroit-based drone-metal duo. Two bass amps, one dictaphone, a contact mic on a steel beam. Their live sets are acts of architectural listening.</p>
-        </article>
-        <article class="artist">
-          <h3>Hollow Front</h3>
-          <p>Post-industrial noise from Buffalo. Field recordings of lake-effect snow, decommissioned grain elevators, and CB radio static layered into beatless soundscapes.</p>
-        </article>
-        <article class="artist">
-          <h3>Wax & Wire</h3>
-          <p>Collage electronics from Montréal. Sampled vinyl crackle, shortwave radio, and broken cassette players reassembled into skeletal rhythm tracks.</p>
-        </article>
-      </div>
+    <section aria-labelledby="artist-h"><h2 class="section-head" id="artist-h">Artists</h2>
+      <ul class="grid-3">
+        <li class="card"><h3>June Belmont</h3><p>Detroit synth-pop. Writes hooks like sun writes shadows &mdash; long, sloping, impossible to ignore.</p></li>
+        <li class="card"><h3>Wax Theatre</h3><p>Four-piece post-punk from Glasgow. Angular guitars, deadpan vox, a rhythm section that knows when to hold back.</p></li>
+        <li class="card"><h3>Margot Half-Step</h3><p>Lo-fi folk from a bedroom in Portland. Four-track warmth, songs about trains and dogs.</p></li>
+      </ul>
     </section>
-
-    <section class="section" aria-labelledby="release-h">
-      <h2 class="section__head" id="release-h">Cold Snap EP — tracklist</h2>
-      <ol class="tracklist">
-        <li><span><span class="tracklist__num">01</span><span class="tracklist__title">Frozen Culvert</span></span><span class="tracklist__duration">4:12</span></li>
-        <li><span><span class="tracklist__num">02</span><span class="tracklist__title">Hoist Chain</span></span><span class="tracklist__duration">3:48</span></li>
-        <li><span><span class="tracklist__num">03</span><span class="tracklist__title">Static Bloom</span></span><span class="tracklist__duration">5:07</span></li>
-        <li><span><span class="tracklist__num">04</span><span class="tracklist__title">Brittle Signal</span></span><span class="tracklist__duration">2:56</span></li>
-        <li><span><span class="tracklist__num">05</span><span class="tracklist__title">Subzero Hiss</span></span><span class="tracklist__duration">6:21</span></li>
-        <li><span><span class="tracklist__num">06</span><span class="tracklist__title">Thaw</span></span><span class="tracklist__duration">8:04</span></li>
-      </ol>
-    </section>
-
-    <section class="section" aria-labelledby="formats-h">
-      <h2 class="section__head" id="formats-h">Formats</h2>
-      <div class="format-grid">
-        <div class="format">
-          <div class="format__icon">💿</div>
-          <h3>Vinyl</h3>
-          <p>180g black vinyl in heavyweight sleeve. Includes download card and zine with liner notes by each artist.</p>
-        </div>
-        <div class="format">
-          <div class="format__icon">📼</div>
-          <h3>Cassette</h3>
-          <p>Chrome tape in clear shell with screen-printed J-card. Limited to 300 copies, each hand-wound at the label.</p>
-        </div>
-        <div class="format">
-          <div class="format__icon">🎧</div>
-          <h3>Digital</h3>
-          <p>24-bit FLAC, MP3 320, and WAV. No DRM. Pay-what-you-want with all proceeds split evenly among the artists.</p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="colophon">
-      <span>Cold Snap Records · Buffalo, NY</span>
-      <span><a href="mailto:tape@coldsnap.label">tape@coldsnap.label</a> · <a href="#">Bandcamp</a></span>
-    </footer>
+    <div class="tracks">
+      <div class="track"><span class="num">01</span><span class="title">Copper Line</span><span class="dur">2:48</span></div>
+      <div class="track"><span class="num">02</span><span class="title">Midnight Service</span><span class="dur">3:12</span></div>
+      <div class="track"><span class="num">03</span><span class="title">Coyote, Don&rsquo;t</span><span class="dur">3:05</span></div>
+      <div class="track"><span class="num">04</span><span class="title">Soft Collision</span><span class="dur">2:56</span></div>
+      <div class="track"><span class="num">05</span><span class="title">Anchor Point</span><span class="dur">3:22</span></div>
+      <div class="track"><span class="num">06</span><span class="title">Last Call, Eastern</span><span class="dur">3:19</span></div>
+    </div>
+    <footer class="colophon"><span>Brickyard Tapes &middot; Independent since 2018</span><span><a href="mailto:tapes@brickyard.rec">tapes@brickyard.rec</a></span></footer>
   </main>
 </body>
 </html>

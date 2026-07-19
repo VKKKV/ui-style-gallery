@@ -4,204 +4,65 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cinder — reasoning engine</title>
-  <meta name="description" content="Cinder is an AI reasoning engine for developers — think in parallel, reason across context, and ship with confidence." />
+  <meta name="description" content="An AI reasoning engine for developers. Think in parallel, ship with confidence." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: lumen · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(10% 0.028 300);
-      --color-paper-2: oklch(16% 0.030 300);
-      --color-ink: oklch(94% 0.010 300);
-      --color-ink-soft: oklch(65% 0.015 290);
-      --color-rule: oklch(28% 0.022 300);
-      --color-accent: oklch(76% 0.17 50);
-      --font-display: 'Instrument Serif', Georgia, serif;
-      --font-body: 'Space Grotesk', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
+    :root { --color-paper: oklch(10% 0.028 300); --color-paper-2: oklch(16% 0.030 300); --color-ink: oklch(94% 0.010 300); --color-ink-soft: oklch(65% 0.015 290); --color-rule: oklch(28% 0.022 300); --color-accent: oklch(76% 0.17 50); --font-display: "Instrument Serif", Georgia, serif; --font-body: "Space Grotesk", sans-serif; --font-mono: "JetBrains Mono", monospace; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--color-paper);
-      color: var(--color-ink);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      line-height: 1.6;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ─── Typography ─── */
-    h1, h2, h3 {
-      font-family: var(--font-display);
-      font-weight: 400;
-      line-height: 1.15;
-      color: var(--color-ink);
-    }
-    h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-style: italic; letter-spacing: -0.02em; line-height: 1.05; }
-    h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
-    h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 500; }
-    p { max-width: 58ch; margin-bottom: 0.75rem; color: var(--color-ink-soft); }
-    a { color: var(--color-accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-    a:hover { border-color: var(--color-accent); }
-    strong { color: var(--color-ink); font-weight: 600; }
-
-    /* ─── Layout ─── */
-    .page { max-width: 64rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-
-    /* ─── Masthead ─── */
-    .masthead {
-      display: flex; justify-content: space-between; align-items: center;
-      font-family: var(--font-mono); font-size: 0.7rem;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--color-ink-soft);
-      border-block-end: 1px solid var(--color-rule);
-      padding-block-end: 0.75rem; margin-block-end: 3rem;
-    }
-    .masthead__brand {
-      font-family: var(--font-display); font-size: 1rem;
-      font-style: italic; letter-spacing: 0.02em;
-      color: var(--color-accent); text-transform: none;
-    }
-
-    /* ─── Hero ─── */
-    .hero { margin-block-end: 3.5rem; }
-    .hero__label {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--color-accent); margin: 0 0 1.25rem;
-    }
-    .hero h1 { margin: 0 0 1rem; }
-    .hero h1 em { font-style: italic; color: var(--color-accent); }
-    .hero__desc {
-      font-size: 1.1rem; color: var(--color-ink-soft);
-      max-width: 52ch; line-height: 1.6; margin: 0;
-    }
-
-    /* ─── Section common ─── */
-    .section { padding-block-start: 2.5rem; border-block-start: 1px solid var(--color-rule); margin-block-end: 2.5rem; }
-    .section__head {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--color-accent); margin: 0 0 1.5rem;
-    }
-
-    /* ─── How it works (3 steps) ─── */
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; counter-reset: step; }
-    .step { counter-increment: step; }
-    .step__num {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--color-accent); display: block; margin-block-end: 0.75rem;
-    }
-    .step h3 { margin: 0 0 0.5rem; }
-    .step p { font-size: 0.925rem; margin: 0; }
-
-    /* ─── Benchmarks (3 stats) ─── */
-    .benchmarks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .benchmark {
-      background: var(--color-paper-2);
-      padding: 2rem 1.5rem; text-align: center;
-      border: 1px solid var(--color-rule);
-    }
-    .benchmark__value {
-      font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.5rem);
-      font-style: italic; line-height: 1;
-      color: var(--color-accent); margin: 0 0 0.5rem;
-    }
-    .benchmark__label {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--color-ink-soft); margin: 0;
-    }
-
-    /* ─── Colophon ─── */
-    .colophon {
-      padding-block-start: 1.5rem;
-      border-block-start: 1px solid var(--color-rule);
-      display: flex; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem;
-      font-family: var(--font-mono); font-size: 0.7rem;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--color-ink-soft);
-    }
-    .colophon a { color: var(--color-ink-soft); }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 60rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
+    .masthead__brand { color: var(--color-accent); font-weight: 600; }
+    .hero { margin-block-end: var(--space-2xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-sm); }
+    .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 400; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); font-style: italic; }
+    .hero__title em { font-style: normal; color: var(--color-accent); }
+    .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 52ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.9rem; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--color-rule); background: transparent; color: var(--color-ink); border-radius: 999px; transition: border-color 120ms ease, background 120ms ease; }
+    .btn:hover { border-color: var(--color-accent); background: color-mix(in oklch, var(--color-accent) 8%, transparent); }
+    .btn--primary { background: var(--color-accent); color: var(--color-paper); border-color: var(--color-accent); }
+    .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
+    .card { padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: 10px; background: var(--color-paper-2); }
+    .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin: 0 0 var(--space-sm); color: var(--color-ink); }
+    .card p { font-size: 0.85rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-block: var(--space-xl); }
+    .metric { padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: 10px; background: var(--color-paper-2); text-align: center; }
+    .metric .num { font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; color: var(--color-accent); display: block; }
+    .metric .label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin-block-start: var(--space-sm); }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: none; }
     .colophon a:hover { color: var(--color-accent); }
-
-    @media (max-width: 48rem) {
-      .steps { grid-template-columns: 1fr; }
-      .benchmarks { grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .grid-3, .metrics { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead">
-      <span class="masthead__brand">Cinder</span>
-      <span>v0.6 · reasoning engine</span>
-    </header>
-
+    <header class="masthead"><span class="masthead__brand">CINDER</span><span>reasoning engine &middot; v1.0</span></header>
     <section class="hero">
-      <p class="hero__label">AI reasoning for developers</p>
-      <h1>Think in <em>parallel</em>.</h1>
-      <p class="hero__desc">
-        Cinder evaluates multiple reasoning paths simultaneously, surfaces the
-        most promising, and prunes the rest — without sacrificing latency or
-        blowing through your context budget.
-      </p>
+      <p class="hero__label">Think in parallel</p>
+      <h1 class="hero__title">Think <em>in parallel</em>.</h1>
+      <p class="hero__desc">Cinder is an AI reasoning engine built for developers. Decompose complex problems into parallel reasoning traces, explore multiple hypothesis trees, and converge on the best answer.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--primary">Get early access</a><a href="#" class="btn">Read the paper &rarr;</a></div>
     </section>
-
-    <section class="section" aria-labelledby="how-h">
-      <h2 class="section__head" id="how-h">How it works</h2>
-      <ol class="steps">
-        <li class="step">
-          <span class="step__num">01 · Input</span>
-          <h3>Parse &amp; expand</h3>
-          <p>Cinder decomposes your query into independent reasoning threads — each one a different angle, assumption, or strategy. Ambiguities are surfaced, not smoothed over.</p>
-        </li>
-        <li class="step">
-          <span class="step__num">02 · Reason</span>
-          <h3>Parallel inference</h3>
-          <p>Threads execute concurrently against a shared context cache. The engine cross-validates intermediate conclusions, flagging contradictions and convergence points in real time.</p>
-        </li>
-        <li class="step">
-          <span class="step__num">03 · Output</span>
-          <h3>Synthesise &amp; cite</h3>
-          <p>The strongest reasoning chain is selected, the runners-up are logged, and every claim is traced back to its source token — auditable down to the individual attention head.</p>
-        </li>
-      </ol>
+    <section aria-labelledby="how-h"><h2 class="section-head" id="how-h">How it works</h2>
+      <ul class="grid-3">
+        <li class="card"><h3>Input</h3><p>Any question or problem expressed in natural language, code, or structured data. Cinder parses it into independent reasoning threads.</p></li>
+        <li class="card"><h3>Reason</h3><p>Multiple parallel traces explore different approaches. Each thread generates its own chain of thought, evidence, and confidence score.</p></li>
+        <li class="card"><h3>Output</h3><p>Results are synthesized into a single answer with cited reasoning paths. Traceable, auditable, and explainable.</p></li>
+      </ul>
     </section>
-
-    <section class="section" aria-labelledby="bench-h">
-      <h2 class="section__head" id="bench-h">Benchmarks</h2>
-      <div class="benchmarks">
-        <div class="benchmark">
-          <div class="benchmark__value">92%</div>
-          <p class="benchmark__label">GSM8K accuracy</p>
-        </div>
-        <div class="benchmark">
-          <div class="benchmark__value">2.1×</div>
-          <p class="benchmark__label">Faster convergence vs. CoT</p>
-        </div>
-        <div class="benchmark">
-          <div class="benchmark__value">47%</div>
-          <p class="benchmark__label">Fewer API calls per task</p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="colophon">
-      <span>Cinder · Apache 2.0 · open-source reasoning</span>
-      <span><a href="mailto:dev@cinder.sh">dev@cinder.sh</a> · <a href="#">Docs</a></span>
-    </footer>
+    <div class="metrics">
+      <div class="metric"><span class="num">8x</span><span class="label">faster reasoning</span></div>
+      <div class="metric"><span class="num">99.2%</span><span class="label">accuracy</span></div>
+      <div class="metric"><span class="num">8K</span><span class="label">parallel paths</span></div>
+    </div>
+    <footer class="colophon"><span>Cinder &middot; parallel reasoning</span><span><a href="mailto:dev@cinder.ai">dev@cinder.ai</a></span></footer>
   </main>
 </body>
 </html>

@@ -4,171 +4,58 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Verbatim — long-form digital</title>
-  <meta name="description" content="A digital magazine for stories that take their time — long-form narrative, deep reporting, and the craft of slow journalism." />
+  <meta name="description" content="A digital magazine for stories that take their time." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/base.css">
   <style>
     /* Hallmark · theme: editorial · pre-emit: P4 H4 E4 S4 R4 V4 */
-    :root {
-      --color-paper: oklch(94% 0.020 75);
-      --color-paper-2: oklch(90% 0.022 75);
-      --color-ink: oklch(15% 0.014 280);
-      --color-ink-soft: oklch(42% 0.012 280);
-      --color-rule: oklch(78% 0.015 75);
-      --color-accent: oklch(60% 0.16 35);
-      --font-display: 'Inter Tight', 'Inter', sans-serif;
-      --font-body: 'Source Serif 4', Georgia, serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --measure: 60ch;
-    }
-
+    :root { --color-paper: oklch(94% 0.020 75); --color-paper-2: oklch(90% 0.022 75); --color-ink: oklch(15% 0.014 280); --color-ink-soft: oklch(42% 0.012 280); --color-rule: oklch(78% 0.015 75); --color-accent: oklch(60% 0.16 35); --font-display: "Inter Tight", "Inter", sans-serif; --font-body: "Source Serif 4", Georgia, serif; --font-mono: "JetBrains Mono", monospace; --measure: 60ch; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--color-paper);
-      color: var(--color-ink);
-      font-family: var(--font-body);
-      font-size: 1.0625rem;
-      line-height: 1.65;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ─── Typography ─── */
-    h1, h2, h3 {
-      font-family: var(--font-display);
-      font-weight: 500;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--color-ink);
-    }
-    h1 { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
-    h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
-    h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
-    p { max-width: var(--measure); margin-bottom: 1rem; font-size: 1rem; }
-    a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--color-accent); transition: color 0.2s; }
-    a:hover { color: var(--color-accent); }
-
-    /* ─── Layout ─── */
-    .page { max-width: 68rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-
-    /* ─── Masthead ─── */
-    .masthead {
-      display: flex; justify-content: space-between; align-items: center;
-      font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--color-ink-soft);
-      border-block-end: 1px solid var(--color-rule);
-      padding-block-end: 0.75rem; margin-block-end: 3rem;
-    }
-    .masthead__brand { color: var(--color-accent); font-weight: 500; }
-
-    /* ─── Hero ─── */
-    .hero { margin-block-end: 3.5rem; }
-    .hero__label {
-      font-family: var(--font-mono); font-size: 0.7rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--color-accent); margin: 0 0 1rem;
-    }
-    .hero h1 { margin: 0 0 1rem; }
-    .hero__desc {
-      font-size: 1.1rem; color: var(--color-ink-soft);
-      max-width: var(--measure); line-height: 1.6; margin: 0;
-    }
-
-    /* ─── Section common ─── */
-    .section { padding-block-start: 2.5rem; border-block-start: 1px solid var(--color-rule); margin-block-end: 2.5rem; }
-    .section__head {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--color-ink-soft); margin: 0 0 1.5rem;
-    }
-
-    /* ─── Features grid ─── */
-    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-    .feature { }
-    .feature h3 { margin: 0 0 0.5rem; }
-    .feature p { font-size: 0.9375rem; color: var(--color-ink-soft); margin: 0; }
-
-    /* ─── About ─── */
-    .about-text { font-size: 1rem; color: var(--color-ink-soft); max-width: var(--measure); }
-
-    /* ─── Colophon ─── */
-    .colophon {
-      padding-block-start: 1.5rem;
-      border-block-start: 1px solid var(--color-rule);
-      display: flex; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem;
-      font-family: var(--font-mono); font-size: 0.7rem;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--color-ink-soft);
-    }
-    .colophon a { text-decoration: underline; text-decoration-color: var(--color-rule); }
-
-    @media (max-width: 48rem) {
-      .features { grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    }
+    body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 56rem; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+    .masthead { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
+    .masthead__brand { font-family: var(--font-display); font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; color: var(--color-ink); text-transform: none; }
+    h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; letter-spacing: -0.02em; color: var(--color-ink); }
+    h1 { font-weight: 400; font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing: -0.03em; line-height: 1.05; }
+    h2 { font-weight: 500; font-size: clamp(1.8rem, 4vw, 2.8rem); }
+    h3 { font-weight: 600; font-size: clamp(1.1rem, 2vw, 1.4rem); }
+    p { max-width: var(--measure); margin-block-end: 1rem; font-size: 1rem; line-height: 1.65; color: var(--color-ink-soft); }
+    .hero { margin-block-end: var(--space-2xl); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
+    .hero__desc { font-size: 1.05rem; max-width: var(--measure); margin: 0 0 var(--space-lg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.6em 1.4em; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 1px solid var(--color-ink); background: transparent; color: var(--color-ink); transition: background 120ms ease; }
+    .btn:hover { background: var(--color-ink); color: var(--color-paper); }
+    .btn--solid { background: var(--color-ink); color: var(--color-paper); }
+    .section-head { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-lg); border-block-start: 1px solid var(--color-rule); padding-block-start: var(--space-md); }
+    .stories { display: grid; gap: var(--space-xl); list-style: none; padding: 0; margin: 0; }
+    .story { }
+    .story .kicker { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-accent); margin-block-end: var(--space-2xs); }
+    .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--color-ink-soft); margin-block-start: var(--space-2xl); }
+    .colophon a { color: var(--color-ink-soft); text-decoration: underline; text-underline-offset: 2px; }
+    .colophon a:hover { color: var(--color-ink); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="masthead">
-      <span class="masthead__brand">Verbatim</span>
-      <span>Issue № 14 · Summer 2026</span>
-    </header>
-
+    <header class="masthead"><span class="masthead__brand">Verbatim</span><span>No. 12 &middot; July 2026</span></header>
     <section class="hero">
-      <p class="hero__label">Digital long-form magazine</p>
-      <h1>Stories that&nbsp;take their&nbsp;time</h1>
-      <p class="hero__desc">
-        A home for narrative depth, rigorous reporting, and the ideas that
-        demand more than a headline and a hot take.
-      </p>
+      <p class="hero__label">Long-form &middot; digital</p>
+      <h1>Stories that take their time.</h1>
+      <p class="hero__desc">No breaking news, no hot takes, nothing that won&rsquo;t still matter next month. Just long-form reporting, essays, and photography from writers who refuse to rush.</p>
+      <div class="hero__actions"><a href="#" class="btn btn--solid">Subscribe</a><a href="#" class="btn">Read the issue</a></div>
     </section>
-
-    <section class="section" aria-labelledby="feat-h">
-      <h2 class="section__head" id="feat-h">Featured pieces</h2>
-      <div class="features">
-        <article class="feature">
-          <h3>The Quiet Index</h3>
-          <p>A photographer walks the length of the Los Angeles aqueduct, cataloguing what the drought maps leave out — the abandoned homesteads, the receding oaks, the birds that stay.</p>
-        </article>
-        <article class="feature">
-          <h3>Against the Algorithmic Edit</h3>
-          <p>Why a growing cohort of editors is abandoning predictive text tools. An inquiry into the gap between what AI suggests and what a sentence needs.</p>
-        </article>
-        <article class="feature">
-          <h3>The Last Fire Lookout</h3>
-          <p>On a tower in the Gifford Pinchot National Forest, a 23-year-old watches for smoke. A profile of solitude, attentiveness, and the dying art of watching.</p>
-        </article>
-      </div>
+    <section aria-labelledby="issue-h"><h2 class="section-head" id="issue-h">In this issue</h2>
+      <ul class="stories">
+        <li class="story"><p class="kicker">Feature</p><h3>The Northwest Passage, Revisited</h3><p>As the ice recedes, the old Arctic sea route is opening for longer each year. A reporter joins a cargo ship making the crossing for the first time without an icebreaker.</p></li>
+        <li class="story"><p class="kicker">Dispatch</p><h3>The Landfill Library</h3><p>In rural Virginia, a retired librarian has been rescuing books from the county dump for thirty years. Her collection now exceeds 40,000 volumes.</p></li>
+        <li class="story"><p class="kicker">Photography</p><h3>Fault Lines</h3><p>Twelve years of drought, wildfire, and recovery in the Sierra Nevada. Documented by a photographer who lost his home in 2021 and stayed to watch what grows back.</p></li>
+      </ul>
     </section>
-
-    <section class="section" aria-labelledby="about-h">
-      <h2 class="section__head" id="about-h">About</h2>
-      <p class="about-text">
-        Verbatim is an independent magazine devoted to long-form narrative and
-        visual storytelling. We commission pieces that take weeks to report and
-        days to edit — because some stories refuse to be compressed into
-        listicles, explainers, or thread-shaped fragments.
-      </p>
-      <p class="about-text">
-        Founded in 2021, we publish four issues a year, each built around a
-        single theme. No ads, no trackers, no paywall-gated archives. Every
-        issue is designed to be read slowly, offline, on whatever device you
-        have.
-      </p>
-    </section>
-
-    <footer class="colophon">
-      <span>Verbatim · ISSN 2834-0912</span>
-      <span><a href="mailto:hello@verbatim.mag">hello@verbatim.mag</a> · <a href="#">Archive</a></span>
-    </footer>
+    <footer class="colophon"><span>Verbatim &middot; Brooklyn, NY</span><span><a href="mailto:editors@verbatim.digital">editors@verbatim.digital</a></span></footer>
   </main>
 </body>
 </html>
