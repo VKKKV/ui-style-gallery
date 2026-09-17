@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A mousestalker cursor study with a delayed halo, hover expansion, and drifting bubble field.">
+  <title>Mouse Stalker — delayed halo study</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    /* Hallmark · interaction: mouse-stalker · pre-emit: P4 H4 E5 S4 R4 V4 */
+    :root {
+      color-scheme: dark;
+      --night: #070b18;
+      --night-2: #0d1430;
+      --ink: #edf1ff;
+      --muted: #8d98bd;
+      --faint: #465074;
+      --line: rgba(210, 222, 255, .16);
+      --glow: #b9c9ff;
+      --violet: #9580ff;
+      --cyan: #8eeaff;
+      --max: 1180px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--night); }
+    body {
+      min-width: 320px;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 70% 14%, rgba(99, 111, 255, .18), transparent 26rem),
+        radial-gradient(circle at 12% 78%, rgba(42, 198, 255, .09), transparent 30rem),
+        var(--night);
+      font: 400 16px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button { color: inherit; font: inherit; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+    .page { width: min(calc(100% - 2.5rem), var(--max)); margin: 0 auto; padding: 1.5rem 0 4rem; }
+    .topline { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: .9rem; border-bottom: 1px solid var(--line); color: var(--muted); font: .68rem/1.2 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+    .back { text-decoration: none; }
+    .back:hover { color: var(--ink); text-decoration: underline; text-underline-offset: .25em; }
+    .serial { color: var(--cyan); }
+    .intro { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(17rem, .75fr); gap: 3rem; align-items: end; padding: clamp(4rem, 10vw, 8rem) 0 3rem; }
+    .eyebrow { margin: 0 0 1rem; color: var(--cyan); font: .68rem/1.2 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { max-width: 9ch; margin: 0; font-size: clamp(4rem, 13vw, 10rem); font-weight: 650; line-height: .8; letter-spacing: -.1em; }
+    h1 em { color: var(--violet); font-style: normal; }
+    .lede { max-width: 30rem; margin: 0 0 .4rem; color: var(--muted); font-size: .92rem; }
+    .lede strong { color: var(--ink); font-weight: 550; }
+    .stage { position: relative; min-height: min(62vw, 600px); overflow: hidden; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(12, 18, 45, .92), rgba(5, 8, 20, .96)); isolation: isolate; }
+    .stage::before { position: absolute; inset: 0; z-index: -1; background: linear-gradient(rgba(210, 222, 255, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(210, 222, 255, .035) 1px, transparent 1px); background-size: 4rem 4rem; content: ""; mask-image: linear-gradient(to bottom, black, transparent 85%); }
+    .stage::after { position: absolute; inset: 10% 15%; z-index: -1; border: 1px solid rgba(142, 234, 255, .16); border-radius: 50%; box-shadow: 0 0 100px rgba(102, 94, 255, .16), inset 0 0 100px rgba(142, 234, 255, .08); content: ""; transform: rotate(-12deg) scaleY(.55); }
+    .stage-meta { position: absolute; top: 1rem; left: 1rem; color: var(--faint); font: .62rem/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+    .stage-meta b { color: var(--cyan); font-weight: 400; }
+    .stage-mark { position: absolute; right: 1rem; bottom: 1rem; color: var(--faint); font: .62rem/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; text-align: right; text-transform: uppercase; }
+    .orbit-label { position: absolute; top: 47%; left: 50%; color: rgba(237, 241, 255, .7); font: .68rem ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .18em; text-transform: uppercase; transform: translate(-50%, -50%); }
+    .orbit-label::before { display: block; width: .45rem; height: .45rem; margin: 0 auto .8rem; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 1.5rem var(--cyan); content: ""; }
+    .bubble-field { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .bubble { position: absolute; bottom: -2rem; width: var(--size); height: var(--size); border: 1px solid rgba(238, 244, 255, .28); border-radius: 50%; background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, .26), rgba(142, 234, 255, .03) 48%, transparent 70%); opacity: 0; animation: floatUp var(--duration) var(--delay) ease-in infinite; }
+    @keyframes floatUp { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.7); } 12% { opacity: .7; } 78% { opacity: .22; } 100% { opacity: 0; transform: translate3d(var(--drift), -680px, 0) scale(1.3); } }
+    .control-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+    .readout { color: var(--muted); font: .68rem/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .readout strong { color: var(--ink); font-weight: 400; }
+    .button { min-height: 42px; padding: .65rem .9rem; border: 1px solid var(--line); background: transparent; cursor: pointer; font: .68rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .button:hover, .button[aria-pressed="true"] { border-color: var(--cyan); color: var(--cyan); }
+    .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: clamp(3rem, 8vw, 6rem); }
+    .note { padding-top: .9rem; border-top: 1px solid var(--line); }
+    .note b { color: var(--violet); font: .65rem ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; }
+    .note h2 { margin: .9rem 0 .4rem; font-size: 1rem; font-weight: 550; }
+    .note p { margin: 0; color: var(--muted); font-size: .78rem; }
+    .fallback { display: none; padding: 5rem clamp(1rem, 8vw, 5rem); color: var(--muted); }
+    .fallback strong { display: block; margin-bottom: .5rem; color: var(--cyan); font: .68rem ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    [data-cursor-hidden="true"] { cursor: none; }
+    #mouse-stalker { position: fixed; z-index: 50; top: 0; left: 0; width: 30px; height: 30px; border: 1px solid rgba(238, 244, 255, .64); border-radius: 50%; background: rgba(238, 244, 255, .08); box-shadow: 0 0 1.5rem rgba(142, 234, 255, .18); opacity: 0; pointer-events: none; transform: translate3d(-100px, -100px, 0); transition: width .45s cubic-bezier(.075, .82, .165, 1), height .45s cubic-bezier(.075, .82, .165, 1), border-color .45s ease, background .45s ease, box-shadow .45s ease, opacity .25s ease; }
+    #mouse-stalker.is-visible { opacity: 1; }
+    #mouse-stalker.is-expanded { width: 60px; height: 60px; border-color: rgba(255, 255, 255, .9); background: rgba(142, 234, 255, .12); box-shadow: 0 0 0 1px rgba(149, 128, 255, .4), 0 0 2.5rem rgba(142, 234, 255, .26); }
+    #mouse-stalker.is-expanded::before { position: absolute; inset: -2px; border: 1px solid rgba(255, 255, 255, .48); border-radius: 50%; content: ""; animation: stalkerPulse 2s ease-out infinite; }
+    @keyframes stalkerPulse { from { opacity: .8; transform: scale(.9); } to { opacity: 0; transform: scale(1.55); } }
+    @media (max-width: 680px) { .page { width: min(calc(100% - 1.5rem), var(--max)); padding-top: 1rem; } .intro { display: block; padding-top: 4rem; } .lede { margin-top: 2rem; } .stage { min-height: 480px; } .notes { grid-template-columns: 1fr; gap: 1rem; } }
+    @media (max-width: 420px) { .topline { font-size: .58rem; } h1 { font-size: clamp(3.7rem, 19vw, 6rem); } .control-bar { align-items: flex-start; flex-direction: column; } .stage { min-height: 430px; } }
+    @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) { #mouse-stalker { display: none; } [data-cursor-hidden="true"] { cursor: auto; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } .bubble { display: none; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topline"><a class="back" href="../index.html">← UI style gallery</a><span class="serial">experiment 14 / 38</span></div>
+    <header class="intro">
+      <div><p class="eyebrow">// pointer study · delayed halo</p><h1>Mouse<br><em>stalker.</em></h1></div>
+      <p class="lede"><strong>Move through the field.</strong> A quiet ring follows behind your pointer, then opens into a larger halo when it finds an interactive surface. The background bubbles are generated locally, not an image texture.</p>
+    </header>
+    <section class="stage" id="stalkerStage" aria-labelledby="stageTitle">
+      <div class="stage-meta"><b id="stageTitle">LIVE FIELD</b><br>LERP .075 / HOVER 2×</div>
+      <div class="orbit-label">follow the light</div>
+      <div class="bubble-field" id="bubbleField" aria-hidden="true"></div>
+      <span class="stage-mark">pointer<br>signal / 014</span>
+    </section>
+    <div class="control-bar">
+      <div class="readout" id="stalkerStatus" role="status" aria-live="polite"><strong>STALKER READY</strong> · move your pointer across the field</div>
+      <button class="button" id="pauseBubbles" type="button" aria-pressed="false">Pause bubbles</button>
+    </div>
+    <section class="notes" aria-label="Implementation notes">
+      <article class="note"><b>01 / FOLLOW</b><h2>Delayed position</h2><p>The stalker interpolates toward the latest pointer position, preserving a soft trailing lag instead of snapping to the cursor.</p></article>
+      <article class="note"><b>02 / APPEAL</b><h2>Hover expansion</h2><p>Buttons, links, and the live field expose a larger ring with a second pulse layer. The native pointer remains available for touch and reduced motion.</p></article>
+      <article class="note"><b>03 / FALLBACK</b><h2>Respect the device</h2><p>Coarse pointers, keyboard use, reduced motion, and unavailable CSS effects keep the page usable without hiding the normal cursor.</p></article>
+    </section>
+    <noscript><p class="fallback" style="display:block">JavaScript is disabled. This study uses a delayed pointer ring and floating bubbles; the page remains readable without the effect.</p></noscript>
+  </main>
+  <div id="mouse-stalker" aria-hidden="true"></div>
+  <script src="../assets/js/mousestalker.js" defer></script>
+</body>
+</html>

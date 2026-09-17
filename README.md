@@ -1,6 +1,6 @@
 # UI Style Gallery
 
-A static gallery with 31 demo pages: 20 Hallmark-inspired visual themes, 7 interaction experiments, and 4 legacy styles. Theme pages showcase fictional brands; interaction pages demonstrate browser techniques. The index is an additional page.
+A static gallery with 38 demo pages: 20 Hallmark-inspired visual themes, 14 interaction experiments, and 4 legacy styles. Theme pages showcase fictional brands; interaction pages demonstrate browser techniques. The index is an additional page.
 
 ## Run locally
 
@@ -12,24 +12,24 @@ python -m http.server 8000 --bind 127.0.0.1
 
 Open `http://127.0.0.1:8000/`. Basic pages can also be opened directly via `index.html`.
 
-Google Fonts, Swiper, and Lenis load from external services; blocked/offline resources use system fonts, manual carousel navigation, or native scrolling. Particle Morph uses local Canvas 2D and native WebGL, with a Canvas fallback. The lightbox is a local placeholder preview; no video service is embedded.
+Google Fonts, Swiper, and Lenis load from external services; blocked/offline resources use system fonts, manual carousel navigation, or native scrolling. Particle Morph uses local Canvas 2D and native WebGL, with a Canvas fallback. The new interaction studies use local Canvas 2D, CSS timelines, the native View Transition API, and pointer effects with progressive fallbacks.
 
 This is a design reference, not a set of production products. Brand CTAs, download links, dashboard numbers, and installation snippets are illustrative; do not treat them as live services or verified installation instructions.
 
 ## Stats
 
-- **31** pages total
+- **38** pages total
 - **20** Hallmark visual themes (Specimen, Midnight, Brutal, Garden, Atelier, Newsprint, Terminal, Manifesto, Almanac, Sport, Studio, Riso, Bloom, Coral, Cobalt, Aurora, Editorial, Carnival, Lumen, Hum)
-- **7** interaction effects (Opening Animation, ShuffleText, Infinite Marquee, Scroll Animations, Custom Cursor, Carousel + Lightbox, Particle Morph Lab)
+- **14** interaction effects (Opening Animation, ShuffleText, Infinite Marquee, Scroll Animations, Custom Cursor, Carousel + Lightbox, Particle Morph Lab, Ink Bleed, Fluid X-ray, Flowmap, Noise Block Reveal, View Transition, Scroll-driven Motion, Mouse Stalker)
 - **4** legacy retained (Tactical HUD, Dark Swiss, Apple / Spatial, Nous / Hermes)
 
 ## Structure
 
 ```
-index.html              — gallery index with hero + 31-card grid
+index.html              — gallery index with hero + 38-card grid
 assets/
   css/base.css          — shared reset, easing variables, keyframes
-  js/                   — shared JS modules (ShuffleText, ScrollReveal, CustomCursor)
+  js/                   — shared JavaScript modules plus standalone interaction demos
 pages/
   [theme-name].html     — standalone visual themes and interaction demos
 scripts/verify-gallery.py — structure, links, JS syntax, optional browser smoke
@@ -72,7 +72,9 @@ The Hallmark visual themes use these conventions; legacy and interaction demos k
 | `pages/atelier.html` | atelier | Alma (textile atelier) | Playfair Display | Inter |
 | `pages/almanac.html` | almanac | Anya Park (design portfolio) | Hanken Grotesk | Inter |
 | `pages/sport.html` | sport | Coyote (trail running) | Inter Tight | Inter |
-| `pages/studio.html` | studio | Terrain (landscape arch) | Fraunces | Inter |
+- `pages/studio.html` | studio | Terrain (landscape arch) | Fraunces | Inter |
+
+The interaction reference set also includes `pages/mousestalker.html`, a local interpretation of the delayed halo cursor and drifting bubble field observed on [Aitsuki Nakuru's official site](https://aitsukinakuru.com/). It does not copy the source site's assets or code.
 
 ## Design System
 
