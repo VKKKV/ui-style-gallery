@@ -1,43 +1,55 @@
 # UI Style Gallery
 
-A 30-page design gallery showcasing the full Hallmark theme system — 20 visual themes + 6 interaction effects + 4 legacy themes. Every page is a standalone landing page for a fictional brand, using exact OKLCH tokens from Hallmark's design system.
+A static gallery with 31 demo pages: 20 Hallmark-inspired visual themes, 7 interaction experiments, and 4 legacy styles. Theme pages showcase fictional brands; interaction pages demonstrate browser techniques. The index is an additional page.
 
-**Live**: open `index.html` in any browser. No build step.
+## Run locally
+
+No build step or application dependencies. From this directory:
+
+```sh
+python -m http.server 8000 --bind 127.0.0.1
+```
+
+Open `http://127.0.0.1:8000/`. Basic pages can also be opened directly via `index.html`.
+
+Google Fonts, Swiper, and Lenis load from external services; blocked/offline resources use system fonts, manual carousel navigation, or native scrolling. Particle Morph uses local Canvas 2D and native WebGL, with a Canvas fallback. The lightbox is a local placeholder preview; no video service is embedded.
+
+This is a design reference, not a set of production products. Brand CTAs, download links, dashboard numbers, and installation snippets are illustrative; do not treat them as live services or verified installation instructions.
 
 ## Stats
 
-- **30** pages total
+- **31** pages total
 - **20** Hallmark visual themes (Specimen, Midnight, Brutal, Garden, Atelier, Newsprint, Terminal, Manifesto, Almanac, Sport, Studio, Riso, Bloom, Coral, Cobalt, Aurora, Editorial, Carnival, Lumen, Hum)
-- **6** interaction effects (Opening Animation, ShuffleText, Infinite Marquee, Scroll Animations, Custom Cursor, Carousel + Lightbox)
+- **7** interaction effects (Opening Animation, ShuffleText, Infinite Marquee, Scroll Animations, Custom Cursor, Carousel + Lightbox, Particle Morph Lab)
 - **4** legacy retained (Tactical HUD, Dark Swiss, Apple / Spatial, Nous / Hermes)
 
 ## Structure
 
 ```
-index.html              — gallery index with hero + 30-card grid
+index.html              — gallery index with hero + 31-card grid
 assets/
   css/base.css          — shared reset, easing variables, keyframes
   js/                   — shared JS modules (ShuffleText, ScrollReveal, CustomCursor)
 pages/
-  [theme-name].html     — each theme is a self-contained landing page
+  [theme-name].html     — standalone visual themes and interaction demos
+scripts/verify-gallery.py — structure, links, JS syntax, optional browser smoke
 ```
 
-Every page carries a Hallmark pre-emit stamp at the top of its CSS:
+Theme pages carry a Hallmark pre-emit design note in their CSS (a self-assessment, not an automated test result):
 
 ```css
 /* Hallmark · theme: <name> · pre-emit: P4 H4 E4 S4 R4 V4 */
 ```
 
-## Hallmark Test Quality
+## Design approach
 
-Each page has been rewritten to match the Hallmark test format:
+The Hallmark visual themes use these conventions; legacy and interaction demos keep their own layouts:
 
-- **Self-contained** — every page carries its entire design system in a `:root` block with exact OKLCH tokens, font stack, and spacing scale. No external CSS dependencies beyond `assets/css/base.css` for shared reset and keyframes.
-- **Typography-driven** — layout is built from type scale, measure, and leading, not from arbitrary margin/pixel values. Each theme uses a unique display + body font pairing that reinforces brand voice.
-- **Minimal CSS** — pages average ~150–200 lines of inline `<style>`, scoped to the sections they need. No unused classes, no framework bloat.
-- **Coherent brand** — every page is a landing page for a distinct fictional brand with real copy (not filler), consistent masthead → hero → sections → colophon structure, and a clear narrative arc.
-- **Pre-emit stamp** — the first line of every page's CSS block carries a `/* Hallmark · theme: <name> · pre-emit: P4 H4 E4 S4 R4 V4 */` comment.
-- **Accessibility** — every page includes a `prefers-reduced-motion` block that disables animations and transitions.
+- **Local tokens** — visual themes define OKLCH colors, font stacks, and spacing in `:root`. Shared reset, navigation, and keyframes live in `assets/css/base.css`; Carousel also uses Swiper CSS.
+- **Typography-driven** — display/body font combinations, measure, and leading reinforce each theme. Some themes intentionally share a font pairing.
+- **No application framework** — page layouts and tokens stay in inline CSS, with shared JavaScript modules for reusable effects.
+- **Coherent brand** — visual themes use fictional brand copy and a masthead → hero → sections → colophon structure.
+- **Accessibility** — reduced-motion styles, visible keyboard focus, and return-to-gallery links are part of the baseline. Interaction demos also guard JavaScript motion; these checks do not constitute a full WCAG audit.
 
 | Page | Theme | Brand | Display | Body |
 |------|-------|-------|---------|------|
@@ -64,10 +76,22 @@ Each page has been rewritten to match the Hallmark test format:
 
 ## Design System
 
-- Colors use `oklch()` throughout — each theme has three base tokens: `--paper`, `--ink`, `--accent`
-- Typography: 20 distinct display + body font pairings
-- Shared structure: `.page-header` (fixed nav), `.section`, `.content`, `.section-header`, prefers-reduced-motion
+- Hallmark themes use `--color-paper`, `--color-ink`, and `--color-accent`; several other demos use the shorter `--paper`, `--ink`, `--accent` convention and hex/RGB colors.
+- Typography: theme-specific display/body combinations with system fallbacks.
+- Visual themes use `.page`, `.masthead`, `.hero`, and `.colophon`; legacy demos retain their own structure. Shared gallery card rules are scoped to `.gallery-index`.
 - No build tools, no framework — vanilla HTML/CSS/JS
+
+## Verification
+
+```sh
+python scripts/verify-gallery.py
+python scripts/verify-gallery.py --browser
+python scripts/verify-interactions.py
+```
+
+Static checks need Python 3 and Node.js. The optional browser suite needs Python Playwright and its Chromium browser (`python -m pip install playwright`, then `python -m playwright install chromium`). Tests serve the current working tree on a temporary loopback port.
+
+The static suite checks every index link, local asset/fragment, page return link, document shell, duplicate ID, card number, and JavaScript syntax. Browser smoke blocks external services deliberately and checks 320/375/1440px reduced-motion layouts plus 375px normal-motion layouts, runtime errors, missing images, keyboard focus, and shared-style isolation. The interaction suite exercises carousel/lightbox keyboard behavior, rapid text input, cursor fallback, replay interruption, marquee pause, particle targets and resize state, plus forced renderer failures. These suites do not replace online third-party integration or real-device GPU testing.
 
 ## Source
 

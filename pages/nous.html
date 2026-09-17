@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>11 — Nous / Hermes</title>
+  <title>31 — Nous / Hermes</title>
   <link rel="stylesheet" href="../assets/css/base.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     }
     /* ===== 5. NOUS / HERMES ===== */
-.nous{background:var(--accent);color:var(--ink);font-family:system-ui,sans-serif;position:relative;min-height:100vh;display:flex;flex-direction:column}
+.nous{background:var(--accent);color:var(--ink);font-family:system-ui,sans-serif;position:relative;min-height:100vh;display:flex;flex-direction:column;padding-top:4rem}
 .nous .badge{background:rgba(255,255,255,.12);color:var(--ink);border-radius:4px;font-size:10px;font-weight:600}
 .nous .artwork{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;z-index:0}
 .nous .artwork .hero-img{position:absolute;top:8%;right:2%;width:48%;max-width:1128px;mix-blend-mode:lighten;pointer-events:none;user-select:none;-webkit-user-select:none}
@@ -72,13 +72,24 @@
 .nous .footer-area{border-top:1px solid rgba(255,255,255,.08);padding:48px 36px;text-align:center}
 .nous .footer-area .link{color:#f5f5f5;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.6;transition:.15s}
 .nous .footer-area .link:hover{opacity:1}
+    .nous .install-area .cmd { flex-wrap: wrap; gap: .5rem; }
+    .nous .install-area .cmd code { min-width: 0; overflow-wrap: anywhere; }
+    .nous .install-area .tabs { flex-wrap: wrap; }
+    @media (max-width: 768px) {
+      .nous nav { padding: 1.5rem; gap: 1rem; }
+      .nous .hero { padding: 1.25rem 1.5rem 3rem; }
+      .nous .platforms { flex-wrap: wrap; }
+      .nous .platforms .plat { flex-basis: 100%; aspect-ratio: 2 / 1; }
+      .nous .features { grid-template-columns: 1fr; }
+      .nous .artwork .hero-img { width: 85%; opacity: .45; }
+    }
   </style>
 </head>
 <body>
   <nav class="page-header">
     <a href="../index.html">Gallery</a>
     <span class="sep">/</span>
-    <span class="current">11 Nous / Hermes</span>
+    <span class="current">31 Nous / Hermes</span>
   </nav>
   <!-- ============ 5. NOUS / HERMES ============ -->
 <section class="nous" id="nous">
@@ -98,10 +109,10 @@
     </div>
     <a href="#">NOUS</a>
     <a href="#">DOCS</a>
-    <a href="#" class="icon-link">
+    <a href="#" class="icon-link" aria-label="Community (design sample)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="12" x2="12" y2="12"/></svg>
     </a>
-    <a href="#" class="icon-link">
+    <a href="#" class="icon-link" aria-label="GitHub (design sample)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
     </a>
     <a href="#">PORTAL</a>
@@ -126,7 +137,7 @@
       </div>
       <div class="cmd">
         <code>curl -fsSL https://hermes-agent.sh/install | sh</code>
-        <button>Copy</button>
+        <button type="button" disabled title="Illustrative installation snippet, not a verified command" style="cursor:default">Demo only</button>
       </div>
     </div>
 
@@ -177,7 +188,6 @@
         <div class="content"><h3>Tasks Multiplied</h3><p>Spawn sub-agents for parallel problem solving.</p></div>
       </div>
       <div class="feat">
-        <img class="art" src="../assets/feature-browse.webp" alt="" draggable="false">
         <div class="content"><h3>Browse the Web</h3><p>Search, scrape, interact — all from the agent.</p></div>
       </div>
       <div class="feat">

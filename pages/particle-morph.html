@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A comparative particle morph laboratory: Canvas 2D, glyph atlas, shader points, and force-field interaction.">
+  <title>07 — Particle Morph Lab</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Hallmark · interaction: particle-morph · pre-emit: P5 H5 E5 S4 R5 V5 */
+    :root {
+      --paper: #080a0d;
+      --panel: #0e1218;
+      --panel-2: #121923;
+      --ink: #e7edf5;
+      --muted: #758196;
+      --faint: #293241;
+      --cyan: #71e4ff;
+      --violet: #a899ff;
+      --orange: #ffb36b;
+      --green: #9fffc4;
+      --accent: var(--cyan);
+    }
+    body { background: var(--paper); color: var(--ink); font-family: 'Space Grotesk', sans-serif; }
+    .lab { max-width: 1380px; margin: 0 auto; padding: 7rem 2rem 3rem; }
+    .lab-head { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr); gap: 3rem; align-items: end; margin-bottom: 3rem; }
+    .eyebrow, .mono, button, .route-label, .metric-label { font-family: 'DM Mono', monospace; }
+    .eyebrow { color: var(--cyan); font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1rem; }
+    h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(3.6rem, 8vw, 8rem); font-weight: 400; line-height: .82; letter-spacing: -.04em; max-width: 800px; }
+    h1 em { color: var(--cyan); font-style: italic; }
+    .lead { color: var(--muted); max-width: 520px; font-size: .92rem; line-height: 1.65; justify-self: end; }
+    .lead strong { color: var(--ink); font-weight: 500; }
+
+    .hero-lab { position: relative; border: 1px solid var(--faint); background: radial-gradient(circle at 50% 35%, #192633 0, #0b0e13 54%, #080a0d 100%); overflow: hidden; min-height: 590px; }
+    .hero-lab::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(113,228,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(113,228,255,.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(to bottom, black, transparent 80%); pointer-events: none; }
+    #heroCanvas { display: block; width: 100%; height: 590px; cursor: crosshair; }
+    .hero-caption { position: absolute; left: 1.5rem; top: 1.25rem; display: flex; gap: .7rem; align-items: center; color: var(--muted); font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 14px var(--green); }
+    .hero-meta { position: absolute; right: 1.5rem; top: 1.25rem; color: var(--muted); font-size: .66rem; text-align: right; line-height: 1.7; }
+    .hero-controls { position: absolute; inset: auto 1.5rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .scene-buttons { display: flex; flex-wrap: wrap; gap: .45rem; }
+    button { border: 1px solid var(--faint); color: var(--muted); background: rgba(8,10,13,.72); padding: .55rem .72rem; font-size: .63rem; letter-spacing: .08em; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+    button { min-height: 44px; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    [hidden] { display: none !important; }
+    .canvas-fallback { padding: 3rem 1.5rem; color: var(--ink); }
+    .hero-lab > .canvas-fallback { padding-top: 8rem; }
+    .playback-controls { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .45rem; }
+    .hero-controls { align-items: end; }
+    button:hover:not(:disabled), button.is-active { color: var(--paper); background: var(--cyan); border-color: var(--cyan); }
+    .hero-hint { color: var(--muted); font-size: .68rem; text-align: right; }
+
+    .section-intro { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin: 5rem 0 1.25rem; border-bottom: 1px solid var(--faint); padding-bottom: .9rem; }
+    .section-intro h2 { font-size: 1rem; font-weight: 500; letter-spacing: .04em; }
+    .section-intro p { color: var(--muted); font-size: .72rem; }
+    .route-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .route { background: var(--panel); border: 1px solid var(--faint); min-height: 360px; position: relative; overflow: hidden; }
+    .route canvas { width: 100%; height: 280px; display: block; }
+    .route-info { border-top: 1px solid var(--faint); padding: 1rem 1.1rem 1.15rem; display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+    .route-label { color: var(--accent); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .35rem; }
+    .route h3 { font-size: 1rem; font-weight: 500; margin-bottom: .25rem; }
+    .route p { color: var(--muted); font-size: .72rem; line-height: 1.45; max-width: 400px; }
+    .route-tag { color: var(--muted); border: 1px solid var(--faint); padding: .28rem .4rem; font-size: .58rem; white-space: nowrap; }
+    .route:nth-child(2) { --accent: var(--violet); }
+    .route:nth-child(3) { --accent: var(--orange); }
+    .route:nth-child(4) { --accent: var(--green); }
+
+    .decision { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--faint); margin-top: 1rem; border: 1px solid var(--faint); }
+    .decision > div { background: var(--panel); padding: 1.3rem; }
+    .decision h3 { font-size: .85rem; font-weight: 500; margin-bottom: .6rem; }
+    .decision p, .decision li { color: var(--muted); font-size: .73rem; line-height: 1.55; }
+    .decision ul { list-style: none; display: grid; gap: .35rem; }
+    .decision li::before { content: '—'; color: var(--cyan); margin-right: .5rem; }
+    .footnote { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .62rem; padding-top: 2rem; }
+    @media (max-width: 760px) {
+      .lab { padding: 5rem 1rem 2rem; }
+      .lab-head, .route-grid, .decision { grid-template-columns: 1fr; }
+      .lead { justify-self: start; }
+      .hero-lab, #heroCanvas { min-height: 520px; height: 520px; }
+      .hero-controls { align-items: start; flex-direction: column; }
+      .section-intro { align-items: start; flex-direction: column; }
+      .route-info { flex-wrap: wrap; }
+      .page-header { padding: 1rem; gap: .6rem; font-size: .7rem; }
+      h1 { font-size: clamp(3rem, 11vw, 5rem); }
+      .hero-hint { text-align: left; width: 100%; }
+      .hero-meta { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header">
+    <a href="../index.html">Gallery</a>
+    <span class="sep">/</span>
+    <span class="current">07 Particle Morph Lab</span>
+  </nav>
+
+  <main class="lab">
+    <header class="lab-head">
+      <div>
+        <div class="eyebrow">// comparative effect study · 04 routes</div>
+        <h1>Particles<br><em>in transition.</em></h1>
+      </div>
+      <p class="lead"><strong>One visual idea, four rendering strategies.</strong> A practical collection for character-built forms: sampled targets, cached glyphs, shader points, and orbital motion. Move the pointer or click the main stage; use BURST for a keyboard-triggered shockwave.</p>
+    </header>
+
+    <section class="hero-lab" aria-label="Interactive particle morph demonstration">
+      <div class="hero-caption"><span class="status-dot"></span><span id="heroStatus" role="status">CANVAS 2D · MORPH TARGET</span></div>
+      <div class="hero-meta mono">TARGETS: TEXT / FIELD / ORBIT<br>INPUT: POINTER / TOUCH / BUTTONS<br>REDUCED MOTION: STATIC TARGET</div>
+      <canvas id="heroCanvas" role="img" aria-label="Particle target demonstration; use the shape and burst buttons below">Particles form text, a field, or an orbit.</canvas>
+      <p class="canvas-fallback" hidden>Canvas rendering is unavailable. This demo arranges particles into text, a circular field, or an orbit.</p>
+      <div class="hero-controls">
+        <div>
+        <div class="scene-buttons" role="group" aria-label="Choose target shape">
+          <button type="button" class="is-active" data-target="MORPH" aria-pressed="true">MORPH</button>
+          <button type="button" data-target="FIELD" aria-pressed="false">FIELD</button>
+          <button type="button" data-target="ORBIT" aria-pressed="false">ORBIT</button>
+          <button type="button" data-target="RESET">RESET</button>
+        </div>
+        <div class="playback-controls" role="group" aria-label="Animation controls">
+          <button type="button" id="pauseMotion">PAUSE MOTION</button>
+          <button type="button" id="burstParticles">BURST</button>
+        </div>
+        </div>
+        <div class="hero-hint">move to repel · click or BURST to scatter</div>
+      </div>
+    </section>
+    <noscript><p class="canvas-fallback">JavaScript is required for the particle demonstrations. Rendering approaches are described below.</p></noscript>
+
+    <div class="section-intro">
+      <h2>FOUR ROUTES / SAME PRINCIPLE</h2>
+      <p class="mono">sample → map → render → disturb</p>
+    </div>
+
+    <section class="route-grid" aria-label="Rendering route examples">
+      <article class="route">
+        <canvas id="glyphCanvas" role="img" aria-label="Sampled dots forming MORPH">Sampled dots form MORPH.</canvas>
+        <p class="canvas-fallback" hidden>Canvas unavailable: sampled dots form MORPH.</p>
+        <div class="route-info"><div><div class="route-label">01 / canvas 2d</div><h3>Sampled Text Morph</h3><p>Off-screen text sampling and interpolated dot targets. The main stage adds cached glyphs and spring motion.</p></div><span class="route-tag">zero build</span></div>
+      </article>
+      <article class="route">
+        <canvas id="shaderCanvas" role="img" aria-label="WebGL glowing points forming GPU, with Canvas fallback">Glowing points form GPU.</canvas>
+        <p class="canvas-fallback" hidden>Rendering unavailable: glowing points form GPU.</p>
+        <div class="route-info"><div><div class="route-label">02 / points + shader</div><h3>GPU Point Field</h3><p>WebGL point sprites, additive glow and procedural oscillation. Falls back to Canvas 2D if WebGL fails.</p></div><span class="route-tag">webgl path</span></div>
+      </article>
+      <article class="route">
+        <canvas id="atlasCanvas" role="img" aria-label="Cached character sprites forming ATLAS">Cached characters form ATLAS.</canvas>
+        <p class="canvas-fallback" hidden>Canvas unavailable: cached characters form ATLAS.</p>
+        <div class="route-info"><div><div class="route-label">03 / glyph atlas</div><h3>Cached Characters</h3><p>Render each glyph once, then stamp sprites. Stable character texture and less text rasterization per frame.</p></div><span class="route-tag">fast 2d</span></div>
+      </article>
+      <article class="route">
+        <canvas id="forceCanvas" role="img" aria-label="Particles orbiting a moving center">Particles orbit a moving center.</canvas>
+        <p class="canvas-fallback" hidden>Canvas unavailable: particles orbit a moving center.</p>
+        <div class="route-info"><div><div class="route-label">04 / motion study</div><h3>Orbital Field</h3><p>Particles orbit a moving center. Try repulsion, spring return and click shockwaves on the main stage above.</p></div><span class="route-tag">procedural</span></div>
+      </article>
+    </section>
+
+    <section class="decision" aria-label="Implementation decision guide">
+      <div><h3>Choose Canvas 2D when…</h3><ul><li>the page is static and dependency-free</li><li>the particle count stays moderate</li><li>mobile fallback matters more than shader polish</li></ul></div>
+      <div><h3>Choose Three.js / shader when…</h3><ul><li>glow, noise, depth and fluid motion matter</li><li>you want a GPU-ready path for later scaling</li><li>you can ship a WebGL fallback and test real devices</li></ul></div>
+    </section>
+    <p class="footnote">IMPLEMENTATION NOTE — vanilla Canvas 2D powers the main stage, sampled text, cached glyph atlas and orbital study. GPU Point Field uses native WebGL with a Canvas 2D fallback. No rendering library is loaded; fonts fall back to system faces. Pause stops all demos, and reduced-motion preferences start with static targets.</p>
+  </main>
+
+  <script src="../assets/js/particle-morph.js" defer></script>
+</body>
+</html>

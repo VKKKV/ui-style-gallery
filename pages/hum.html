@@ -18,11 +18,12 @@
       --color-ink-soft: oklch(38% 0.010 250);
       --color-rule: oklch(85% 0.016 90);
       --color-accent: oklch(86% 0.18 95);
+      --color-accent-text: oklch(43% 0.085 85);
       --color-accent-dim: oklch(86% 0.18 95 / 0.15);
       --font-display: "Plus Jakarta Sans", sans-serif;
       --font-body: "Plus Jakarta Sans", sans-serif;
       --font-mono: "JetBrains Mono", monospace;
-      --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem;
+      --space-3xs: .25rem; --space-2xs: .375rem; --space-xs: .5rem; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2rem;
       --space-xl: 3rem; --space-2xl: 4.5rem; --space-3xl: 6.5rem;
       --measure-prose: 56ch;
       --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -33,9 +34,9 @@
     .masthead { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); border-block-end: 1px solid var(--color-rule); padding-block-end: var(--space-sm); margin-block-end: var(--space-2xl); }
     .masthead__brand { color: var(--color-ink); font-weight: 600; }
     .hero { margin-block-end: var(--space-3xl); }
-    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--space-sm); }
+    .hero__label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-text); margin: 0 0 var(--space-sm); }
     .hero__title { margin: 0 0 var(--space-md); font-family: var(--font-display); font-weight: 800; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 0.92; letter-spacing: -0.03em; color: var(--color-ink); }
-    .hero__title em { font-style: normal; color: var(--color-accent); }
+    .hero__title em { font-style: normal; color: var(--color-accent-text); }
     .hero__desc { font-size: 1.1rem; color: var(--color-ink-soft); max-width: var(--measure-prose); line-height: 1.6; margin: 0 0 var(--space-lg); }
     .hero__actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
     .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.75em 1.5em; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 999px; transition: transform 120ms var(--ease-out); }
@@ -46,7 +47,7 @@
     .steps { margin-block-end: var(--space-3xl); padding-block-start: var(--space-2xl); border-block-start: 1px solid var(--color-rule); }
     .steps__head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .steps__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); list-style: none; padding: 0; margin: 0; }
-    .step__num { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); display: block; margin-block-end: var(--space-xs); }
+    .step__num { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-text); display: block; margin-block-end: var(--space-xs); }
     .step h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin: 0 0 var(--space-2xs); color: var(--color-ink); }
     .step p { font-size: 0.95rem; color: var(--color-ink-soft); line-height: 1.55; margin: 0; }
     .features { margin-block-end: var(--space-3xl); padding-block-start: var(--space-2xl); border-block-start: 1px solid var(--color-rule); }
@@ -57,13 +58,14 @@
     .features__item p { font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; margin: 0; }
     .colophon { padding-block-start: var(--space-lg); border-block-start: 1px solid var(--color-rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-soft); }
     .colophon a { color: var(--color-ink-soft); text-decoration: none; }
-    .colophon a:hover { color: var(--color-accent); }
+    .colophon a:hover { color: var(--color-accent-text); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
     @media (max-width: 48rem) { .page { padding: var(--space-xl) var(--space-md); } .steps__grid { grid-template-columns: 1fr; } .features__list { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
+    <a class="gallery-back" href="../index.html">← Gallery</a>
     <header class="masthead"><span class="masthead__brand">Bubble</span><span>v2.4 &middot; sourdough companion</span></header>
     <section class="hero">
       <p class="hero__label">Guided sourdough &middot; no dogma</p>

@@ -167,11 +167,13 @@
       justify-content: center;
       opacity: 0;
       pointer-events: none;
+      visibility: hidden;
       transition: opacity 0.4s;
     }
     .modal-overlay.is-open {
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
     }
     .modal-content {
       width: 90%;
@@ -219,6 +221,19 @@
       color: var(--accent);
     }
 
+    .swiper-fallback { position: relative; }
+    .swiper-fallback .swiper-wrapper { display: block; }
+    .swiper-fallback .swiper-button-prev, .swiper-fallback .swiper-button-next {
+      position: absolute; top: 50%; width: 44px; height: 44px; transform: translateY(-50%); z-index: 2;
+    }
+    .swiper-fallback .swiper-button-prev { left: 10px; }
+    .swiper-fallback .swiper-button-next { right: 10px; }
+    .swiper-fallback .swiper-button-prev::after { content: '‹'; font-size: 2rem; }
+    .swiper-fallback .swiper-button-next::after { content: '›'; font-size: 2rem; }
+    .swiper-fallback .swiper-slide:not(.swiper-slide-active) { display: none; }
+    .thumb-fallback .swiper-wrapper { display: flex; gap: 12px; }
+    .thumb-fallback .swiper-slide { flex: 1; }
+
     /* Controls row */
     .carousel-controls {
       display: flex;
@@ -241,6 +256,9 @@
       background: var(--accent);
       color: #0a0a0a;
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -255,7 +273,7 @@
     <div class="carousel-sub">SWIPER + LOOP + AUTOPLAY + LIGHTBOX</div>
 
     <!-- Main Swiper -->
-    <div class="swiper main-swiper" id="mainSwiper">
+    <div class="swiper main-swiper" id="mainSwiper" tabindex="0" role="region" aria-label="Color carousel" aria-roledescription="carousel">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <div class="slide-bg slide-bg-1">
@@ -299,8 +317,8 @@
         </div>
       </div>
       <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
+      <button class="swiper-button-prev" type="button" aria-label="Previous slide"></button>
+      <button class="swiper-button-next" type="button" aria-label="Next slide"></button>
       <div class="swiper-progress" id="swiperProgress"></div>
     </div>
 
@@ -328,8 +346,8 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal-overlay" id="modal">
-    <button class="modal-close" id="closeModal">✕</button>
+  <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-label="Lightbox preview" aria-hidden="true" inert>
+    <button class="modal-close" id="closeModal" aria-label="Close lightbox">✕</button>
     <div class="modal-content">
       <div class="placeholder-video">
         <span class="play-icon">▶</span>
@@ -340,84 +358,151 @@
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    // Thumbnail swiper
-    const thumbSwiper = new Swiper('#thumbSwiper', {
-      slidesPerView: 4,
-      spaceBetween: 12,
-      watchSlidesProgress: true,
-      breakpoints: {
-        0: { slidesPerView: 3 },
-        768: { slidesPerView: 4 },
-      },
-    });
-
-    // Main swiper
-    const mainSwiper = new Swiper('#mainSwiper', {
-      loop: true,
-      speed: 900,
-      autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        el: '.main-swiper .swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.main-swiper .swiper-button-next',
-        prevEl: '.main-swiper .swiper-button-prev',
-      },
-      thumbs: {
-        swiper: thumbSwiper,
-      },
-      on: {
-        slideChange: function() {
-          const idx = this.realIndex;
-          document.getElementById('slideCurrent').textContent = String(idx + 1).padStart(2, '0');
-        },
-        autoplayTimeLeft: function(s, time, progress) {
-          const bar = document.getElementById('swiperProgress');
-          bar.style.width = ((1 - progress) * 100) + '%';
-        },
-      },
-    });
-
-    // Toggle autoplay
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const mainElement = document.getElementById('mainSwiper');
+    const thumbElement = document.getElementById('thumbSwiper');
     const toggleBtn = document.getElementById('toggleAutoplay');
-    let autoplayOn = true;
-    toggleBtn.addEventListener('click', () => {
-      if (autoplayOn) {
-        mainSwiper.autoplay.stop();
-        toggleBtn.textContent = 'RESUME AUTOPLAY';
-      } else {
-        mainSwiper.autoplay.start();
-        toggleBtn.textContent = 'PAUSE AUTOPLAY';
-      }
-      autoplayOn = !autoplayOn;
-    });
-
-    // Modal
     const modal = document.getElementById('modal');
-    document.getElementById('openModal').addEventListener('click', () => {
+    const closeButton = document.getElementById('closeModal');
+    const openButton = document.getElementById('openModal');
+    const thumbnails = [...thumbElement.querySelectorAll('.swiper-slide')];
+    let mainSwiper = null;
+    let thumbSwiper = null;
+    let autoplayOn = !motion.matches;
+    let modalOpen = false;
+    let returnFocus = null;
+    let backgroundState = [];
+    let previousOverflow = '';
+    let fallbackIndex = 0;
+
+    function syncAutoplay() {
+      const allowed = autoplayOn && !motion.matches;
+      const running = allowed && !modalOpen && !document.hidden;
+      if (mainSwiper) {
+        if (running && !mainSwiper.autoplay.running) mainSwiper.autoplay.start();
+        if (!running && mainSwiper.autoplay.running) mainSwiper.autoplay.stop();
+      }
+      toggleBtn.disabled = motion.matches || !mainSwiper;
+      toggleBtn.textContent = motion.matches ? 'REDUCED MOTION' : !mainSwiper ? 'AUTOPLAY UNAVAILABLE' : allowed ? 'PAUSE AUTOPLAY' : 'RESUME AUTOPLAY';
+      toggleBtn.setAttribute('aria-pressed', String(allowed && !!mainSwiper));
+      if (!running) document.getElementById('swiperProgress').style.width = '0%';
+    }
+    function updateCounter(index) {
+      document.getElementById('slideCurrent').textContent = String(index + 1).padStart(2, '0');
+      thumbnails.forEach((el, i) => el.setAttribute('aria-pressed', String(i === index)));
+    }
+    function goTo(index) {
+      index = (index + thumbnails.length) % thumbnails.length;
+      if (mainSwiper) mainSwiper.slideToLoop(index);
+      else {
+        fallbackIndex = index;
+        mainElement.querySelectorAll('.swiper-slide').forEach((el, i) => {
+          el.classList.toggle('swiper-slide-active', i === index);
+        });
+        thumbnails.forEach((el, i) => el.classList.toggle('swiper-slide-thumb-active', i === index));
+        updateCounter(index);
+      }
+    }
+    if (window.Swiper) {
+      thumbSwiper = new Swiper('#thumbSwiper', {
+        slidesPerView: 4,
+        speed: motion.matches ? 0 : 300,
+        spaceBetween: 12,
+        watchSlidesProgress: true,
+        breakpoints: { 0: { slidesPerView: 3 }, 768: { slidesPerView: 4 } },
+      });
+      mainSwiper = new Swiper('#mainSwiper', {
+        loop: true,
+        speed: motion.matches ? 0 : 900,
+        autoplay: { enabled: !motion.matches, delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true },
+        pagination: { el: '.main-swiper .swiper-pagination', clickable: true },
+        navigation: { nextEl: '.main-swiper .swiper-button-next', prevEl: '.main-swiper .swiper-button-prev' },
+        thumbs: { swiper: thumbSwiper },
+        on: {
+          slideChange() { updateCounter(this.realIndex); },
+          autoplayTimeLeft(s, time, progress) {
+            document.getElementById('swiperProgress').style.width = ((1 - progress) * 100) + '%';
+          },
+        },
+      });
+    } else {
+      mainElement.classList.add('swiper-fallback');
+      thumbElement.classList.add('thumb-fallback');
+      mainElement.querySelector('.swiper-button-prev').addEventListener('click', () => goTo(fallbackIndex - 1));
+      mainElement.querySelector('.swiper-button-next').addEventListener('click', () => goTo(fallbackIndex + 1));
+      goTo(0);
+    }
+    thumbnails.forEach((el, i) => {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', `Show slide ${i + 1}`);
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(i); }
+      });
+      if (!mainSwiper) el.addEventListener('click', () => goTo(i));
+    });
+    updateCounter(mainSwiper?.realIndex || 0);
+    mainElement.addEventListener('keydown', e => {
+      if (e.target !== mainElement || !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+      e.preventDefault();
+      goTo((mainSwiper?.realIndex ?? fallbackIndex) + (e.key === 'ArrowRight' ? 1 : -1));
+    });
+    // Keyboard exploration stops rotation until the user explicitly resumes it.
+    document.querySelector('.carousel-page').addEventListener('focusin', e => {
+      if (e.target === toggleBtn) return;
+      autoplayOn = false;
+      syncAutoplay();
+    });
+    toggleBtn.addEventListener('click', () => { autoplayOn = !autoplayOn; syncAutoplay(); });
+    motion.addEventListener('change', () => {
+      if (motion.matches) autoplayOn = false;
+      if (mainSwiper) mainSwiper.params.speed = motion.matches ? 0 : 900;
+      if (thumbSwiper) thumbSwiper.params.speed = motion.matches ? 0 : 300;
+      syncAutoplay();
+    });
+    document.addEventListener('visibilitychange', syncAutoplay);
+    syncAutoplay();
+
+    function openModal() {
+      if (modalOpen) return;
+      modalOpen = true;
+      returnFocus = document.activeElement;
+      previousOverflow = document.body.style.overflow;
+      backgroundState = [...document.body.children]
+        .filter(el => el !== modal && el.tagName !== 'SCRIPT')
+        .map(el => [el, el.inert]);
+      backgroundState.forEach(([el]) => { el.inert = true; });
+      document.body.style.overflow = 'hidden';
+      modal.inert = false;
+      modal.removeAttribute('aria-hidden');
       modal.classList.add('is-open');
-      mainSwiper.autoplay.stop();
-    });
-    document.getElementById('closeModal').addEventListener('click', () => {
+      closeButton.focus();
+      syncAutoplay();
+    }
+    function closeModal() {
+      if (!modalOpen) return;
+      modalOpen = false;
       modal.classList.remove('is-open');
-      if (autoplayOn) mainSwiper.autoplay.start();
+      modal.inert = true;
+      backgroundState.forEach(([el, inert]) => { el.inert = inert; });
+      document.body.style.overflow = previousOverflow;
+      if (returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
+      modal.setAttribute('aria-hidden', 'true');
+      syncAutoplay();
+    }
+    openButton.addEventListener('click', openModal);
+    closeButton.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => {
+      if (!modalOpen) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+      if (e.key === 'Tab') { e.preventDefault(); closeButton.focus(); }
     });
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('is-open');
-        if (autoplayOn) mainSwiper.autoplay.start();
-      }
+    window.addEventListener('pagehide', () => {
+      closeModal();
+      mainSwiper?.autoplay.stop();
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        modal.classList.remove('is-open');
-        if (autoplayOn) mainSwiper.autoplay.start();
-      }
-    });
+    window.addEventListener('pageshow', syncAutoplay);
   </script>
 </body>
 </html>

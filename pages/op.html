@@ -20,7 +20,7 @@
       justify-content: center;
       pointer-events: none;
     }
-    .op-overlay.is-done { pointer-events: none; }
+    .op-overlay.is-done { display: none; }
 
     /* Noise BG */
     .op-bg {
@@ -172,6 +172,9 @@
       pointer-events: none;
       z-index: 0;
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -182,7 +185,7 @@
   </nav>
 
   <!-- OP Overlay -->
-  <div class="op-overlay" id="opOverlay">
+  <div class="op-overlay" id="opOverlay" aria-hidden="true">
     <div class="op-bg"></div>
     <div class="op-content">
       <div class="op-logo-icon">
@@ -213,33 +216,42 @@
     const pageContent = document.getElementById('pageContent');
     const replayBtn = document.getElementById('replayBtn');
 
-    function playOP() {
-      overlay.classList.remove('is-done', 'is-exiting');
-      pageContent.classList.remove('is-revealed');
-
-      // Start OP
-      requestAnimationFrame(() => {
-        overlay.classList.add('op-active');
-      });
-
-      // Exit OP after 2.5s
-      setTimeout(() => {
-        overlay.classList.add('is-exiting');
-      }, 2500);
-
-      // Remove overlay, reveal content
-      setTimeout(() => {
-        overlay.classList.add('is-done');
-        pageContent.classList.add('is-revealed');
-      }, 3300);
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    let timers = [];
+    let frame = null;
+    function cancelSequence() {
+      timers.forEach(clearTimeout);
+      timers = [];
+      cancelAnimationFrame(frame);
     }
-
+    function finishOP() {
+      cancelSequence();
+      overlay.classList.add('is-done');
+      pageContent.classList.add('is-revealed');
+      pageContent.inert = false;
+      if (playOP.restoreFocus) replayBtn.focus({ preventScroll: true });
+      playOP.restoreFocus = false;
+    }
+    function playOP() {
+      cancelSequence();
+      if (motion.matches) { finishOP(); return; }
+      playOP.restoreFocus = document.activeElement === replayBtn;
+      pageContent.inert = true;
+      overlay.classList.remove('is-done', 'is-exiting', 'op-active');
+      pageContent.classList.remove('is-revealed');
+      void overlay.offsetWidth; // Commit reset states before replaying transitions.
+      frame = requestAnimationFrame(() => overlay.classList.add('op-active'));
+      timers.push(setTimeout(() => overlay.classList.add('is-exiting'), 2500));
+      timers.push(setTimeout(finishOP, 3400));
+    }
     replayBtn.addEventListener('click', playOP);
-
-    // Auto-play on load
-    window.addEventListener('load', () => {
-      setTimeout(playOP, 300);
-    });
+    motion.addEventListener('change', () => { if (motion.matches) finishOP(); });
+    window.addEventListener('pagehide', finishOP);
+    if (motion.matches) finishOP();
+    else {
+      pageContent.inert = true;
+      timers.push(setTimeout(playOP, 300));
+    }
   </script>
 </body>
 </html>

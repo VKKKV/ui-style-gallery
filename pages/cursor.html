@@ -10,8 +10,10 @@
     :root { --accent: #ff8800; }
     body {
       background: #0a0a0a;
-      cursor: none;
+      cursor: auto;
     }
+
+    .custom-cursor-active, .custom-cursor-active * { cursor: none !important; }
 
     /* ── Cursor Elements ── */
     .cursor {
@@ -214,6 +216,9 @@
         opacity: 0;
       }
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -224,8 +229,8 @@
   </nav>
 
   <!-- Custom Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-follower" id="cursorFollower"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
 
   <div class="cursor-page">
     <p class="mobile-msg">Custom cursor requires a mouse / trackpad. Touch devices use native cursor.</p>
@@ -234,9 +239,9 @@
     <div class="cursor-sub">LERP-BASED MAGNETIC FOLLOWER</div>
 
     <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center; align-items:center;">
-      <a class="hover-link" data-cursor-hover>HOVER LINK</a>
+      <button class="hover-link" type="button" data-cursor-hover>HOVER LINK</button>
       <span style="color:#333;">|</span>
-      <a class="hover-link" data-cursor-hover>ANOTHER LINK</a>
+      <button class="hover-link" type="button" data-cursor-hover>ANOTHER LINK</button>
     </div>
 
     <div class="hover-image-wrap" data-cursor-hover>
@@ -269,7 +274,7 @@
 
   <script src="../assets/js/custom-cursor.js"></script>
   <script>
-    new CustomCursor({
+    const customCursor = new CustomCursor({
       cursor: '#cursor',
       follower: '#cursorFollower',
       hoverTargets: '[data-cursor-hover]',
@@ -277,14 +282,21 @@
       followerSpeed: 0.08,
     });
 
-    // Click ripple
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    motion.addEventListener('change', () => {
+      if (motion.matches) document.querySelectorAll('.click-ripple').forEach(el => el.remove());
+    });
+    // Keyboard clicks have no pointer position and must not create a top-left ripple.
     document.addEventListener('click', (e) => {
+      if (motion.matches || !e.detail) return;
       const ripple = document.createElement('div');
       ripple.className = 'click-ripple';
       ripple.style.left = e.clientX + 'px';
       ripple.style.top = e.clientY + 'px';
       document.body.appendChild(ripple);
-      ripple.addEventListener('animationend', () => ripple.remove());
+      ripple.setAttribute('aria-hidden', 'true');
+      const cleanup = setTimeout(() => ripple.remove(), 700);
+      ripple.addEventListener('animationend', () => { clearTimeout(cleanup); ripple.remove(); }, { once: true });
     });
   </script>
 </body>

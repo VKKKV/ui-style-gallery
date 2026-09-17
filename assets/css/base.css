@@ -19,6 +19,18 @@ body {
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+/* Theme pages keep their own masthead; this link does not cover their content. */
+.gallery-back {
+  display: inline-block;
+  margin-block-end: 1.5rem;
+  color: var(--color-ink-soft, currentColor);
+  font-family: var(--font-mono, monospace);
+  font-size: .75rem;
+  text-underline-offset: .2em;
+}
+.gallery-back:hover { text-decoration: underline; }
 
 /* ── Easing Variables ── */
 :root {
@@ -53,14 +65,14 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: #666;
   margin-bottom: 3rem;
 }
-.card-grid {
+.gallery-index .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   max-width: 1000px;
   width: 100%;
 }
-.card {
+.gallery-index .card {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
@@ -68,44 +80,44 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   border: 1px solid #222;
   transition: transform 0.4s var(--out-expo), border-color 0.4s;
 }
-.card:hover {
+.gallery-index .card:hover {
   transform: translateY(-6px);
   border-color: var(--accent, #444);
 }
-.card__color-bar {
+.gallery-index .card__color-bar {
   height: 4px;
   background: var(--accent);
 }
-.card__body {
+.gallery-index .card__body {
   padding: 1.5rem;
 }
-.card__number {
+.gallery-index .card__number {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   color: var(--accent);
   letter-spacing: 0.15em;
   margin-bottom: 0.5rem;
 }
-.card__title {
+.gallery-index .card__title {
   font-family: 'Fjalla One', serif;
   font-size: 1.4rem;
   margin-bottom: 0.5rem;
   color: #fff;
 }
-.card__desc {
+.gallery-index .card__desc {
   font-size: 0.85rem;
   color: #888;
   line-height: 1.5;
 }
-.card__arrow {
+.gallery-index .card__arrow {
   position: absolute;
   bottom: 1.2rem;
   right: 1.2rem;
   width: 24px; height: 24px;
   transition: transform 0.3s var(--out-expo);
 }
-.card:hover .card__arrow { transform: translateX(4px); }
-.card__arrow svg { width: 100%; height: 100%; fill: var(--accent); }
+.gallery-index .card:hover .card__arrow { transform: translateX(4px); }
+.gallery-index .card__arrow svg { width: 100%; height: 100%; fill: var(--accent); }
 
 /* ── Shared Page Header (back nav) ── */
 .page-header {
@@ -128,7 +140,14 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 .page-header a:hover { color: #fff; }
 .page-header .sep { color: #333; }
-.page-header .current { color: var(--accent, #fff); }
+.page-header .current { color: var(--accent, #fff); min-width: 0; overflow-wrap: anywhere; }
+.page-header a { flex-shrink: 0; }
+@media (max-width: 480px) {
+  .page-header { padding: .75rem 1rem; gap: .65rem; font-size: .7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+}
 
 /* ── Shared: Full-screen Demo Stage ── */
 .demo-stage {

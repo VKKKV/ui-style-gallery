@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>08 — Dark Swiss</title>
+  <title>29 — Dark Swiss</title>
   <link rel="stylesheet" href="../assets/css/base.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -130,13 +130,18 @@
       max-width: 400px;
       line-height: 1.7;
     }
+    @media (max-width: 768px) {
+      .dark-swiss .grid-3 { grid-template-columns: minmax(0, 1fr); }
+      .dark-swiss .grid-3 > div { border-right: none; border-bottom: 1px solid oklch(98% 0 0 / .06); padding: 1.5rem 0; }
+      .dark-swiss .grid-3 p { overflow-wrap: anywhere; }
+    }
   </style>
 </head>
 <body>
   <nav class="page-header">
     <a href="../index.html">Gallery</a>
     <span class="sep">/</span>
-    <span class="current">08 Dark Swiss</span>
+    <span class="current">29 Dark Swiss</span>
   </nav>
   <!-- ============ 2. DARK SWISS ============ -->
 <section class="section dark-swiss" id="swiss">
@@ -176,7 +181,7 @@
         <div class="body">Typography is the craft of endowing human language with a durable visible form, and thus with an independent existence.</div>
       </div>
     </div>
-    <div style="display:flex;gap:12px;margin-top:8px">
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
       <button class="btn">Explore work</button>
       <button class="btn" style="opacity:.5">About</button>
     </div>

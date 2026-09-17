@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="specimen">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UI Style Gallery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=EB+Garamond:wght@300;400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="31 standalone UI demos: Hallmark visual themes, interaction experiments, and legacy styles.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:wght@400&display=swap" rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════════
        UI Style Gallery — Hallmark-refined
@@ -22,6 +25,7 @@
     }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
+    a:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 4px; }
 
     :root {
       --ease-out:    cubic-bezier(.16, 1, .3, 1);
@@ -55,7 +59,7 @@
     }
     .gallery-hero h1 {
       font-family: 'EB Garamond', Georgia, serif;
-      font-weight: 300;
+      font-weight: 400;
       font-size: clamp(2.5rem, 6vw, 4.5rem);
       letter-spacing: -.02em;
       line-height: .92;
@@ -66,7 +70,7 @@
     .gallery-hero .sub {
       font-family: 'JetBrains Mono', monospace;
       font-size: .75rem;
-      color: #666;
+      color: #888;
       letter-spacing: .15em;
       text-transform: uppercase;
       margin-bottom: .75rem;
@@ -101,35 +105,7 @@
       font-size: .65rem;
       letter-spacing: .1em;
       text-transform: uppercase;
-      color: #555;
-    }
-
-    /* ── Section Tabs (genre filter) ── */
-    .filter-bar {
-      display: flex;
-      justify-content: center;
-      gap: .5rem;
-      flex-wrap: wrap;
-      padding: 0 2rem 2rem;
-      border-bottom: 1px solid rgba(255,255,255,.04);
-    }
-    .filter-bar .btn {
-      background: transparent;
-      color: #666;
-      border: 1px solid rgba(255,255,255,.06);
-      padding: .4rem 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: .65rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 0;
-      transition: .15s;
-    }
-    .filter-bar .btn:hover,
-    .filter-bar .btn.active {
-      color: #f5f5f5;
-      border-color: #555;
+      color: #888;
     }
 
     /* ── Card Grid ── */
@@ -149,10 +125,11 @@
       gap: 1rem;
       margin: 1.5rem 0 .5rem;
     }
-    .section-divider span {
+    .section-divider h2 {
+      font-weight: 400;
       font-family: 'JetBrains Mono', monospace;
       font-size: .6rem;
-      color: #444;
+      color: #888;
       letter-spacing: .2em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -171,10 +148,10 @@
       background: #141414;
       border: 1px solid #222;
       transition: transform .35s var(--ease-out), border-color .35s;
-      opacity: 0;
-      animation: fadeInUp .5s var(--ease-out) forwards;
+      animation: fadeInUp .5s var(--ease-out) backwards;
+      animation-delay: calc(var(--order, 0) * .02s);
     }
-    .card:hover {
+    .card:hover, .card:focus-visible {
       transform: translateY(-4px);
       border-color: var(--accent, #444);
     }
@@ -205,7 +182,7 @@
       transition: transform .25s var(--ease-out);
     }
     .card:hover .card__arrow { transform: translateX(3px); }
-    .card__arrow svg { width: 100%; height: 100%; fill: var(--accent); }
+    .card__arrow svg { width: 100%; height: 100%; fill: none; stroke: var(--accent); stroke-width: 1.5; }
 
     /* ── Theme accent colors ── */
     .card[data-theme="op"]        { --accent: #0010e4; }
@@ -214,6 +191,7 @@
     .card[data-theme="scroll"]    { --accent: #8b5cf6; }
     .card[data-theme="cursor"]    { --accent: #ff8800; }
     .card[data-theme="carousel"]  { --accent: #00d4ff; }
+    .card[data-theme="particle-morph"] { --accent: #71e4ff; }
     /* Visual themes — Hallmark palette */
     .card[data-theme="specimen"]  { --accent: #FC4C02; }
     .card[data-theme="midnight"]  { --accent: oklch(72% 0.16 220); }
@@ -241,34 +219,6 @@
     .card[data-theme="apple"]     { --accent: #0071e3; }
     .card[data-theme="nous"]      { --accent: #0000f2; }
 
-    /* ── Animation delays ── */
-    .card:nth-child(1)  { animation-delay: .02s; }
-    .card:nth-child(2)  { animation-delay: .04s; }
-    .card:nth-child(3)  { animation-delay: .06s; }
-    .card:nth-child(4)  { animation-delay: .08s; }
-    .card:nth-child(5)  { animation-delay: .10s; }
-    .card:nth-child(6)  { animation-delay: .12s; }
-    .card:nth-child(7)  { animation-delay: .14s; }
-    .card:nth-child(8)  { animation-delay: .16s; }
-    .card:nth-child(9)  { animation-delay: .18s; }
-    .card:nth-child(10) { animation-delay: .20s; }
-    .card:nth-child(11) { animation-delay: .22s; }
-    .card:nth-child(12) { animation-delay: .24s; }
-    .card:nth-child(13) { animation-delay: .26s; }
-    .card:nth-child(14) { animation-delay: .28s; }
-    .card:nth-child(15) { animation-delay: .30s; }
-    .card:nth-child(16) { animation-delay: .32s; }
-    .card:nth-child(17) { animation-delay: .34s; }
-    .card:nth-child(18) { animation-delay: .36s; }
-    .card:nth-child(19) { animation-delay: .38s; }
-    .card:nth-child(20) { animation-delay: .40s; }
-    .card:nth-child(21) { animation-delay: .42s; }
-    .card:nth-child(22) { animation-delay: .44s; }
-    .card:nth-child(23) { animation-delay: .46s; }
-    .card:nth-child(24) { animation-delay: .48s; }
-    .card:nth-child(25) { animation-delay: .50s; }
-    .card:nth-child(26) { animation-delay: .52s; }
-
     /* ── Footer ── */
     .gallery-footer {
       border-top: 1px solid #1a1a1a;
@@ -278,7 +228,7 @@
     .gallery-footer p {
       font-family: 'JetBrains Mono', monospace;
       font-size: .6rem;
-      color: #444;
+      color: #888;
       letter-spacing: .1em;
       text-transform: uppercase;
     }
@@ -293,18 +243,23 @@
       .card-grid { grid-template-columns: 1fr; padding: 1rem; }
       .gallery-hero { padding: 4rem 1rem 2rem; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .card:hover, .card:focus-visible, .card:hover .card__arrow { transform: none; }
+    }
   </style>
 </head>
 <body>
-  <div class="gallery-index">
+  <main class="gallery-index">
     <div class="gallery-hero">
-      <div class="sub">// Hallmark-refined · 26 demos</div>
+      <div class="sub">// Hallmark-refined · 31 demos</div>
       <h1>UI STYLE GALLERY</h1>
-      <p>Anti-AI-slop design patterns. Twenty Hallmark themes + six interaction effects + four legacy themes. Every page self-contained.</p>
+      <p>Anti-AI-slop design patterns. Twenty Hallmark themes + seven interaction effects + four legacy themes. Every page self-contained.</p>
       <div class="hero-stats">
-        <div class="stat"><div class="num">26</div><div class="label">demos</div></div>
+        <div class="stat"><div class="num">31</div><div class="label">demos</div></div>
         <div class="stat"><div class="num">20</div><div class="label">Hallmark themes</div></div>
-        <div class="stat"><div class="num">6</div><div class="label">interactions</div></div>
+        <div class="stat"><div class="num">7</div><div class="label">interactions</div></div>
         <div class="stat"><div class="num">4</div><div class="label">legacy</div></div>
       </div>
     </div>
@@ -312,319 +267,329 @@
     <div class="card-grid">
 
       <!-- ── Interaction Effects ── -->
-      <div class="section-divider"><span>INTERACTION EFFECTS</span></div>
+      <div class="section-divider"><h2>INTERACTION EFFECTS</h2></div>
 
-      <a href="pages/op.html" class="card" data-theme="op">
+      <a href="pages/op.html" class="card" data-theme="op" style="--order: 0">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">01</div>
           <div class="card__title">Opening Animation</div>
           <div class="card__desc">Noise texture overlay · blue multiply blend · staged entrance sequence with 3D flip.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/shuffle.html" class="card" data-theme="shuffle">
+      <a href="pages/shuffle.html" class="card" data-theme="shuffle" style="--order: 1">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">02</div>
           <div class="card__title">ShuffleText</div>
           <div class="card__desc">Per-character scramble typewriter. Random glyphs converge to final text with staggered timing.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/marquee.html" class="card" data-theme="marquee">
+      <a href="pages/marquee.html" class="card" data-theme="marquee" style="--order: 2">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">03</div>
           <div class="card__title">Infinite Marquee</div>
           <div class="card__desc">Dual-band infinite horizontal scroll. Opposing directions, SVG line art, CSS-only motion.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/scroll.html" class="card" data-theme="scroll">
+      <a href="pages/scroll.html" class="card" data-theme="scroll" style="--order: 3">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">04</div>
           <div class="card__title">Scroll Animations</div>
           <div class="card__desc">Lenis smooth scroll · IntersectionObserver reveal. Staggered fade-in-up with elastic easing.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/cursor.html" class="card" data-theme="cursor">
+      <a href="pages/cursor.html" class="card" data-theme="cursor" style="--order: 4">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">05</div>
           <div class="card__title">Custom Cursor</div>
           <div class="card__desc">Magnetic follower cursor with hover state expansion. Lerp-based smooth tracking.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/carousel.html" class="card" data-theme="carousel">
+      <a href="pages/carousel.html" class="card" data-theme="carousel" style="--order: 5">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">06</div>
           <div class="card__title">Carousel + Lightbox</div>
           <div class="card__desc">Swiper loop carousel with auto-play, parallax slides, and YouTube modal embed.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <!-- ── Hallmark Visual Themes ── -->
-      <div class="section-divider"><span>HALLMARK VISUAL THEMES</span></div>
-
-      <a href="pages/specimen.html" class="card" data-theme="specimen">
+      <a href="pages/particle-morph.html" class="card" data-theme="particle-morph" style="--order: 6">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">07</div>
-          <div class="card__title">Specimen</div>
-          <div class="card__desc">Warm oat paper · Fraunces serif · orange accent. Editorial design workshop.</div>
+          <div class="card__title">Particle Morph Lab</div>
+          <div class="card__desc">Canvas glyph morph · WebGL point field · cached glyphs · spring force interaction.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/midnight.html" class="card" data-theme="midnight">
+      <!-- ── Hallmark Visual Themes ── -->
+      <div class="section-divider"><h2>HALLMARK VISUAL THEMES</h2></div>
+
+      <a href="pages/specimen.html" class="card" data-theme="specimen" style="--order: 7">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">08</div>
-          <div class="card__title">Midnight</div>
-          <div class="card__desc">Deep cool charcoal · Space Grotesk · cool blue accent. Real-time data pipeline.</div>
+          <div class="card__title">Specimen</div>
+          <div class="card__desc">Warm oat paper · Fraunces serif · orange accent. Editorial design workshop.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/brutal.html" class="card" data-theme="brutal">
+      <a href="pages/midnight.html" class="card" data-theme="midnight" style="--order: 8">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">09</div>
-          <div class="card__title">Brutal</div>
-          <div class="card__desc">Near-black · Bebas Neue condensed · yellow strike. Compliance certification.</div>
+          <div class="card__title">Midnight</div>
+          <div class="card__desc">Deep cool charcoal · Space Grotesk · cool blue accent. Real-time data pipeline.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/garden.html" class="card" data-theme="garden">
+      <a href="pages/brutal.html" class="card" data-theme="brutal" style="--order: 9">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">10</div>
-          <div class="card__title">Garden</div>
-          <div class="card__desc">Warm oat-cream · Fraunces serif · leaf-green accent. Small-batch honey farm.</div>
+          <div class="card__title">Brutal</div>
+          <div class="card__desc">Near-black · Bebas Neue condensed · yellow strike. Compliance certification.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/atelier.html" class="card" data-theme="atelier">
+      <a href="pages/garden.html" class="card" data-theme="garden" style="--order: 10">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">11</div>
-          <div class="card__title">Atelier</div>
-          <div class="card__desc">Cool cream · Playfair Display 900 · warm ink. Textile atelier, Lisbon.</div>
+          <div class="card__title">Garden</div>
+          <div class="card__desc">Warm oat-cream · Fraunces serif · leaf-green accent. Small-batch honey farm.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/newsprint.html" class="card" data-theme="newsprint">
+      <a href="pages/atelier.html" class="card" data-theme="atelier" style="--order: 11">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">12</div>
-          <div class="card__title">Newsprint</div>
-          <div class="card__desc">Salmon-pink paper · Playfair Display · burgundy. Slow journalism broadsheet.</div>
+          <div class="card__title">Atelier</div>
+          <div class="card__desc">Cool cream · Playfair Display 900 · warm ink. Textile atelier, Lisbon.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/terminal.html" class="card" data-theme="terminal">
+      <a href="pages/newsprint.html" class="card" data-theme="newsprint" style="--order: 12">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">13</div>
-          <div class="card__title">Terminal</div>
-          <div class="card__desc">CRT black · JetBrains Mono · phosphor green. Infrastructure monitoring.</div>
+          <div class="card__title">Newsprint</div>
+          <div class="card__desc">Salmon-pink paper · Playfair Display · burgundy. Slow journalism broadsheet.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/manifesto.html" class="card" data-theme="manifesto">
+      <a href="pages/terminal.html" class="card" data-theme="terminal" style="--order: 13">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">14</div>
-          <div class="card__title">Manifesto</div>
-          <div class="card__desc">Black paper · Anton condensed · red blocks. Observability, declarative.</div>
+          <div class="card__title">Terminal</div>
+          <div class="card__desc">CRT black · JetBrains Mono · phosphor green. Infrastructure monitoring.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/almanac.html" class="card" data-theme="almanac">
+      <a href="pages/manifesto.html" class="card" data-theme="manifesto" style="--order: 14">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">15</div>
-          <div class="card__title">Almanac</div>
-          <div class="card__desc">Cool pale paper · Hanken Grotesk · slate accent. Product design portfolio.</div>
+          <div class="card__title">Manifesto</div>
+          <div class="card__desc">Black paper · Anton condensed · red blocks. Observability, declarative.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/sport.html" class="card" data-theme="sport">
+      <a href="pages/almanac.html" class="card" data-theme="almanac" style="--order: 15">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">16</div>
-          <div class="card__title">Sport</div>
-          <div class="card__desc">Crisp white · Inter Tight · burnt orange. Trail running gear.</div>
+          <div class="card__title">Almanac</div>
+          <div class="card__desc">Cool pale paper · Hanken Grotesk · slate accent. Product design portfolio.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/studio.html" class="card" data-theme="studio">
+      <a href="pages/sport.html" class="card" data-theme="sport" style="--order: 16">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">17</div>
-          <div class="card__title">Studio</div>
-          <div class="card__desc">Cool grey · Fraunces italic · forest-green. Landscape architecture.</div>
+          <div class="card__title">Sport</div>
+          <div class="card__desc">Crisp white · Inter Tight · burnt orange. Trail running gear.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/riso.html" class="card" data-theme="riso">
+      <a href="pages/studio.html" class="card" data-theme="studio" style="--order: 17">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">18</div>
-          <div class="card__title">Riso</div>
-          <div class="card__desc">Warm peach · Public Sans · cyan+yellow. Risograph print fair.</div>
+          <div class="card__title">Studio</div>
+          <div class="card__desc">Cool grey · Fraunces italic · forest-green. Landscape architecture.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/bloom.html" class="card" data-theme="bloom">
+      <a href="pages/riso.html" class="card" data-theme="riso" style="--order: 18">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">19</div>
-          <div class="card__title">Bloom</div>
-          <div class="card__desc">Warm cream · Instrument Serif · earthy accent. Botanical design studio.</div>
+          <div class="card__title">Riso</div>
+          <div class="card__desc">Warm peach · Public Sans · cyan+yellow. Risograph print fair.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/coral.html" class="card" data-theme="coral">
+      <a href="pages/bloom.html" class="card" data-theme="bloom" style="--order: 19">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">20</div>
-          <div class="card__title">Coral</div>
-          <div class="card__desc">Warm sand · DM Sans · coral accent. Coastal research collective.</div>
+          <div class="card__title">Bloom</div>
+          <div class="card__desc">Warm cream · Instrument Serif · earthy accent. Botanical design studio.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/cobalt.html" class="card" data-theme="cobalt">
+      <a href="pages/coral.html" class="card" data-theme="coral" style="--order: 20">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">21</div>
-          <div class="card__title">Cobalt</div>
-          <div class="card__desc">Cool white · Space Grotesk · electric cobalt. Content extraction API.</div>
+          <div class="card__title">Coral</div>
+          <div class="card__desc">Warm sand · DM Sans · coral accent. Coastal research collective.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/aurora.html" class="card" data-theme="aurora">
+      <a href="pages/cobalt.html" class="card" data-theme="cobalt" style="--order: 21">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">22</div>
-          <div class="card__title">Aurora</div>
-          <div class="card__desc">Deep navy · Space Grotesk · cyan accent. Orbital tracking system.</div>
+          <div class="card__title">Cobalt</div>
+          <div class="card__desc">Cool white · Space Grotesk · electric cobalt. Content extraction API.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/editorial.html" class="card" data-theme="editorial">
+      <a href="pages/aurora.html" class="card" data-theme="aurora" style="--order: 22">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">23</div>
-          <div class="card__title">Editorial</div>
-          <div class="card__desc">Warm cream · Inter Tight 800 · coral. Long-form digital magazine.</div>
+          <div class="card__title">Aurora</div>
+          <div class="card__desc">Deep navy · Space Grotesk · cyan accent. Orbital tracking system.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/carnival.html" class="card" data-theme="carnival">
+      <a href="pages/editorial.html" class="card" data-theme="editorial" style="--order: 23">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">24</div>
-          <div class="card__title">Carnival</div>
-          <div class="card__desc">Warm cream · Big Shoulders Display · oxblood+mustard. Indie record label.</div>
+          <div class="card__title">Editorial</div>
+          <div class="card__desc">Warm cream · Inter Tight 800 · coral. Long-form digital magazine.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/lumen.html" class="card" data-theme="lumen">
+      <a href="pages/carnival.html" class="card" data-theme="carnival" style="--order: 24">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">25</div>
-          <div class="card__title">Lumen</div>
-          <div class="card__desc">Dark violet · Instrument Serif · brass. AI reasoning engine.</div>
+          <div class="card__title">Carnival</div>
+          <div class="card__desc">Warm cream · Big Shoulders Display · oxblood+mustard. Indie record label.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/hum.html" class="card" data-theme="hum">
+      <a href="pages/lumen.html" class="card" data-theme="lumen" style="--order: 25">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">26</div>
-          <div class="card__title">Hum</div>
-          <div class="card__desc">Warm cream · Plus Jakarta Sans · pear-yellow. Sourdough baking companion.</div>
+          <div class="card__title">Lumen</div>
+          <div class="card__desc">Dark violet · Instrument Serif · brass. AI reasoning engine.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <!-- ── Legacy Retained ── -->
-      <div class="section-divider"><span>LEGACY RETAINED</span></div>
-
-      <a href="pages/hud.html" class="card" data-theme="hud">
+      <a href="pages/hum.html" class="card" data-theme="hum" style="--order: 26">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">27</div>
-          <div class="card__title">Tactical HUD</div>
-          <div class="card__desc">Phosphor green on black · scanlines · grid overlay. Terminal emulator.</div>
+          <div class="card__title">Hum</div>
+          <div class="card__desc">Warm cream · Plus Jakarta Sans · pear-yellow. Sourdough baking companion.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/swiss.html" class="card" data-theme="swiss">
+      <!-- ── Legacy Retained ── -->
+      <div class="section-divider"><h2>LEGACY RETAINED</h2></div>
+
+      <a href="pages/hud.html" class="card" data-theme="hud" style="--order: 27">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">28</div>
-          <div class="card__title">Dark Swiss</div>
-          <div class="card__desc">Pure black · Inter only · no shadows. Hierarchy through weight and space.</div>
+          <div class="card__title">Tactical HUD</div>
+          <div class="card__desc">Phosphor green on black · scanlines · grid overlay. Terminal emulator.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/apple.html" class="card" data-theme="apple">
+      <a href="pages/swiss.html" class="card" data-theme="swiss" style="--order: 28">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">29</div>
-          <div class="card__title">Apple / Spatial</div>
-          <div class="card__desc">#f5f5f7 canvas · large-radius cards · pill buttons · translucent whites.</div>
+          <div class="card__title">Dark Swiss</div>
+          <div class="card__desc">Pure black · Inter only · no shadows. Hierarchy through weight and space.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
-      <a href="pages/nous.html" class="card" data-theme="nous">
+      <a href="pages/apple.html" class="card" data-theme="apple" style="--order: 29">
         <div class="card__color-bar"></div>
         <div class="card__body">
           <div class="card__number">30</div>
+          <div class="card__title">Apple / Spatial</div>
+          <div class="card__desc">#f5f5f7 canvas · large-radius cards · pill buttons · translucent whites.</div>
+        </div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </a>
+
+      <a href="pages/nous.html" class="card" data-theme="nous" style="--order: 30">
+        <div class="card__color-bar"></div>
+        <div class="card__body">
+          <div class="card__number">31</div>
           <div class="card__title">Nous / Hermes</div>
           <div class="card__desc">Electric blue canvas · hero-art lighten blend · SVG noise grain · vignette.</div>
         </div>
-        <div class="card__arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        <div class="card__arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
       </a>
 
     </div>
 
-    <div class="gallery-footer">
+    <footer class="gallery-footer">
       <p>Hallmark-refined · pre-emit critique: P4 H4 E4 S3 R4 V5</p>
-    </div>
-  </div>
+    </footer>
+  </main>
 </body>
 </html>

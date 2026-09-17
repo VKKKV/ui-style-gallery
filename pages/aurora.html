@@ -23,8 +23,9 @@
     .hero__title span { color: var(--color-accent); }
     .hero__desc { font-size: 1rem; color: var(--color-ink-soft); max-width: 52ch; line-height: 1.6; margin: 0 0 var(--space-lg); }
     .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.5em; font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid var(--color-rule); background: transparent; color: var(--color-ink); border-radius: 999px; transition: border-color 120ms ease, background 120ms ease; }
-    .btn:hover { border-color: var(--color-accent); background: color-mix(in oklch, var(--color-accent) 8%, transparent); }
+    .btn:not(.btn--primary):hover { border-color: var(--color-accent); background: color-mix(in oklch, var(--color-accent) 8%, transparent); }
     .btn--primary { background: var(--color-accent); color: var(--color-paper); border-color: var(--color-accent); }
+    .btn--primary:hover { outline: 2px solid var(--color-accent); outline-offset: 3px; }
     .section-head { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); list-style: none; padding: 0; margin: 0; }
     .card { padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: 10px; background: var(--color-paper-2); }
@@ -43,6 +44,7 @@
 </head>
 <body>
   <main class="page">
+    <a class="gallery-back" href="../index.html">← Gallery</a>
     <header class="masthead"><span class="masthead__brand">AETHER</span><span>orbital tracking &middot; v2.1</span></header>
     <section class="hero">
       <p class="hero__label">Real-time &middot; 10,000+ objects</p>

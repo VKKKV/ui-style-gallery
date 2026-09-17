@@ -25,6 +25,12 @@
       gap: 3rem;
     }
 
+    .shuffle-hero > * { max-width: 100%; min-width: 0; }
+    .shuffle-title, .shuffle-sub, .shuffle-output { overflow-wrap: anywhere; }
+    .shuffle-sub { text-align: center; }
+    .shuffle-playground { width: 100%; }
+    @media (max-width: 480px) { .shuffle-title { font-size: 10vw; } }
+
     /* Main big title */
     .shuffle-title {
       font-family: 'Fjalla One', serif;
@@ -130,7 +136,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 1rem;
       width: 300px;
-      max-width: 90vw;
+      max-width: 100%;
       text-align: center;
       outline: none;
       transition: border-color 0.3s;
@@ -175,6 +181,9 @@
         rgba(0,0,0,0.03) 4px
       );
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -193,21 +202,21 @@
     <div class="shuffle-sub">PER-CHARACTER SCRAMBLE ANIMATION</div>
 
     <div class="shuffle-hover-row">
-      <span class="shuffle-hover-item" data-shuffle-hover>DYNAMICS</span>
-      <span class="shuffle-hover-item" data-shuffle-hover>QUANTUM</span>
-      <span class="shuffle-hover-item" data-shuffle-hover>NEBULOUS</span>
-      <span class="shuffle-hover-item" data-shuffle-hover>CIPHER</span>
+      <button class="shuffle-hover-item" type="button" data-shuffle-hover>DYNAMICS</button>
+      <button class="shuffle-hover-item" type="button" data-shuffle-hover>QUANTUM</button>
+      <button class="shuffle-hover-item" type="button" data-shuffle-hover>NEBULOUS</button>
+      <button class="shuffle-hover-item" type="button" data-shuffle-hover>CIPHER</button>
     </div>
 
     <div class="shuffle-controls">
       <button class="ctrl-btn" onclick="replayMain()">REPLAY</button>
-      <button class="ctrl-btn" data-speed="20" onclick="setSpeed(this, 20)">FAST</button>
-      <button class="ctrl-btn active" data-speed="35" onclick="setSpeed(this, 35)">NORMAL</button>
-      <button class="ctrl-btn" data-speed="80" onclick="setSpeed(this, 80)">SLOW</button>
+      <button class="ctrl-btn" data-speed="20" aria-pressed="false" onclick="setSpeed(this, 20)">FAST</button>
+      <button class="ctrl-btn active" data-speed="35" aria-pressed="true" onclick="setSpeed(this, 35)">NORMAL</button>
+      <button class="ctrl-btn" data-speed="80" aria-pressed="false" onclick="setSpeed(this, 80)">SLOW</button>
     </div>
 
     <div class="shuffle-playground">
-      <input class="shuffle-input" id="playInput" placeholder="Type something..." maxlength="20">
+      <input class="shuffle-input" id="playInput" aria-label="Text to scramble" placeholder="Type something..." maxlength="20">
       <div class="shuffle-output" id="playOutput"></div>
     </div>
   </div>
@@ -226,30 +235,19 @@
 
     function setSpeed(btn, speed) {
       currentSpeed = speed;
-      document.querySelectorAll('.ctrl-btn[data-speed]').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.ctrl-btn[data-speed]').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
       btn.classList.add('active');
     }
 
     // Playground input
     const playInput = document.getElementById('playInput');
     const playOutput = document.getElementById('playOutput');
-    let playShuffle = null;
-
+    const playShuffle = new ShuffleText(playOutput, { frameInterval: 30 });
     playInput.addEventListener('input', () => {
-      const val = playInput.value.toUpperCase();
-      if (!val) {
-        playOutput.textContent = '';
-        return;
-      }
-      playOutput.textContent = val;
-      if (!playShuffle) {
-        playShuffle = new ShuffleText(playOutput, {
-          frameInterval: 30,
-          sourceChars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*',
-        });
-      } else {
-        playShuffle.originalText = val;
-      }
+      playShuffle.originalText = playInput.value.toUpperCase();
       playShuffle.start();
     });
   </script>
