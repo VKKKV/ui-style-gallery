@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A procedural Canvas 2D block reveal with threshold noise and chromatic aberration.">
+  <title>Noise Block Reveal — Chromatic Aberration</title>
+  <style>
+    :root {
+      --bg: #07090c;
+      --panel: #0d1118;
+      --panel-hi: #121925;
+      --ink: #edf4f7;
+      --muted: #8d9ba4;
+      --line: #27313c;
+      --cyan: #55e7ed;
+      --magenta: #ff4f9a;
+      --yellow: #ffd166;
+      --blue: #5e8dff;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { min-width: 280px; background: var(--bg); }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--sans); line-height: 1.5; }
+    a { color: inherit; }
+    button { font: inherit; }
+    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+    .page { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 56px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: clamp(48px, 9vw, 112px); font: 11px/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .back { color: var(--muted); text-decoration: none; }
+    .back:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+    .edition { color: var(--cyan); }
+    .intro { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(230px, .75fr); gap: 40px; align-items: end; margin-bottom: 34px; }
+    .kicker { margin: 0 0 16px; color: var(--cyan); font: 11px/1.2 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+    h1 { max-width: 760px; margin: 0; font-size: clamp(3rem, 9vw, 8.2rem); font-weight: 650; line-height: .86; letter-spacing: -.075em; }
+    h1 span { color: var(--magenta); }
+    .dek { max-width: 350px; margin: 0 0 4px auto; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .stage-shell { border: 1px solid var(--line); background: var(--panel); box-shadow: 0 20px 70px rgba(0, 0, 0, .28); }
+    .stage-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 54px; padding: 0 18px; border-bottom: 1px solid var(--line); font: 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .signal { display: inline-flex; align-items: center; gap: 9px; color: var(--cyan); }
+    .signal::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 14px currentColor; }
+    .stage-meta { color: var(--muted); text-align: right; }
+    .canvas-wrap { position: relative; min-height: clamp(340px, 58vw, 650px); background: #090c11; }
+    #revealCanvas { display: block; width: 100%; height: clamp(340px, 58vw, 650px); cursor: crosshair; }
+    .canvas-fallback { display: grid; place-content: center; min-height: clamp(340px, 58vw, 650px); padding: 32px; color: var(--ink); }
+    .canvas-fallback[hidden] { display: none; }
+    .canvas-fallback h2 { margin: 0 0 10px; font: 18px/1.2 var(--mono); color: var(--cyan); }
+    .canvas-fallback p { max-width: 520px; margin: 0; color: var(--muted); }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 18px; border-top: 1px solid var(--line); }
+    .button-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .control { min-height: 42px; padding: 9px 13px; border: 1px solid var(--line); color: var(--ink); background: var(--panel-hi); cursor: pointer; font: 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+    .control:hover { border-color: var(--cyan); color: var(--cyan); }
+    .control.primary { border-color: var(--cyan); color: var(--bg); background: var(--cyan); }
+    .control.primary:hover { border-color: #a8fbff; color: var(--bg); background: #a8fbff; }
+    .control[aria-pressed="true"] { border-color: var(--yellow); color: var(--yellow); }
+    .control:disabled { cursor: not-allowed; opacity: .55; }
+    .progress-copy { min-width: 145px; color: var(--muted); font: 11px/1.45 var(--mono); text-align: right; text-transform: uppercase; }
+    .progress-copy strong { display: block; color: var(--ink); font-weight: 400; }
+    .legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 18px; border: 1px solid var(--line); background: var(--line); }
+    .legend-item { min-height: 92px; padding: 16px; background: var(--panel); }
+    .legend-item b { display: block; margin-bottom: 7px; font: 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .legend-item p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .red { color: var(--magenta); } .green { color: var(--cyan); } .blue { color: var(--blue); }
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: clamp(60px, 10vw, 120px); padding-top: 18px; border-top: 1px solid var(--line); }
+    .notes h2 { margin: 0 0 12px; font: 12px/1.2 var(--mono); color: var(--yellow); letter-spacing: .1em; text-transform: uppercase; }
+    .notes p { max-width: 500px; margin: 0; color: var(--muted); font-size: 13px; }
+    .notes kbd { padding: 2px 5px; border: 1px solid var(--line); color: var(--ink); font: 11px var(--mono); }
+    .foot { margin-top: 50px; color: #5f6c75; font: 10px/1.5 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+    @media (max-width: 720px) {
+      .page { width: min(100% - 22px, 1180px); padding-top: 18px; }
+      .topbar { margin-bottom: 58px; }
+      .intro, .notes { grid-template-columns: 1fr; gap: 20px; }
+      .dek { margin-left: 0; }
+      .stage-head { align-items: flex-start; flex-direction: column; justify-content: center; gap: 5px; padding-block: 13px; }
+      .stage-meta { text-align: left; }
+      .controls { align-items: flex-start; flex-direction: column; }
+      .progress-copy { text-align: left; }
+      .legend { grid-template-columns: 1fr; }
+      .legend-item { min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="topbar" aria-label="Gallery navigation">
+      <a class="back" href="../index.html">← Back to gallery</a>
+      <span class="edition">Noise study / 05</span>
+    </nav>
+
+    <header class="intro">
+      <div>
+        <p class="kicker">Canvas 2D / threshold compositor</p>
+        <h1>Noise <span>reveals</span><br>the signal.</h1>
+      </div>
+      <p class="dek">A procedural image is rebuilt from noisy blocks. During the handoff, the RGB channels slip apart before locking back into one frame.</p>
+    </header>
+
+    <section class="stage-shell" aria-labelledby="stage-title">
+      <div class="stage-head">
+        <span class="signal" id="stage-title">Live transition / <span id="sceneName">Signal</span></span>
+        <span class="stage-meta" id="status" role="status" aria-live="polite">Ready · press NEXT</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="revealCanvas" width="960" height="620" role="img" aria-label="Procedural signal artwork revealed through threshold noise">A procedural signal artwork is revealed through threshold noise.</canvas>
+        <div class="canvas-fallback" id="canvasFallback" hidden>
+          <div>
+            <h2>Canvas 2D is unavailable.</h2>
+            <p id="fallbackCopy">This study uses no remote media: Signal is a procedural grid, rings, and waveform revealed by a noise threshold. Use NEXT to read the other programmed scenes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="button-row" role="group" aria-label="Transition controls">
+          <button class="control primary" id="nextButton" type="button">Next <span aria-hidden="true">→</span></button>
+          <button class="control" id="replayButton" type="button">Replay</button>
+          <button class="control" id="pauseButton" type="button" aria-pressed="false">Pause</button>
+          <button class="control" id="resetButton" type="button">Reset</button>
+        </div>
+        <div class="progress-copy"><strong id="progressLabel">Scene 01 / 03</strong><span id="progressDetail">noise threshold idle</span></div>
+      </div>
+    </section>
+
+    <section class="legend" aria-label="Effect components">
+      <article class="legend-item"><b class="red">01 / red channel</b><p>Late blocks expose a red edge shifted outward from the target.</p></article>
+      <article class="legend-item"><b class="green">02 / green anchor</b><p>The unshifted procedural frame keeps the composition legible.</p></article>
+      <article class="legend-item"><b class="blue">03 / blue channel</b><p>A mirrored offset creates the chromatic split before convergence.</p></article>
+    </section>
+
+    <section class="notes" aria-label="How to use this demo">
+      <div><h2>Controls</h2><p><kbd>N</kbd> next scene · <kbd>R</kbd> replay · <kbd>P</kbd> or <kbd>Space</kbd> pause · <kbd>0</kbd> reset. Buttons remain native keyboard controls and focus visibly.</p></div>
+      <div><h2>Motion policy</h2><p>When reduced motion is preferred, each scene resolves immediately to a stable frame. The readable scene description remains available if Canvas 2D cannot be created.</p></div>
+    </section>
+    <p class="foot">No images · no video · no libraries · deterministic procedural art</p>
+  </main>
+  <script src="../assets/js/noise-reveal.js" defer></script>
+</body>
+</html>

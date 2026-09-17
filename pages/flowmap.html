@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A cursor-driven flowmap study with directional liquid distortion and RGB separation.">
+  <title>Flowmap / Cursor Distortion</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f3f0e8;
+      --muted: #9b9b9b;
+      --dim: #595959;
+      --line: rgba(243, 240, 232, .18);
+      --panel: #101113;
+      --acid: #d8ff3e;
+      --cyan: #38e6ff;
+      --red: #ff3f67;
+      --max: 1180px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: #08090a; }
+    body {
+      min-width: 280px;
+      margin: 0;
+      background: #08090a;
+      color: var(--ink);
+      font: 400 16px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible, canvas:focus-visible { outline: 2px solid var(--acid); outline-offset: 4px; }
+    .page { width: min(100% - 2.5rem, var(--max)); margin: 0 auto; padding: 1.5rem 0 3rem; }
+    .topline { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding-bottom: .9rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+    .back { color: var(--muted); text-decoration: none; }
+    .back:hover { color: var(--ink); }
+    .serial { color: var(--acid); }
+    .intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(14rem, .6fr); gap: 3rem; align-items: end; padding: clamp(3rem, 9vw, 7.5rem) 0 2.4rem; }
+    .eyebrow { margin: 0 0 1rem; color: var(--acid); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { max-width: 9ch; margin: 0; font: 700 clamp(3.6rem, 12vw, 9.5rem)/.82 Arial, Helvetica, sans-serif; letter-spacing: -.09em; text-transform: uppercase; }
+    .intro-copy { max-width: 30rem; margin: 0 0 .25rem; color: var(--muted); font-size: .83rem; }
+    .intro-copy strong { color: var(--ink); font-weight: 400; }
+    .demo-shell { position: relative; overflow: hidden; min-height: min(68vw, 650px); border: 1px solid var(--line); background: var(--panel); }
+    .demo-shell::before { content: "FLOW FIELD / POINTER VELOCITY / DECAY .94"; position: absolute; z-index: 1; top: 1rem; left: 1.2rem; color: rgba(243, 240, 232, .42); font-size: .62rem; letter-spacing: .08em; pointer-events: none; }
+    .demo-shell::after { content: "2D CANVAS STUDY"; position: absolute; z-index: 1; right: 1.2rem; bottom: 1rem; color: rgba(243, 240, 232, .42); font-size: .62rem; letter-spacing: .08em; pointer-events: none; }
+    #flowmap-canvas { display: block; width: 100%; height: min(68vw, 650px); min-height: 360px; cursor: crosshair; touch-action: none; }
+    .canvas-fallback { display: block; padding: 6rem clamp(1.4rem, 8vw, 6rem); min-height: 360px; color: var(--ink); background: repeating-linear-gradient(135deg, #17191b 0 1px, #101113 1px 12px); }
+    .canvas-fallback[hidden] { display: none; }
+    .canvas-fallback h2 { max-width: 18ch; margin: 0 0 1rem; font: 700 clamp(2rem, 6vw, 4.8rem)/.9 Arial, sans-serif; letter-spacing: -.07em; text-transform: uppercase; }
+    .canvas-fallback p { max-width: 42ch; margin: 0; color: var(--muted); font-size: .8rem; }
+    .controls { display: flex; align-items: center; flex-wrap: wrap; gap: .7rem 1.2rem; border-bottom: 1px solid var(--line); padding: 1.1rem 0; }
+    .button { border: 1px solid var(--line); padding: .65rem .9rem; color: var(--ink); background: transparent; font: inherit; font-size: .72rem; cursor: pointer; text-transform: uppercase; letter-spacing: .06em; }
+    .button:hover { border-color: var(--acid); color: var(--acid); }
+    .readout { display: flex; flex-wrap: wrap; gap: 1rem 1.6rem; margin-left: auto; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; }
+    .readout b { color: var(--ink); font-weight: 400; }
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding-top: 2rem; }
+    .note { border-top: 1px solid var(--line); padding-top: .8rem; }
+    .note h2 { margin: 0 0 .5rem; color: var(--acid); font-size: .68rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; }
+    .note p { max-width: 48ch; margin: 0; color: var(--muted); font-size: .78rem; }
+    .note kbd { padding: .15rem .35rem; border: 1px solid var(--line); color: var(--ink); font-size: .68rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @media (max-width: 680px) {
+      .page { width: min(100% - 1.5rem, var(--max)); padding-top: 1rem; }
+      .intro { display: block; padding-top: 4rem; }
+      .intro-copy { margin-top: 1.8rem; }
+      .demo-shell, #flowmap-canvas { min-height: 420px; }
+      .readout { width: 100%; margin-left: 0; }
+      .notes { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .button { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topline">
+      <a class="back" href="../index.html">← UI style gallery</a>
+      <span class="serial">experiment 06 / 31</span>
+    </div>
+
+    <header class="intro">
+      <div>
+        <p class="eyebrow">Interactive canvas / flowmap cursor distortion</p>
+        <h1>Move<br>through<br>matter.</h1>
+      </div>
+      <p class="intro-copy"><strong>Pointer velocity becomes a temporary vector field.</strong> Drag across the specimen to push its color channels and letterforms through space. The field dissipates rather than snapping back.</p>
+    </header>
+
+    <section class="demo-shell" aria-labelledby="demo-title">
+      <h2 id="demo-title" class="sr-only">Interactive flowmap canvas</h2>
+      <canvas id="flowmap-canvas" tabindex="0" aria-label="Interactive flowmap. Move or drag your pointer across the canvas to distort the specimen. Use arrow keys to inject flow."></canvas>
+      <div id="canvas-fallback" class="canvas-fallback">
+        <h2>Flow follows force.</h2>
+        <p>Your browser cannot display the 2D canvas experiment. The controls and description remain available: pointer velocity is sampled into a decaying vector field, then used to offset the specimen and its red/cyan channels.</p>
+      </div>
+    </section>
+
+    <div class="controls" aria-label="Flowmap controls">
+      <button class="button" id="pause-button" type="button" aria-pressed="false">Pause field</button>
+      <button class="button" id="reset-button" type="button">Reset field</button>
+      <div class="readout" aria-live="polite">
+        <span>State <b id="state-readout">LIVE</b></span>
+        <span>Velocity <b id="velocity-readout">0.00</b></span>
+        <span>Field <b id="field-readout">0%</b></span>
+      </div>
+    </div>
+
+    <div class="notes">
+      <section class="note" aria-labelledby="method-title">
+        <h2 id="method-title">Method / 01</h2>
+        <p>Each gesture adds a directional impulse to a low-resolution flowmap. Neighbouring cells advect and decay every frame; the resulting vector offsets horizontal text slices and color layers.</p>
+      </section>
+      <section class="note" aria-labelledby="keys-title">
+        <h2 id="keys-title">Control / 02</h2>
+        <p><kbd>Space</kbd> pause or resume · <kbd>R</kbd> reset · <kbd>← ↑ ↓ →</kbd> inject flow. Touch drag is supported; reduced-motion mode keeps the field still until you interact.</p>
+      </section>
+    </div>
+    <noscript><p class="note" style="margin-top:2rem">JavaScript is off. This study needs JavaScript for the interactive canvas, but its method is described above.</p></noscript>
+  </main>
+  <script src="../assets/js/flowmap.js"></script>
+</body>
+</html>

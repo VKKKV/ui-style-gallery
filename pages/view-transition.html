@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A native View Transition API gallery with a shared-element card-to-detail transition and a resilient CSS fallback.">
+  <title>View Transition Gallery — Native motion study</title>
+  <style>
+    /* Hallmark · interaction: view-transition-gallery · pre-emit: P4 H4 E5 S4 R4 V4 */
+    :root {
+      color-scheme: dark;
+      --paper: oklch(14% .025 250);
+      --paper-2: oklch(18% .03 250);
+      --panel: oklch(21% .035 250 / .96);
+      --ink: oklch(94% .02 250);
+      --muted: oklch(70% .035 250);
+      --faint: oklch(44% .035 250);
+      --rule: oklch(100% 0 0 / .13);
+      --accent: oklch(79% .16 175);
+      --accent-2: oklch(76% .13 246);
+      --warm: oklch(80% .12 62);
+      --radius: 1.25rem;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--paper); }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at 88% 8%, oklch(44% .11 247 / .16), transparent 31rem),
+        radial-gradient(circle at 8% 74%, oklch(45% .12 175 / .09), transparent 28rem),
+        var(--paper);
+      color: var(--ink);
+      font: 400 1rem/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+    button, a { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+
+    .vt-shell { width: min(1180px, calc(100% - 2.5rem)); margin: 0 auto; padding: 1.5rem 0 4rem; }
+    .vt-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: clamp(4rem, 12vw, 8rem); }
+    .back-link, .eyebrow, .status, .card-index, .detail-kicker, .detail-meta, .hint {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .back-link { color: var(--muted); font-size: .75rem; text-decoration: none; text-underline-offset: .25em; }
+    .back-link:hover { color: var(--ink); text-decoration: underline; }
+    .nav-label { color: var(--faint); font: .68rem ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+    .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .62fr); gap: 3rem; align-items: end; margin-bottom: 3rem; }
+    .eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .68rem; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 11ch; margin-bottom: 1.4rem; font-size: clamp(3.5rem, 9vw, 7.7rem); line-height: .86; letter-spacing: -.075em; font-weight: 640; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .intro-copy { max-width: 31rem; margin: 0 0 .4rem; color: var(--muted); font-size: .96rem; }
+    .intro-copy strong { color: var(--ink); font-weight: 560; }
+    .support-line { display: flex; align-items: center; gap: .6rem; margin: 1.5rem 0 0; color: var(--muted); font-size: .72rem; }
+    .status { display: inline-flex; align-items: center; gap: .5rem; color: var(--accent); font-size: .63rem; }
+    .status::before { content: ""; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 .9rem currentColor; }
+    .status.is-fallback { color: var(--warm); }
+
+    .gallery-region { position: relative; }
+    .section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: .8rem; border-bottom: 1px solid var(--rule); }
+    .section-heading h2 { margin: 0; font-size: .8rem; font-weight: 560; letter-spacing: .12em; text-transform: uppercase; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .75rem; }
+    .card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; padding-top: 1rem; }
+
+    .project-card {
+      display: block; width: 100%; padding: 0; overflow: hidden; text-align: left; cursor: pointer;
+      background: oklch(100% 0 0 / .035); border: 1px solid var(--rule); border-radius: var(--radius);
+      transition: border-color .25s ease, transform .35s var(--ease), background .25s ease;
+    }
+    .project-card:hover { border-color: var(--card-accent, var(--accent)); background: oklch(100% 0 0 / .07); transform: translateY(-.3rem); }
+    .project-card[aria-current="true"] { border-color: var(--card-accent, var(--accent)); background: oklch(100% 0 0 / .09); }
+    .card-art, .detail-art { position: relative; overflow: hidden; isolation: isolate; background: var(--art-bg, #193638); }
+    .card-art { aspect-ratio: 1.36; border-bottom: 1px solid var(--rule); }
+    .card-art::before, .detail-art::before { content: ""; position: absolute; inset: 0; background: var(--art-image); background-size: cover; background-position: center; z-index: -1; }
+    .card-art::after, .detail-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(145deg, transparent 25%, oklch(8% .025 250 / .35)); pointer-events: none; }
+    .art-one { --art-bg: #123e42; --art-image: radial-gradient(circle at 72% 26%, oklch(87% .15 175 / .85) 0 8%, transparent 8.5%), radial-gradient(ellipse at 50% 70%, oklch(48% .15 181 / .75) 0 18%, transparent 18.5%), linear-gradient(135deg, oklch(26% .1 188), oklch(13% .04 225)); }
+    .art-two { --art-bg: #252553; --art-image: repeating-conic-gradient(from 18deg at 52% 48%, oklch(78% .12 246 / .8) 0 4deg, transparent 4deg 12deg), radial-gradient(circle at 55% 48%, oklch(34% .12 276), oklch(14% .05 251)); }
+    .art-three { --art-bg: #593b25; --art-image: radial-gradient(ellipse at 35% 30%, oklch(88% .13 75) 0 7%, transparent 7.5%), radial-gradient(ellipse at 72% 76%, oklch(74% .16 48 / .75) 0 14%, transparent 14.5%), linear-gradient(145deg, oklch(41% .11 62), oklch(19% .05 32)); }
+    .art-four { --art-bg: #24293a; --art-image: linear-gradient(120deg, transparent 40%, oklch(85% .12 335 / .8) 40.5% 43%, transparent 43.5%), linear-gradient(35deg, transparent 52%, oklch(68% .15 290 / .7) 52.5% 55%, transparent 55.5%), oklch(20% .06 275); }
+    .art-five { --art-bg: #163c33; --art-image: radial-gradient(circle at 50% 50%, transparent 0 19%, oklch(83% .15 138 / .7) 19.5% 20.5%, transparent 21%), repeating-radial-gradient(ellipse at 45% 48%, oklch(63% .13 153 / .55) 0 2px, transparent 3px 15px), oklch(18% .07 156); }
+    .art-six { --art-bg: #412546; --art-image: linear-gradient(90deg, transparent 47%, oklch(87% .16 350 / .8) 47.5% 52%, transparent 52.5%), linear-gradient(0deg, transparent 47%, oklch(80% .12 60 / .75) 47.5% 52%, transparent 52.5%), radial-gradient(circle, oklch(48% .16 330), oklch(16% .06 296)); }
+    .card-number { position: absolute; inset: 1rem auto auto 1rem; z-index: 1; color: oklch(100% 0 0 / .72); font: .65rem ui-monospace, monospace; letter-spacing: .16em; }
+    .card-swatch { position: absolute; right: 1rem; bottom: 1rem; width: .62rem; height: .62rem; border-radius: 50%; background: var(--card-accent, var(--accent)); box-shadow: 0 0 .8rem var(--card-accent, var(--accent)); }
+    .card-copy { padding: 1rem 1rem 1.15rem; }
+    .card-copy h3 { margin-bottom: .25rem; font-size: 1.1rem; font-weight: 570; letter-spacing: -.025em; }
+    .card-copy p { margin: 0; color: var(--muted); font-size: .78rem; }
+    .project-card:nth-child(1) { --card-accent: var(--accent); } .project-card:nth-child(2) { --card-accent: var(--accent-2); } .project-card:nth-child(3) { --card-accent: var(--warm); }
+    .project-card:nth-child(4) { --card-accent: oklch(78% .13 335); } .project-card:nth-child(5) { --card-accent: oklch(81% .15 140); } .project-card:nth-child(6) { --card-accent: oklch(78% .15 350); }
+
+    .hint { margin: 1.25rem 0 0; color: var(--faint); font-size: .62rem; }
+
+    .detail-panel { position: relative; display: grid; grid-template-columns: minmax(16rem, .9fr) minmax(0, 1.1fr); gap: clamp(1.5rem, 5vw, 4rem); align-items: center; margin-top: 4rem; padding: clamp(1rem, 3vw, 2rem); overflow: hidden; background: var(--panel); border: 1px solid var(--rule); border-radius: calc(var(--radius) + .2rem); view-transition-name: detail-panel; }
+    .detail-panel::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 0 100%, var(--detail-accent, var(--accent)) 0, transparent 38%); opacity: .08; pointer-events: none; }
+    .detail-art { width: 100%; aspect-ratio: 1.15; min-height: 16rem; border-radius: calc(var(--radius) - .2rem); view-transition-name: detail-art; }
+    .detail-art .art-mark { position: absolute; inset: auto 1.2rem 1rem; z-index: 1; color: oklch(100% 0 0 / .84); font-size: clamp(2rem, 6vw, 5rem); line-height: .9; letter-spacing: -.08em; }
+    .detail-kicker { margin-bottom: .8rem; color: var(--detail-accent, var(--accent)); font-size: .65rem; }
+    .detail-panel h2 { max-width: 10ch; margin-bottom: 1rem; font-size: clamp(2.2rem, 5vw, 4.6rem); line-height: .9; letter-spacing: -.06em; }
+    .detail-description { max-width: 35rem; margin-bottom: 1.3rem; color: var(--muted); }
+    .detail-meta { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin-bottom: 1.6rem; color: var(--faint); font-size: .62rem; }
+    .detail-actions { display: flex; flex-wrap: wrap; gap: .7rem; }
+    .action { min-height: 2.75rem; padding: .65rem .9rem; border: 1px solid var(--rule); border-radius: 999px; background: transparent; cursor: pointer; font-size: .76rem; transition: background .2s ease, border-color .2s ease, color .2s ease; }
+    .action:hover { border-color: var(--detail-accent, var(--accent)); background: var(--detail-accent, var(--accent)); color: var(--paper); }
+    .action--primary { border-color: var(--detail-accent, var(--accent)); color: var(--detail-accent, var(--accent)); }
+    .footer-note { margin: 4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--faint); font-size: .7rem; }
+
+    @keyframes fallback-in { from { opacity: 0; transform: translateY(1.4rem) scale(.98); } to { opacity: 1; transform: none; } }
+    @keyframes replay-detail { 0% { opacity: .45; transform: scale(.985); } 100% { opacity: 1; transform: none; } }
+    .detail-panel.is-fallback-entry { animation: fallback-in .5s var(--ease) both; }
+    .detail-panel.is-replaying { animation: replay-detail .5s var(--ease) both; }
+    ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .42s; animation-timing-function: var(--ease); }
+    ::view-transition-old(detail-panel), ::view-transition-new(detail-panel) { animation-duration: .5s; animation-timing-function: var(--ease); }
+    ::view-transition-old(detail-art), ::view-transition-new(detail-art) { animation-duration: .58s; animation-timing-function: var(--ease); }
+    ::view-transition-new(detail-panel) { animation-name: detail-reveal; }
+    @keyframes detail-reveal { from { clip-path: circle(0% at 94% 7%); } to { clip-path: circle(150% at 94% 7%); } }
+
+    @media (max-width: 760px) {
+      .vt-shell { width: min(100% - 1.5rem, 42rem); padding-top: 1rem; }
+      .vt-nav { margin-bottom: 4rem; }
+      .nav-label { display: none; }
+      .intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      h1 { max-width: 8ch; }
+      .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+      .card-copy { padding: .75rem; }
+      .card-copy h3 { font-size: .95rem; }
+      .card-copy p { font-size: .72rem; }
+      .detail-panel { grid-template-columns: 1fr; gap: 1.3rem; margin-top: 2.5rem; }
+      .detail-art { min-height: 0; }
+    }
+    @media (max-width: 430px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .card-art { aspect-ratio: 1.75; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: .35rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="vt-shell">
+    <nav class="vt-nav" aria-label="Page navigation">
+      <a class="back-link" href="../index.html">← Back to gallery</a>
+      <span class="nav-label">Native motion / 06 studies</span>
+    </nav>
+
+    <header class="intro">
+      <div>
+        <p class="eyebrow">View transition gallery / 2026</p>
+        <h1>Make the <em>route</em> visible.</h1>
+      </div>
+      <div>
+        <p class="intro-copy"><strong>Cards become details without losing their place.</strong> Select a study to see a shared visual move into the detail panel. The native API is enhanced when available; the same state change remains usable with a plain CSS fallback.</p>
+        <p class="support-line"><span id="apiStatus" class="status">Checking native API</span><span>·</span><span>keyboard ready</span></p>
+      </div>
+    </header>
+
+    <section class="gallery-region" aria-labelledby="gallery-title">
+      <div class="section-heading">
+        <h2 id="gallery-title">Choose a visual study</h2>
+        <p>Enter / Space to open · arrows to move</p>
+      </div>
+      <div id="projectGrid" class="card-grid" role="list">
+        <button class="project-card" type="button" role="listitem" data-index="0" aria-current="false" aria-label="Open Tidal signal details">
+          <span class="card-art art-one" data-art="0" aria-hidden="true"><span class="card-number">01 / 06</span><span class="card-swatch"></span></span>
+          <span class="card-copy"><span class="card-index">Tidal signal</span><h3>Gradient as horizon</h3><p>Layered atmosphere</p></span>
+        </button>
+        <button class="project-card" type="button" role="listitem" data-index="1" aria-current="false" aria-label="Open Orbit index details">
+          <span class="card-art art-two" data-art="1" aria-hidden="true"><span class="card-number">02 / 06</span><span class="card-swatch"></span></span>
+          <span class="card-copy"><span class="card-index">Orbit index</span><h3>Signal in motion</h3><p>Radial attention</p></span>
+        </button>
+        <button class="project-card" type="button" role="listitem" data-index="2" aria-current="false" aria-label="Open Amber field details">
+          <span class="card-art art-three" data-art="2" aria-hidden="true"><span class="card-number">03 / 06</span><span class="card-swatch"></span></span>
+          <span class="card-copy"><span class="card-index">Amber field</span><h3>Warmth, indexed</h3><p>Soft focus system</p></span>
+        </button>
+        <button class="project-card" type="button" role="listitem" data-index="3" aria-current="false" aria-label="Open Chromatic fold details">
+          <span class="card-art art-four" data-art="3" aria-hidden="true"><span class="card-number">04 / 06</span><span class="card-swatch"></span></span>
+          <span class="card-copy"><span class="card-index">Chromatic fold</span><h3>Edges in tension</h3><p>Geometry with drag</p></span>
+        </button>
+        <button class="project-card" type="button" role="listitem" data-index="4" aria-current="false" aria-label="Open Green room details">
+          <span class="card-art art-five" data-art="4" aria-hidden="true"><span class="card-number">05 / 06</span><span class="card-swatch"></span></span>
+          <span class="card-copy"><span class="card-index">Green room</span><h3>Quiet repetition</h3><p>Organic intervals</p></span>
+        </button>
+        <button class="project-card" type="button" role="listitem" data-index="5" aria-current="false" aria-label="Open Crossfade details">
+          <span class="card-art art-six" data-art="5" aria-hidden="true"><span class="card-number">06 / 06</span><span class="card-swatch"></span></span>
+          <span class="card-copy"><span class="card-index">Crossfade</span><h3>Meet at the center</h3><p>Alignment study</p></span>
+        </button>
+      </div>
+      <p class="hint">The selected art gets a temporary <code>view-transition-name</code>; no library or asset request is required.</p>
+    </section>
+
+    <aside id="detailPanel" class="detail-panel" aria-labelledby="detailTitle" hidden>
+      <div id="detailArt" class="detail-art" aria-hidden="true"><span id="detailMark" class="art-mark">01</span></div>
+      <div class="detail-copy">
+        <p id="detailKicker" class="detail-kicker">01 / Tidal signal</p>
+        <h2 id="detailTitle">Gradient as horizon</h2>
+        <p id="detailDescription" class="detail-description">A study in soft layers, where a small shift in position can carry the same visual object into a new context.</p>
+        <p id="detailMeta" class="detail-meta"><span>shared element</span><span>circular reveal</span><span>no dependency</span></p>
+        <div class="detail-actions">
+          <button id="replayButton" class="action action--primary" type="button">Replay transition</button>
+          <button id="closeButton" class="action" type="button">Close detail</button>
+        </div>
+      </div>
+    </aside>
+
+    <p class="footer-note">Native View Transition API + CSS fallback · reduced motion is respected · try Escape to close</p>
+    <noscript><p class="footer-note">JavaScript is required to open the detail panel. The visual studies remain available above.</p></noscript>
+  </main>
+  <script src="../assets/js/view-transition.js" defer></script>
+</body>
+</html>

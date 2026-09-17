@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A self-contained CSS scroll-driven motion demo with progressive enhancement and an IntersectionObserver fallback.">
+  <meta name="theme-color" content="#10100f">
+  <title>Scroll Timeline — CSS motion lab</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    /* Hallmark · interaction: scroll-driven-motion · pre-emit: P4 H4 E4 S4 R4 V4 */
+    :root {
+      --paper: #10100f;
+      --paper-raised: #181816;
+      --paper-soft: #22221e;
+      --ink: #f0eee5;
+      --ink-soft: #a7a59b;
+      --ink-faint: #68675f;
+      --accent: #d4f36a;
+      --accent-warm: #ff8a5b;
+      --rule: rgba(240, 238, 229, .16);
+      --serif: Georgia, "Times New Roman", serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--paper); color: var(--ink); scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 75% 12%, rgba(212, 243, 106, .07), transparent 26rem),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+    ::selection { color: var(--paper); background: var(--accent); }
+
+    .skip-link {
+      position: fixed;
+      z-index: 30;
+      top: .75rem;
+      left: .75rem;
+      padding: .55rem .8rem;
+      color: var(--paper);
+      background: var(--accent);
+      font: 700 .72rem/1 var(--mono);
+      transform: translateY(-180%);
+      transition: transform .2s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .site-header {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+      min-height: 4.5rem;
+      padding: 1rem clamp(1rem, 4vw, 4rem);
+      border-bottom: 1px solid var(--rule);
+      background: rgba(16, 16, 15, .9);
+      backdrop-filter: blur(14px);
+    }
+    .back-link, .header-label, .section-kicker, .eyebrow, .progress-dock, .support-note, .path-index {
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .11em;
+    }
+    .back-link {
+      width: fit-content;
+      color: var(--ink-soft);
+      font-size: .68rem;
+      text-decoration: none;
+    }
+    .back-link:hover { color: var(--accent); }
+    .section-nav { display: flex; justify-content: center; gap: 1rem; }
+    .section-nav a { color: var(--ink-soft); font: .61rem var(--mono); text-decoration: none; text-transform: uppercase; letter-spacing: .08em; }
+    .section-nav a:hover { color: var(--accent); }
+    .header-state { color: var(--accent); font-size: .62rem; text-align: right; }
+    .header-state::before { content: "●"; margin-right: .45rem; color: var(--accent); }
+
+    .progress-dock {
+      position: fixed;
+      z-index: 19;
+      top: 6.5rem;
+      right: clamp(1rem, 4vw, 4rem);
+      display: grid;
+      gap: .5rem;
+      width: 9rem;
+      color: var(--ink-faint);
+      font-size: .58rem;
+      pointer-events: none;
+    }
+    .progress-copy { display: flex; justify-content: space-between; gap: .75rem; }
+    .progress-value { color: var(--accent); }
+    .progress-track {
+      height: .3rem;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      background: var(--paper-raised);
+    }
+    .progress-fill {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: var(--accent);
+    }
+
+    .motion-rail {
+      position: fixed;
+      z-index: 18;
+      top: 10rem;
+      right: clamp(1rem, 4vw, 4rem);
+      bottom: 3rem;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--rule) 12%, var(--rule) 88%, transparent);
+      pointer-events: none;
+    }
+    .motion-rail::before, .motion-rail::after {
+      position: absolute;
+      left: 50%;
+      width: .35rem;
+      height: .35rem;
+      border: 1px solid var(--accent);
+      content: "";
+      transform: translateX(-50%) rotate(45deg);
+    }
+    .motion-rail::before { top: 12%; }
+    .motion-rail::after { bottom: 12%; border-color: var(--accent-warm); }
+    .motion-satellite {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: .7rem;
+      height: .7rem;
+      border: 2px solid var(--paper);
+      background: var(--accent-warm);
+      box-shadow: 0 0 0 .2rem rgba(255, 138, 91, .2);
+      transform: translate(-50%, -50%);
+    }
+
+    .hero, .chapter, .path-section, .closing {
+      width: min(100% - 2rem, 76rem);
+      margin-inline: auto;
+    }
+    .hero {
+      min-height: calc(100vh - 4.5rem);
+      display: grid;
+      align-content: center;
+      padding-block: 7rem 5rem;
+    }
+    .eyebrow, .section-kicker {
+      margin: 0 0 1.25rem;
+      color: var(--accent);
+      font-size: .67rem;
+    }
+    .hero h1 {
+      max-width: 11ch;
+      margin: 0;
+      font-size: clamp(4rem, 13vw, 11rem);
+      font-weight: 400;
+      letter-spacing: -.075em;
+      line-height: .83;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero-intro {
+      max-width: 35rem;
+      margin: 2.5rem 0 0 clamp(0rem, 18vw, 15rem);
+      color: var(--ink-soft);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+    }
+    .hero-scroll-cue {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-top: 5rem;
+      color: var(--ink-faint);
+      font: .63rem var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .hero-scroll-cue i { display: block; width: 3rem; height: 1px; background: var(--accent); }
+
+    .chapter {
+      min-height: 92vh;
+      display: grid;
+      align-content: center;
+      grid-template-columns: minmax(8rem, .7fr) minmax(0, 1.6fr);
+      gap: clamp(2rem, 9vw, 9rem);
+      padding-block: 7rem;
+      border-top: 1px solid var(--rule);
+    }
+    .chapter-number {
+      color: var(--accent-warm);
+      font: clamp(3rem, 8vw, 7rem)/.9 var(--mono);
+      letter-spacing: -.1em;
+    }
+    .chapter-copy { max-width: 42rem; }
+    .chapter h2, .path-section h2, .closing h2 {
+      margin: 0;
+      font-size: clamp(2.3rem, 6vw, 5.5rem);
+      font-weight: 400;
+      letter-spacing: -.065em;
+      line-height: .95;
+    }
+    .chapter h2 span { color: var(--accent); }
+    .chapter p {
+      max-width: 39rem;
+      margin: 1.75rem 0 0;
+      color: var(--ink-soft);
+      font-size: clamp(1rem, 1.7vw, 1.2rem);
+    }
+    .specimen {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .5rem;
+      margin-top: 3rem;
+    }
+    .specimen span {
+      min-height: 7rem;
+      padding: 1rem;
+      border: 1px solid var(--rule);
+      color: var(--ink-faint);
+      font: .63rem var(--mono);
+      text-transform: uppercase;
+    }
+    .specimen b { display: block; margin-top: 2rem; color: var(--ink); font: 1.6rem var(--serif); }
+
+    .path-section {
+      min-height: 105vh;
+      padding-block: 8rem;
+      border-top: 1px solid var(--rule);
+    }
+    .path-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 4rem; }
+    .path-heading p { max-width: 23rem; margin: 0; color: var(--ink-soft); font-size: .95rem; }
+    .path-list {
+      position: relative;
+      display: grid;
+      gap: 0;
+      max-width: 58rem;
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+    }
+    .path-list::before {
+      position: absolute;
+      top: 1rem;
+      bottom: 1rem;
+      left: 1.15rem;
+      width: 1px;
+      background: var(--rule);
+      content: "";
+    }
+    .path-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1.5rem;
+      padding-block: 1.6rem;
+    }
+    .path-index {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      color: var(--accent);
+      background: var(--paper);
+      font-size: .58rem;
+    }
+    .path-step h3 { margin: 0; font-size: clamp(1.3rem, 3vw, 2.2rem); font-weight: 400; letter-spacing: -.04em; }
+    .path-step p { max-width: 34rem; margin: .45rem 0 0; color: var(--ink-soft); font-size: .93rem; }
+
+    .closing {
+      min-height: 88vh;
+      display: grid;
+      align-content: center;
+      padding-block: 7rem;
+      border-top: 1px solid var(--rule);
+    }
+    .closing h2 { max-width: 13ch; }
+    .closing h2 strong { color: var(--accent); font-weight: 400; }
+    .closing p { max-width: 35rem; margin: 1.75rem 0 0; color: var(--ink-soft); }
+    .support-note {
+      display: none;
+      width: fit-content;
+      margin-top: 2.5rem;
+      padding: .75rem 1rem;
+      border-left: 2px solid var(--accent-warm);
+      color: var(--ink-soft);
+      font-size: .62rem;
+    }
+    [data-motion-mode="fallback"] .support-note { display: block; }
+    .footer-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-faint);
+      font: .6rem var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* The no-JS baseline remains readable. Native view() progressively enhances it. */
+    [data-scroll-reveal] { opacity: 1; transform: none; }
+    @keyframes view-reveal {
+      from { opacity: 0; transform: translateY(2.5rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes page-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes satellite-travel {
+      0% { top: 0; transform: translate(-50%, -50%) rotate(0deg); }
+      100% { top: 100%; transform: translate(-50%, -50%) rotate(540deg); }
+    }
+    @supports (animation-timeline: view()) {
+      [data-scroll-reveal] {
+        animation: view-reveal both ease-out;
+        animation-timeline: view(block);
+        animation-range: entry 8% cover 35%;
+      }
+    }
+    @supports (animation-timeline: scroll()) {
+      .progress-fill {
+        animation: page-progress linear both;
+        animation-timeline: scroll(root block);
+      }
+      .motion-satellite {
+        animation: satellite-travel linear both;
+        animation-timeline: scroll(root block);
+      }
+    }
+    /* Explicit JS + IntersectionObserver fallback when native timelines are absent. */
+    [data-motion-mode="fallback"] [data-scroll-reveal] {
+      opacity: 0;
+      transform: translateY(2.5rem);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    [data-motion-mode="fallback"] [data-scroll-reveal].is-visible { opacity: 1; transform: none; }
+    [data-motion-mode="fallback"] .progress-fill {
+      animation: none;
+      transform: scaleX(var(--scroll-progress, 0));
+    }
+    [data-motion-mode="fallback"] .motion-satellite {
+      animation: none;
+      top: var(--satellite-y, 0px);
+      transform: translate(-50%, -50%) rotate(var(--satellite-angle, 0deg));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      [data-scroll-reveal] { opacity: 1 !important; transform: none !important; }
+      .progress-fill { animation: none !important; transform: scaleX(var(--scroll-progress, 0)); }
+      .motion-satellite { top: 0 !important; transform: translate(-50%, -50%) !important; }
+    }
+    @media (max-width: 700px) {
+      .site-header { grid-template-columns: 1fr auto; gap: .75rem; }
+      .section-nav { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; overflow-x: auto; padding-top: .65rem; border-top: 1px solid var(--rule); }
+      .header-state { text-align: right; }
+      .progress-dock { top: 5.8rem; right: 1rem; width: 6.8rem; }
+      .motion-rail { right: 1.4rem; }
+      .chapter { grid-template-columns: 1fr; gap: 1.5rem; min-height: 85vh; }
+      .chapter-number { font-size: 2.4rem; }
+      .path-heading { display: block; }
+      .path-heading p { margin-top: 1.5rem; }
+      .specimen { grid-template-columns: 1fr; }
+      .specimen span { min-height: auto; }
+      .specimen b { margin-top: .7rem; }
+      .footer-line { flex-direction: column; }
+    }
+    @media (max-width: 420px) {
+      .hero, .chapter, .path-section, .closing { width: min(100% - 1.5rem, 76rem); }
+      .hero { min-height: calc(100vh - 4rem); }
+      .hero-intro { margin-left: 0; }
+      .site-header { padding-inline: .75rem; }
+      .progress-dock { right: .75rem; }
+      .motion-rail { right: 1.15rem; }
+    }
+  </style>
+</head>
+<body data-motion-mode="native">
+  <a class="skip-link" href="#main-content">Skip to motion lab</a>
+  <header class="site-header">
+    <a class="back-link" href="../index.html">← Gallery</a>
+    <nav class="section-nav" aria-label="Demo sections">
+      <a href="#overview">Overview</a>
+      <a href="#progress">Progress</a>
+      <a href="#rotation">Path</a>
+      <a href="#reveal">View</a>
+      <a href="#fallback">Fallback</a>
+    </nav>
+    <span class="header-state" id="motion-state">CSS motion ready</span>
+  </header>
+
+  <aside class="progress-dock" aria-label="Document reading progress">
+    <div class="progress-copy"><span>Progress</span><output class="progress-value" id="progress-value">0%</output></div>
+    <div class="progress-track"><div class="progress-fill" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 percent"></div></div>
+  </aside>
+  <div class="motion-rail" aria-hidden="true"><div class="motion-satellite"></div></div>
+
+  <main id="main-content">
+    <section class="hero" id="overview" aria-labelledby="hero-title">
+      <p class="eyebrow">CSS motion lab / 01</p>
+      <h1 id="hero-title">Move with the <em>page.</em></h1>
+      <p class="hero-intro">This page turns scroll position into a timeline. The indicator, satellite, and chapter reveals are animated by CSS first — JavaScript only steps in when the browser needs a hand.</p>
+      <p class="hero-scroll-cue"><i aria-hidden="true"></i> Scroll to scrub the timeline</p>
+    </section>
+
+    <section class="chapter" id="progress" aria-labelledby="progress-title">
+      <div class="chapter-number" aria-hidden="true">02</div>
+      <div class="chapter-copy" data-scroll-reveal>
+        <p class="section-kicker">animation-timeline: scroll()</p>
+        <h2 id="progress-title">A page becomes a <span>playhead.</span></h2>
+        <p>The lime bar at the top is not listening for scroll events in a loop. In supporting browsers, <code>scroll(root block)</code> maps the document's 0–100% range directly to a CSS animation.</p>
+        <div class="specimen" aria-label="Scroll timeline properties">
+          <span>source<b>root</b></span>
+          <span>axis<b>block</b></span>
+          <span>range<b>0 → 1</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="rotation" aria-labelledby="rotation-title">
+      <div class="chapter-number" aria-hidden="true">03</div>
+      <div class="chapter-copy" data-scroll-reveal>
+        <p class="section-kicker">transform / rotation / path</p>
+        <h2 id="rotation-title">Follow the <span>signal.</span></h2>
+        <p>The orange satellite travels down the right-hand rail and turns as you move through the document. It is decorative, but the motion makes the invisible timeline legible without asking you to study a chart.</p>
+        <div class="specimen" aria-label="Motion values">
+          <span>motion<b>translate</b></span>
+          <span>gesture<b>scroll</b></span>
+          <span>spin<b>540°</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="reveal" aria-labelledby="reveal-title">
+      <div class="chapter-number" aria-hidden="true">04</div>
+      <div class="chapter-copy" data-scroll-reveal>
+        <p class="section-kicker">animation-timeline: view()</p>
+        <h2 id="reveal-title">Every block gets a <span>moment.</span></h2>
+        <p>Each step below owns its own view timeline. As a step enters the viewport, CSS interpolates its opacity and position. Scroll back up and the animation reverses naturally — no one-shot event required.</p>
+        <div class="specimen" aria-label="View timeline properties">
+          <span>range<b>entry</b></span>
+          <span>easing<b>ease-out</b></span>
+          <span>state<b>reversible</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="path-section" id="path" aria-labelledby="path-title">
+      <div class="path-heading">
+        <div>
+          <p class="section-kicker">a practical sequence / 05</p>
+          <h2 id="path-title">The scroll<br>route.</h2>
+        </div>
+        <p>Long content is intentional here. Keep moving to watch four independently revealed steps cross the viewport threshold.</p>
+      </div>
+      <ol class="path-list">
+        <li class="path-step" data-scroll-reveal>
+          <span class="path-index">01</span>
+          <div><h3>Declare the keyframes</h3><p>Describe the visual state at the start and end. Keep the animation useful without relying on a runtime library.</p></div>
+        </li>
+        <li class="path-step" data-scroll-reveal>
+          <span class="path-index">02</span>
+          <div><h3>Bind a timeline</h3><p>Use <code>scroll()</code> for the whole document or <code>view()</code> for an element's trip through the viewport.</p></div>
+        </li>
+        <li class="path-step" data-scroll-reveal>
+          <span class="path-index">03</span>
+          <div><h3>Respect the user</h3><p>Reduced motion makes the content present immediately. Focus rings, landmarks, and a text progress value keep the experience usable.</p></div>
+        </li>
+        <li class="path-step" data-scroll-reveal>
+          <span class="path-index">04</span>
+          <div><h3>Keep a fallback</h3><p>An IntersectionObserver supplies the reveal state and a small scroll listener supplies progress in browsers without scroll-driven timelines.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="closing" id="fallback" aria-labelledby="closing-title">
+      <p class="section-kicker">progressive enhancement / 06</p>
+      <h2 id="closing-title">Motion is optional.<br><strong>Meaning is not.</strong></h2>
+      <p>The demo remains readable with JavaScript disabled, with native CSS unavailable, or when reduced motion is requested. Scroll-driven motion is an enhancement layered over a clear document.</p>
+      <p class="support-note" id="support-note">Native scroll timelines unavailable — using JavaScript + IntersectionObserver fallback.</p>
+      <div class="footer-line" id="footer"><span>CSS scroll-driven motion</span><a href="#overview">Back to top ↑</a></div>
+    </section>
+  </main>
+  <script src="../assets/js/scroll-timeline.js" defer></script>
+</body>
+</html>

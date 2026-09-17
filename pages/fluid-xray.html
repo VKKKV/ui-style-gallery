@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A fluid Canvas 2D reveal that moves from a solid instrument panel to an x-ray layer.">
+  <title>Fluid X-ray Reveal</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    /* Hallmark · interaction: fluid-xray-reveal · pre-emit: P5 H5 E5 S4 R5 V5 */
+    :root {
+      --paper: #07100f;
+      --panel: #0c1916;
+      --panel-raised: #10231e;
+      --ink: #e8f3e8;
+      --muted: #8ca69a;
+      --dim: #48665a;
+      --line: #24473a;
+      --lime: #c8f36a;
+      --cyan: #7fffe0;
+      --orange: #ffb56b;
+      --accent: var(--lime);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      min-width: 320px;
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+    a { color: inherit; }
+    button { font: inherit; }
+    :focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+    .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      padding: 1.2rem clamp(1rem, 4vw, 3.5rem);
+      border-bottom: 1px solid rgba(127, 255, 224, .14);
+      color: var(--muted);
+      font: .72rem/1.2 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .page-header a { color: var(--cyan); text-decoration: none; }
+    .page-header a:hover { text-decoration: underline; text-underline-offset: .25em; }
+    .page-header .slash { color: var(--dim); }
+    .page-header .current { overflow-wrap: anywhere; }
+
+    .wrap { width: min(1240px, calc(100% - 2rem)); margin: 0 auto; padding: clamp(2.8rem, 7vw, 6rem) 0 3rem; }
+    .intro { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr); gap: clamp(2rem, 7vw, 7rem); align-items: end; margin-bottom: clamp(2rem, 5vw, 4rem); }
+    .kicker { margin: 0 0 1rem; color: var(--lime); font: .68rem/1.2 "SFMono-Regular", Consolas, monospace; letter-spacing: .2em; text-transform: uppercase; }
+    h1 { max-width: 760px; margin: 0; font-size: clamp(3.2rem, 10vw, 8.5rem); font-weight: 650; letter-spacing: -.085em; line-height: .82; }
+    h1 span { color: var(--cyan); font-weight: 400; }
+    .lede { max-width: 425px; margin: 0; color: var(--muted); font-size: clamp(.9rem, 1.4vw, 1.05rem); }
+    .lede strong { color: var(--ink); font-weight: 600; }
+
+    .workbench { border: 1px solid var(--line); background: var(--panel); box-shadow: 0 24px 80px rgba(0, 0, 0, .25); }
+    .workbench-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .8rem 1rem; border-bottom: 1px solid var(--line); color: var(--muted); font: .66rem/1.3 "SFMono-Regular", Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+    .live { display: inline-flex; align-items: center; gap: .5rem; color: var(--lime); }
+    .live::before { width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 12px currentColor; content: ""; }
+    .readout { text-align: right; }
+    .stage { position: relative; min-height: clamp(440px, 59vw, 680px); overflow: hidden; background: #0a1713; }
+    #fluidCanvas { display: block; width: 100%; height: 100%; min-height: inherit; cursor: crosshair; touch-action: none; }
+    #fluidCanvas:focus-visible { outline-offset: -5px; }
+    .stage-label { position: absolute; top: 1.2rem; left: 1.3rem; pointer-events: none; }
+    .stage-label strong { display: block; color: var(--ink); font: 600 clamp(1rem, 2vw, 1.45rem)/1.1 "SFMono-Regular", Consolas, monospace; letter-spacing: .08em; }
+    .stage-label small { display: block; margin-top: .45rem; color: var(--muted); font: .62rem/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .12em; }
+    .axis { position: absolute; right: 1.3rem; top: 1.2rem; color: var(--dim); font: .6rem/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .12em; text-align: right; pointer-events: none; }
+    .fallback { max-width: 560px; margin: 0; padding: 7rem 1.5rem; color: var(--ink); font-size: 1rem; }
+    .fallback strong { display: block; margin-bottom: .65rem; color: var(--lime); font: .7rem/1.2 "SFMono-Regular", Consolas, monospace; letter-spacing: .16em; text-transform: uppercase; }
+    [hidden] { display: none !important; }
+
+    .controls { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; padding: 1rem; border-top: 1px solid var(--line); }
+    .legend { display: flex; flex-wrap: wrap; gap: 1.1rem; color: var(--muted); font: .65rem/1.3 "SFMono-Regular", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .legend span { display: inline-flex; align-items: center; gap: .45rem; }
+    .legend i { display: block; width: .75rem; height: .75rem; border: 1px solid currentColor; }
+    .legend .solid { color: var(--orange); background: rgba(255,181,107,.22); }
+    .legend .xray { color: var(--cyan); border-radius: 50%; box-shadow: 0 0 9px rgba(127,255,224,.7); }
+    .button-row { display: flex; flex-wrap: wrap; justify-content: end; gap: .5rem; }
+    .button-row button { min-height: 44px; padding: .65rem .8rem; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--muted); cursor: pointer; font: .66rem/1 "SFMono-Regular", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; transition: color .2s, background .2s, border-color .2s; }
+    .button-row button:hover, .button-row button:focus-visible { border-color: var(--lime); color: var(--paper); background: var(--lime); }
+    .button-row #pauseButton { color: var(--cyan); border-color: rgba(127,255,224,.38); }
+    .button-row #pauseButton:hover, .button-row #pauseButton:focus-visible { color: var(--paper); background: var(--cyan); }
+
+    .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 1px; background: var(--line); }
+    .note { min-height: 145px; padding: 1.2rem; background: var(--panel); }
+    .note .num { color: var(--lime); font: .64rem/1 "SFMono-Regular", Consolas, monospace; }
+    .note h2 { margin: 1.1rem 0 .35rem; font-size: .95rem; font-weight: 600; }
+    .note p { max-width: 32ch; margin: 0; color: var(--muted); font-size: .78rem; }
+    .footnote { margin: 1.5rem 0 0; color: var(--dim); font: .65rem/1.6 "SFMono-Regular", Consolas, monospace; }
+
+    @media (max-width: 760px) {
+      .intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .lede { max-width: 590px; }
+      .controls { grid-template-columns: 1fr; align-items: start; }
+      .button-row { justify-content: start; }
+      .notes { grid-template-columns: 1fr; }
+      .note { min-height: 0; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: min(100% - 1.2rem, 1240px); padding-top: 2.3rem; }
+      .page-header { padding: 1rem .7rem; font-size: .62rem; }
+      h1 { font-size: clamp(3rem, 17vw, 5.2rem); }
+      .workbench-top { align-items: start; flex-direction: column; gap: .4rem; }
+      .readout { text-align: left; }
+      .stage { min-height: 510px; }
+      .stage-label { left: .9rem; top: .9rem; }
+      .axis { right: .9rem; top: .9rem; }
+      .button-row button { flex: 1 1 auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-header" aria-label="Breadcrumb">
+    <a href="../index.html">Gallery</a>
+    <span class="slash">/</span>
+    <span class="current">Fluid X-ray Reveal</span>
+  </nav>
+
+  <main class="wrap">
+    <header class="intro">
+      <div>
+        <p class="kicker">// interaction study · canvas 2d</p>
+        <h1>See the<br><span>current.</span></h1>
+      </div>
+      <p class="lede"><strong>Drag across the instrument.</strong> Your pointer leaves a diffusing velocity field that peels back the solid surface and exposes its x-ray construction underneath.</p>
+    </header>
+
+    <section class="workbench" aria-labelledby="demo-title">
+      <div class="workbench-top">
+        <div class="live"><span id="demo-title">Live material scan</span></div>
+        <div class="readout" id="status" role="status" aria-live="polite">SOLID SURFACE · TRACKING READY</div>
+      </div>
+      <div class="stage">
+        <canvas id="fluidCanvas" tabindex="0" role="img" aria-label="Interactive solid and x-ray material scan. Drag or use the controls to reveal the x-ray layer.">Interactive fluid x-ray reveal.</canvas>
+        <p class="fallback" id="canvasFallback" hidden><strong>Readable fallback</strong>The interactive canvas is unavailable. The material has a solid green shell around a cyan internal grid, and the X-RAY REVEAL control exposes that internal layer when Canvas 2D is supported.</p>
+        <div class="stage-label" aria-hidden="true"><strong id="modeLabel">SOLID / X-RAY</strong><small>DIFFUSION MASK // 2D FIELD</small></div>
+        <div class="axis" aria-hidden="true">X 000—100<br>Y 000—100</div>
+      </div>
+      <div class="controls">
+        <div class="legend" aria-label="Visual layer legend"><span><i class="solid"></i>solid shell</span><span><i class="xray"></i>x-ray layer</span></div>
+        <div class="button-row" role="group" aria-label="Demo controls">
+          <button id="revealButton" type="button">Reveal X-ray</button>
+          <button id="pauseButton" type="button" aria-pressed="false">Pause</button>
+          <button id="resetButton" type="button">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Interaction notes">
+      <article class="note"><span class="num">01 / DRAG</span><h2>Inject a trail</h2><p>Mouse, pen, and touch input inject velocity and dye; the field carries both forward before viscosity softens it.</p></article>
+      <article class="note"><span class="num">02 / REVEAL</span><h2>Open the layer</h2><p>A seeded burst turns the simulated density into a soft mask. The cyan internals appear only where the field is bright.</p></article>
+      <article class="note"><span class="num">03 / KEYBOARD</span><h2>Stay in control</h2><p>Focus the canvas and press Enter or Space to reveal. R resets; P pauses or resumes the simulation.</p></article>
+    </section>
+    <p class="footnote">VANILLA IMPLEMENTATION — no libraries, no WebGL. Reduced-motion preferences disable the live loop while preserving the readable visual and all controls.</p>
+    <noscript><p class="fallback" style="padding: 1rem 0;">JavaScript is disabled. The concept is a solid shell with a cyan x-ray layer revealed by a diffusing mask; enable JavaScript to interact with it.</p></noscript>
+  </main>
+  <script src="../assets/js/fluid-xray.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An interactive Canvas 2D ink bleed transition with an accessible reduced-motion fallback.">
+  <title>Ink Bleed Transition — Canvas 2D</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    /* Hallmark · theme: ink-bleed · pre-emit: P5 H4 E5 S4 R4 V4 */
+    :root {
+      --color-paper: oklch(91% .035 76);
+      --color-paper-deep: oklch(82% .055 71);
+      --color-ink: oklch(21% .025 52);
+      --color-ink-soft: oklch(39% .035 52);
+      --color-rule: color-mix(in oklch, var(--color-ink) 22%, transparent);
+      --color-accent: oklch(52% .14 38);
+      --color-accent-light: oklch(72% .12 68);
+      --font-display: Georgia, 'Times New Roman', serif;
+      --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    }
+
+    .ink-page {
+      min-height: 100vh;
+      overflow: clip;
+      background:
+        radial-gradient(circle at 72% 14%, color-mix(in oklch, var(--color-accent-light) 25%, transparent), transparent 27rem),
+        var(--color-paper);
+      color: var(--color-ink);
+      font-family: var(--font-mono);
+    }
+
+    .ink-header {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.5rem clamp(1.25rem, 4vw, 4rem);
+      border-bottom: 1px solid var(--color-rule);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .ink-header a { color: var(--color-ink-soft); text-underline-offset: .25em; }
+    .ink-header a:hover { color: var(--color-accent); text-decoration: underline; }
+    .ink-header__mark { color: var(--color-accent); }
+
+    .ink-main {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(18rem, .95fr);
+      gap: clamp(2rem, 7vw, 8rem);
+      align-items: center;
+      max-width: 1240px;
+      min-height: calc(100vh - 5rem);
+      margin: 0 auto;
+      padding: clamp(3rem, 8vw, 7rem) clamp(1.25rem, 4vw, 4rem);
+    }
+    .ink-copy { max-width: 40rem; }
+    .ink-kicker { margin: 0 0 1.25rem; color: var(--color-accent); font-size: .67rem; letter-spacing: .2em; text-transform: uppercase; }
+    .ink-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 11vw, 9rem);
+      font-weight: 400;
+      line-height: .82;
+      letter-spacing: -.075em;
+    }
+    .ink-title em { color: var(--color-accent); font-style: italic; }
+    .ink-intro { max-width: 32rem; margin: 2rem 0 0; color: var(--color-ink-soft); font-family: Georgia, serif; font-size: clamp(1rem, 1.8vw, 1.25rem); line-height: 1.55; }
+
+    .ink-action-row { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2.3rem; }
+    .ink-button {
+      min-height: 2.9rem;
+      padding: .75rem 1.1rem;
+      border: 1px solid var(--color-ink);
+      color: var(--color-ink);
+      background: transparent;
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .ink-button:hover { transform: translateY(-2px); }
+    .ink-button--primary { color: var(--color-paper); background: var(--color-ink); }
+    .ink-button--primary:hover, .ink-button--primary:focus-visible { color: var(--color-paper); background: var(--color-accent); border-color: var(--color-accent); }
+    .ink-button--quiet { border-color: var(--color-rule); color: var(--color-ink-soft); }
+    .ink-button:disabled { cursor: not-allowed; opacity: .45; transform: none; }
+
+    .ink-note { display: flex; gap: .7rem; align-items: flex-start; max-width: 31rem; margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--color-rule); color: var(--color-ink-soft); font-size: .65rem; line-height: 1.6; }
+    .ink-note strong { flex: 0 0 auto; color: var(--color-accent); font-weight: 400; }
+
+    .ink-specimen { position: relative; min-height: min(53vw, 32rem); }
+    .ink-specimen::before, .ink-specimen::after { content: ''; position: absolute; border: 1px solid var(--color-rule); pointer-events: none; }
+    .ink-specimen::before { inset: 7% 3% 4% 8%; transform: rotate(3deg); }
+    .ink-specimen::after { inset: 3% 8% 9% 2%; transform: rotate(-5deg); }
+    .ink-stain { position: absolute; inset: 12% 10% 12% 12%; display: grid; place-items: center; isolation: isolate; background: var(--color-ink); clip-path: polygon(9% 16%, 30% 7%, 55% 12%, 82% 4%, 96% 28%, 91% 52%, 97% 78%, 70% 94%, 42% 90%, 13% 97%, 4% 71%, 10% 47%); }
+    .ink-stain::before { content: ''; position: absolute; z-index: -1; inset: 9%; border: 1px solid color-mix(in oklch, var(--color-accent-light) 65%, transparent); clip-path: inherit; transform: rotate(11deg); }
+    .ink-stain__text { max-width: 11rem; color: var(--color-paper); font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 3.4rem); line-height: .9; text-align: center; }
+    .ink-stain__text em { color: var(--color-accent-light); }
+    .ink-caption { position: absolute; right: 0; bottom: 0; color: var(--color-ink-soft); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; writing-mode: vertical-rl; }
+    .ink-coordinate { position: absolute; left: 0; top: 0; color: var(--color-accent); font-size: .6rem; letter-spacing: .12em; }
+
+    .ink-overlay {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      visibility: hidden;
+      pointer-events: none;
+      background: var(--color-paper);
+    }
+    .ink-overlay.is-visible { visibility: visible; pointer-events: auto; }
+    .ink-overlay__canvas { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+    .ink-menu { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, .7fr); gap: 3rem; align-items: end; width: min(100%, 1100px); min-height: 100%; margin: 0 auto; padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 6vw, 6rem); color: var(--color-ink); opacity: 0; transform: translateY(1rem); }
+    .ink-overlay.is-revealed .ink-menu { opacity: 1; transform: none; transition: opacity .45s ease, transform .55s cubic-bezier(.2, .9, .25, 1); }
+    .ink-menu__eyebrow { margin: 0 0 1.5rem; color: var(--color-accent); font-size: .65rem; letter-spacing: .2em; }
+    .ink-menu h2 { max-width: 10ch; margin: 0; font-family: var(--font-display); font-size: clamp(3.3rem, 10vw, 8rem); font-weight: 400; line-height: .8; letter-spacing: -.07em; }
+    .ink-menu h2 em { color: var(--color-accent); }
+    .ink-links { align-self: center; display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+    .ink-links a { display: block; padding: .8rem 0; border-bottom: 1px solid var(--color-rule); color: var(--color-ink-soft); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+    .ink-links a::before { content: '↗'; display: inline-block; width: 1.6rem; color: var(--color-accent); opacity: 0; transform: translateX(-.4rem); transition: opacity .2s ease, transform .2s ease; }
+    .ink-links a:hover { color: var(--color-ink); }
+    .ink-links a:hover::before, .ink-links a:focus-visible::before { opacity: 1; transform: none; }
+    .ink-menu__close { justify-self: start; margin-top: 2.2rem; }
+    .ink-fallback { position: absolute; z-index: 3; inset: auto 1.25rem 1.25rem; padding: .8rem 1rem; border: 1px solid var(--color-rule); color: var(--color-ink-soft); background: var(--color-paper); font-size: .7rem; line-height: 1.5; }
+    .ink-overlay.is-no-canvas .ink-overlay__canvas { display: none; }
+    .ink-overlay.is-no-canvas .ink-menu { opacity: 1; transform: none; }
+    .ink-live { position: fixed; z-index: 20; left: 1rem; bottom: 1rem; color: var(--color-ink-soft); font-size: .62rem; letter-spacing: .08em; }
+    .ink-live[data-state="open"] { color: var(--color-accent); }
+
+    @media (max-width: 760px) {
+      .ink-main { grid-template-columns: 1fr; gap: 3rem; padding-top: 4rem; }
+      .ink-specimen { min-height: 68vw; }
+      .ink-note { margin-top: 2.5rem; }
+      .ink-menu { grid-template-columns: 1fr; align-content: center; gap: 2.5rem; }
+      .ink-links { align-self: start; width: min(100%, 25rem); }
+      .ink-menu h2 { font-size: clamp(3.4rem, 18vw, 6rem); }
+    }
+    @media (max-width: 420px) {
+      .ink-header { padding-inline: 1rem; font-size: .58rem; }
+      .ink-title { font-size: clamp(3.4rem, 19vw, 5rem); }
+      .ink-intro { font-size: 1rem; }
+      .ink-specimen { min-height: 82vw; }
+      .ink-stain { inset: 12% 5% 12% 9%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      .ink-button:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ink-page">
+    <header class="ink-header">
+      <a href="../index.html">← Gallery</a>
+      <span class="ink-header__mark">01 / Ink Bleed Transition</span>
+    </header>
+
+    <main class="ink-main">
+      <section class="ink-copy" aria-labelledby="ink-title">
+        <p class="ink-kicker">Canvas 2D / organic wipe study</p>
+        <h1 class="ink-title" id="ink-title">Ink<br><em>bleed.</em></h1>
+        <p class="ink-intro">A soft edge is made from hard pixels. Watch noise become a spreading stain, then burn back to reveal a full-screen menu.</p>
+        <div class="ink-action-row" role="group" aria-label="Transition actions">
+          <button class="ink-button ink-button--primary" id="openButton" type="button">Open menu <span aria-hidden="true">↗</span></button>
+          <button class="ink-button ink-button--quiet" id="replayButton" type="button">Replay</button>
+          <button class="ink-button ink-button--quiet" id="resetButton" type="button">Reset</button>
+        </div>
+        <p class="ink-note"><strong>METHOD</strong><span>Low-resolution field diffusion + seeded edge noise. No images, libraries, or pre-rendered masks are used.</span></p>
+      </section>
+
+      <aside class="ink-specimen" aria-label="Ink specimen preview">
+        <span class="ink-coordinate">FIELD 04° / 17°</span>
+        <div class="ink-stain"><div class="ink-stain__text">the edge is <em>alive</em></div></div>
+        <span class="ink-caption">specimen / wet edge</span>
+      </aside>
+    </main>
+  </div>
+
+  <div class="ink-overlay" id="inkOverlay" aria-hidden="true" inert>
+    <canvas class="ink-overlay__canvas" id="inkCanvas" aria-hidden="true">Ink transition canvas.</canvas>
+    <div class="ink-menu" id="inkMenu">
+      <div>
+        <p class="ink-menu__eyebrow">The menu / now open</p>
+        <h2>Make room for <em>mess.</em></h2>
+        <button class="ink-button ink-button--primary ink-menu__close" id="closeButton" type="button">Close <span aria-hidden="true">×</span></button>
+      </div>
+      <nav aria-label="Full-screen menu">
+        <ul class="ink-links">
+          <li><a href="#process" id="process">Process</a></li>
+          <li><a href="#material" id="material">Material</a></li>
+          <li><a href="#notes" id="notes">Field notes</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="ink-fallback" id="inkFallback" hidden>Canvas is unavailable. The menu is shown without the ink transition.</p>
+  </div>
+
+  <p class="ink-live" id="inkLive" role="status" aria-live="polite">READY · Canvas 2D</p>
+  <noscript><p class="ink-fallback" style="display:block;position:fixed;z-index:30;inset:auto 1rem 1rem;">JavaScript is disabled. Use the page content above; the interactive menu requires JavaScript.</p></noscript>
+  <script src="../assets/js/ink-bleed.js" defer></script>
+</body>
+</html>
