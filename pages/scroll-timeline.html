@@ -37,6 +37,7 @@
       line-height: 1.6;
     }
     a { color: inherit; }
+    section[id], main[id] { scroll-margin-top: 7rem; }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
     ::selection { color: var(--paper); background: var(--accent); }
 
@@ -345,6 +346,7 @@
     }
     /* Explicit JS + IntersectionObserver fallback when native timelines are absent. */
     [data-motion-mode="fallback"] [data-scroll-reveal] {
+      animation: none;
       opacity: 0;
       transform: translateY(2.5rem);
       transition: opacity .65s ease, transform .65s ease;
@@ -402,11 +404,11 @@
       <a href="#reveal">View</a>
       <a href="#fallback">Fallback</a>
     </nav>
-    <span class="header-state" id="motion-state">CSS motion ready</span>
+    <span class="header-state" id="motion-state">CSS motion demo</span>
   </header>
 
   <aside class="progress-dock" aria-label="Document reading progress">
-    <div class="progress-copy"><span>Progress</span><output class="progress-value" id="progress-value">0%</output></div>
+    <div class="progress-copy"><span>Progress</span><span class="progress-value" id="progress-value">0%</span></div>
     <div class="progress-track"><div class="progress-fill" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 percent"></div></div>
   </aside>
   <div class="motion-rail" aria-hidden="true"><div class="motion-satellite"></div></div>
@@ -415,7 +417,7 @@
     <section class="hero" id="overview" aria-labelledby="hero-title">
       <p class="eyebrow">CSS motion lab / 01</p>
       <h1 id="hero-title">Move with the <em>page.</em></h1>
-      <p class="hero-intro">This page turns scroll position into a timeline. The indicator, satellite, and chapter reveals are animated by CSS first — JavaScript only steps in when the browser needs a hand.</p>
+      <p class="hero-intro">This page turns scroll position into a timeline. The indicator, satellite, and chapter reveals are animated by CSS first — JavaScript keeps the accessible progress value in sync and supplies a fallback when needed.</p>
       <p class="hero-scroll-cue"><i aria-hidden="true"></i> Scroll to scrub the timeline</p>
     </section>
 
@@ -452,7 +454,7 @@
       <div class="chapter-copy" data-scroll-reveal>
         <p class="section-kicker">animation-timeline: view()</p>
         <h2 id="reveal-title">Every block gets a <span>moment.</span></h2>
-        <p>Each step below owns its own view timeline. As a step enters the viewport, CSS interpolates its opacity and position. Scroll back up and the animation reverses naturally — no one-shot event required.</p>
+        <p>Each step below owns its own view timeline. As a step enters the viewport, CSS interpolates its opacity and position. With native timelines, scrolling back up reverses the animation naturally. The fallback reveals each block once.</p>
         <div class="specimen" aria-label="View timeline properties">
           <span>range<b>entry</b></span>
           <span>easing<b>ease-out</b></span>

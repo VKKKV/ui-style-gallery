@@ -6,84 +6,73 @@
   const progress = document.getElementById('scroll-progress');
   const progressValue = document.getElementById('progress-value');
   const motionState = document.getElementById('motion-state');
+  const rail = document.querySelector('.motion-rail');
   const revealItems = [...document.querySelectorAll('[data-scroll-reveal]')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const supportsScrollTimeline = CSS.supports('animation-timeline: scroll()');
-  const supportsViewTimeline = CSS.supports('animation-timeline: view()');
-  let ticking = false;
+  const supports = value => !!window.CSS?.supports(value);
+  const needsFallback = !supports('animation-timeline: scroll()') ||
+    !supports('animation-timeline: view()') || !supports('animation-range: entry 8% cover 35%');
+  let frame = 0;
+  let observer;
 
-  function setProgress(value) {
-    const bounded = Math.max(0, Math.min(1, value));
+  function updateProgress() {
+    frame = 0;
+    const scrollable = root.scrollHeight - window.innerHeight;
+    const bounded = Math.max(0, Math.min(1, scrollable > 0 ? window.scrollY / scrollable : 0));
     const percent = Math.round(bounded * 100);
     progressValue.textContent = `${percent}%`;
     progress.setAttribute('aria-valuenow', String(percent));
     progress.setAttribute('aria-valuetext', `${percent} percent`);
     root.style.setProperty('--scroll-progress', String(bounded));
-    root.style.setProperty('--satellite-angle', `${bounded * 540}deg`);
-    const rail = document.querySelector('.motion-rail');
-    if (rail) root.style.setProperty('--satellite-y', `${bounded * rail.getBoundingClientRect().height}px`);
+    if (needsFallback && rail) {
+      root.style.setProperty('--satellite-angle', `${bounded * 540}deg`);
+      root.style.setProperty('--satellite-y', `${bounded * rail.getBoundingClientRect().height}px`);
+    }
   }
 
-  function updateRailDistance() {
-    const rail = document.querySelector('.motion-rail');
-    if (!rail) return;
-    const height = Math.max(1, rail.getBoundingClientRect().height);
-    root.style.setProperty('--rail-distance', `${height}px`);
-    if (body.dataset.motionMode === 'fallback') updateFallbackProgress();
+  function scheduleProgress() {
+    if (!frame && !document.hidden) frame = requestAnimationFrame(updateProgress);
   }
 
-  function updateFallbackProgress() {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    setProgress(scrollable > 0 ? window.scrollY / scrollable : 0);
-    ticking = false;
+  function updateMotion() {
+    motionState.textContent = reduceMotion.matches ? 'Reduced motion on' :
+      (needsFallback ? 'JS fallback active' : 'CSS timelines active');
+    if (reduceMotion.matches) {
+      observer?.disconnect();
+      revealItems.forEach(item => item.classList.add('is-visible'));
+    }
+    updateProgress();
   }
 
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(updateFallbackProgress);
-  }
-
-  // Native timelines own the visual motion; JS still updates the accessible text value.
-  // If either timeline is missing, switch to explicit fallback rules for all enhanced parts.
-  const needsFallback = !supportsScrollTimeline || !supportsViewTimeline;
+  body.dataset.motionMode = needsFallback ? 'fallback' : 'native';
   if (needsFallback) {
-    body.dataset.motionMode = 'fallback';
-    motionState.textContent = 'JS fallback active';
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateRailDistance, { passive: true });
-    updateFallbackProgress();
-
-    if ('IntersectionObserver' in window && !reduceMotion.matches) {
-      const observer = new IntersectionObserver((entries, currentObserver) => {
-        entries.forEach((entry) => {
+    if (typeof IntersectionObserver === 'function' && !reduceMotion.matches) {
+      observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            currentObserver.unobserve(entry.target);
+            observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
-      revealItems.forEach((item) => observer.observe(item));
+      }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+      revealItems.forEach(item => observer.observe(item));
     } else {
-      revealItems.forEach((item) => item.classList.add('is-visible'));
+      revealItems.forEach(item => item.classList.add('is-visible'));
     }
-  } else {
-    motionState.textContent = 'CSS timelines active';
-    // Reading progress is semantic state, not a second animation implementation.
-    const updateAccessibleProgress = () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(scrollable > 0 ? window.scrollY / scrollable : 0);
-    };
-    window.addEventListener('scroll', updateAccessibleProgress, { passive: true });
-    window.addEventListener('resize', updateAccessibleProgress, { passive: true });
-    updateAccessibleProgress();
   }
-
-  updateRailDistance();
-  reduceMotion.addEventListener?.('change', () => {
-    if (reduceMotion.matches) {
-      revealItems.forEach((item) => item.classList.add('is-visible'));
-      setProgress(0);
-    }
+  window.addEventListener('scroll', scheduleProgress, { passive: true });
+  window.addEventListener('resize', scheduleProgress, { passive: true });
+  window.addEventListener('pageshow', updateMotion);
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
   });
+  document.addEventListener('visibilitychange', () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    if (!document.hidden) updateProgress();
+  });
+  reduceMotion.addEventListener?.('change', updateMotion);
+  if (typeof ResizeObserver === 'function') new ResizeObserver(scheduleProgress).observe(body);
+  updateMotion();
 })();
