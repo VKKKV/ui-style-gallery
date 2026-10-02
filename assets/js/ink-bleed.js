@@ -13,7 +13,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   let context = null;
-  let frame = 0;
+  let currentProgress = 0;
   let animationId = 0;
   let transitionState = 'closed';
   let previousFocus = openButton;
@@ -36,6 +36,8 @@
     overlay.classList.toggle('is-revealed', open);
     overlay.setAttribute('aria-hidden', String(!visible));
     overlay.inert = !visible;
+    document.querySelector('.ink-page').inert = visible;
+    document.body.style.overflow = visible ? 'hidden' : '';
     if (visible) menu.removeAttribute('inert');
     else menu.inert = true;
   }
@@ -62,12 +64,14 @@
     gridWidth = clamp(Math.ceil(width / 10), 42, 120);
     gridHeight = clamp(Math.ceil(height / 10), 30, 90);
     makeField();
-    draw(transitionState === 'open' ? 1 : 0);
+    draw(currentProgress);
   }
 
   function draw(progress) {
+    currentProgress = progress;
     if (!context || !field) return;
     context.clearRect(0, 0, width, height);
+    if (progress <= 0) return;
     context.fillStyle = 'oklch(21% .025 52)';
     const cellWidth = width / gridWidth;
     const cellHeight = height / gridHeight;
@@ -109,25 +113,29 @@
     phase = 0;
     const started = performance.now();
     const duration = instant || reducedMotion.matches ? 1 : (targetOpen ? 1250 : 950);
-    const start = targetOpen ? 0 : 1;
-    const end = targetOpen ? 1 : 0;
+    const finish = () => {
+      stop();
+      transitionState = targetOpen ? 'open' : 'closed';
+      draw(0);
+      setOverlay(targetOpen, targetOpen);
+      if (targetOpen) closeButton.focus({ preventScroll: true });
+      else if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+      announce(targetOpen ? 'OPEN · menu ready' : context ? 'READY · Canvas 2D' : 'READY · Canvas unavailable', targetOpen ? 'open' : 'closed');
+    };
     setOverlay(targetOpen, true);
     announce(targetOpen ? 'OPENING · ink spreading' : 'CLOSING · ink receding', targetOpen ? 'open' : 'closed');
 
+    if (instant || reducedMotion.matches || !context || document.hidden) { finish(); return; }
+    closeButton.focus({ preventScroll: true });
     const tick = (now) => {
       const amount = clamp((now - started) / duration, 0, 1);
-      const eased = targetOpen ? 1 - Math.pow(1 - amount, 3) : Math.pow(1 - amount, 3);
       phase = amount * 2.5;
-      draw(start + (end - start) * eased);
+      draw(Math.sin(amount * Math.PI));
       if (amount < 1) {
         animationId = requestAnimationFrame(tick);
         return;
       }
-      animationId = 0;
-      transitionState = targetOpen ? 'open' : 'closed';
-      if (!targetOpen) setOverlay(false, false);
-      else closeButton.focus({ preventScroll: true });
-      announce(targetOpen ? 'OPEN · menu ready' : 'READY · Canvas 2D', targetOpen ? 'open' : 'closed');
+      finish();
     };
     animationId = requestAnimationFrame(tick);
   }
@@ -141,7 +149,7 @@
   function close() {
     if (transitionState === 'closed' || transitionState === 'closing') return;
     animate(false, false);
-    if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus({ preventScroll: true });
+    // Restore focus only after the modal is no longer inerting the page.
   }
 
   function replay() {
@@ -154,7 +162,7 @@
     transitionState = 'closed';
     setOverlay(false, false);
     draw(0);
-    announce('READY · Canvas 2D', 'closed');
+    announce(context ? 'READY · Canvas 2D' : 'READY · Canvas unavailable', 'closed');
     openButton.focus({ preventScroll: true });
   }
 
@@ -163,21 +171,18 @@
       event.preventDefault();
       close();
     }
-    if (event.key === 'Enter' && document.activeElement === openButton) open();
+    if (event.key === 'Tab' && overlay.classList.contains('is-visible')) {
+      const items = [...menu.querySelectorAll('button, a[href]')];
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
   }
 
   function noCanvas() {
     overlay.classList.add('is-no-canvas');
     fallback.hidden = false;
-    openButton.addEventListener('click', () => {
-      setOverlay(true, true);
-      announce('OPEN · Canvas unavailable; menu ready', 'open');
-      closeButton.focus({ preventScroll: true });
-    });
-    closeButton.addEventListener('click', reset);
-    replayButton.disabled = true;
-    resetButton.addEventListener('click', reset);
-    return;
+    announce('READY · Canvas unavailable', 'closed');
   }
 
   try {
@@ -187,7 +192,6 @@
   }
   if (!context) {
     noCanvas();
-    return;
   }
 
   openButton.addEventListener('click', open);
@@ -196,6 +200,12 @@
   resetButton.addEventListener('click', reset);
   document.addEventListener('keydown', keyboard);
   window.addEventListener('resize', resize, { passive: true });
-  reducedMotion.addEventListener?.('change', () => draw(transitionState === 'open' ? 1 : 0));
+  function settle() {
+    if (transitionState === 'opening' || transitionState === 'closing') animate(transitionState === 'opening', true);
+  }
+  reducedMotion.addEventListener?.('change', () => { if (reducedMotion.matches) settle(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) settle(); });
+  window.addEventListener('pagehide', settle);
+  window.addEventListener('pageshow', resize);
   resize();
 })();

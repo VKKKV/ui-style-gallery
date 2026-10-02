@@ -111,10 +111,12 @@
       z-index: 10;
       inset: 0;
       visibility: hidden;
+      overflow-y: auto;
       pointer-events: none;
       background: var(--color-paper);
     }
     .ink-overlay.is-visible { visibility: visible; pointer-events: auto; }
+    .ink-overlay, .ink-overlay * { transition-property: opacity, transform, background-color, color, border-color !important; }
     .ink-overlay__canvas { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
     .ink-menu { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, .7fr); gap: 3rem; align-items: end; width: min(100%, 1100px); min-height: 100%; margin: 0 auto; padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 6vw, 6rem); color: var(--color-ink); opacity: 0; transform: translateY(1rem); }
     .ink-overlay.is-revealed .ink-menu { opacity: 1; transform: none; transition: opacity .45s ease, transform .55s cubic-bezier(.2, .9, .25, 1); }
@@ -171,7 +173,7 @@
           <button class="ink-button ink-button--quiet" id="replayButton" type="button">Replay</button>
           <button class="ink-button ink-button--quiet" id="resetButton" type="button">Reset</button>
         </div>
-        <p class="ink-note"><strong>METHOD</strong><span>Low-resolution field diffusion + seeded edge noise. No images, libraries, or pre-rendered masks are used.</span></p>
+        <p class="ink-note"><strong>METHOD</strong><span>Low-resolution threshold wipe + deterministic edge noise. No images, libraries, or pre-rendered masks are used.</span></p>
       </section>
 
       <aside class="ink-specimen" aria-label="Ink specimen preview">
@@ -182,7 +184,7 @@
     </main>
   </div>
 
-  <div class="ink-overlay" id="inkOverlay" aria-hidden="true" inert>
+  <div class="ink-overlay" id="inkOverlay" role="dialog" aria-modal="true" aria-label="Full-screen menu" aria-hidden="true" inert>
     <canvas class="ink-overlay__canvas" id="inkCanvas" aria-hidden="true">Ink transition canvas.</canvas>
     <div class="ink-menu" id="inkMenu">
       <div>
