@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yudho's original dirty-pixel GIF displayed as a Three.js animated texture.">
+  <title>40 — Dirty Pixels</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    :root { --paper:#090a0b; --ink:#dfded7; --muted:#92948e; --accent:#c5d19c; --line:#333631; }
+    body { background:var(--paper); color:var(--ink); font-family:Arial,sans-serif; }
+    main { max-width:1440px; margin:auto; padding:7rem 3rem 2rem; }
+    .eyebrow, .meta, .controls, .notes { font: .7rem/1.7 monospace; letter-spacing:.08em; }
+    .eyebrow { color:var(--accent); text-transform:uppercase; }
+    .intro { display:flex; justify-content:space-between; align-items:end; gap:2rem; margin-bottom:2rem; }
+    h1 { font:400 clamp(3.5rem,9vw,8rem)/.9 Georgia,serif; letter-spacing:-.065em; margin-top:1rem; }
+    h1 em { color:var(--accent); font-weight:400; }
+    .lead { max-width:290px; color:var(--muted); font-size:.85rem; line-height:1.8; }
+    .stage { position:relative; aspect-ratio:5/3; overflow:hidden; border:1px solid var(--line); background:var(--paper); }
+    .stage img, .stage canvas { width:100%; height:100%; display:block; object-fit:contain; }
+    .stage canvas, .stage picture { position:absolute; inset:0; }
+    .corner { position:absolute; z-index:1; font: .65rem/1.5 monospace; letter-spacing:.14em; color:var(--muted); pointer-events:none; }
+    .corner.top { top:1rem; left:1rem; }.corner.bottom { bottom:1rem; right:1rem; }
+    .toolbar { padding:1.2rem 0; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:1.5rem; }
+    .meta { color:var(--muted); max-width:360px; }
+    .controls { display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap; }
+    label { color:var(--muted); display:flex; align-items:center; gap:.7rem; }
+    button { background:transparent; color:var(--ink); border:1px solid var(--line); padding:.8rem 1rem; font:inherit; min-height:44px; cursor:pointer; }
+    button:hover { border-color:var(--accent); } button:disabled { opacity:.45; cursor:not-allowed; }
+    button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .notes { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:2rem; color:var(--muted); }
+    .notes strong { display:block; color:var(--ink); font-weight:400; margin-bottom:.6rem; }
+    [hidden] { display:none !important; }
+    @media(max-width:700px) { main { padding:6rem 1rem 2rem; } .intro { flex-direction:column; align-items:start; }.lead { max-width:100%; }.toolbar { align-items:start; flex-direction:column; }.controls { gap:.7rem; }.notes { grid-template-columns:1fr; gap:1rem; }.corner { font-size:.5rem; }.page-header { padding:1rem; font-size:.7rem; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+  <nav class="page-header"><a href="../index.html">Gallery</a><span class="sep">/</span><span class="current">40 Dirty Pixels</span></nav>
+  <main>
+    <header class="intro">
+      <div><p class="eyebrow">Moving image / 480 ms / endless edition</p><h1>Dirty <em>pixels.</em></h1></div>
+      <p class="lead">Yudho's original GIF is decoded by the browser and its live frames are sampled into a Three.js CanvasTexture. No redraw or cursor required.</p>
+    </header>
+    <section aria-label="Looping monochrome pixel artwork">
+      <div class="stage" id="dirtyStage">
+        <picture>
+          <source media="(prefers-reduced-motion: reduce)" srcset="../assets/yudho-dirty-pixels-frames/frame-00.png">
+          <img id="dirtyFallback" src="../assets/yudho-dirty-pixels.gif" alt="Yudho's original dirty-pixel artwork.">
+        </picture>
+        <canvas id="dirtyCanvas" role="img" aria-label="Yudho's original dirty-pixel GIF displayed as a looping Three.js texture." hidden></canvas>
+        <span class="corner top">FIELD STUDY / 040</span><span class="corner bottom">SIGNAL ≠ SILENCE</span>
+      </div>
+      <div class="toolbar">
+        <p class="meta" id="dirtyStatus" role="status">Yudho GIF texture · loading local Three.js…</p>
+        <div class="controls">
+          <button id="dirtyPause" type="button" aria-pressed="false" disabled>PAUSE LOOP</button>
+          <button id="dirtyRestart" type="button" disabled>RESTART</button>
+        </div>
+      </div>
+    </section>
+    <noscript><p>The original interference drawing remains visible without JavaScript.</p></noscript>
+    <footer class="notes">
+      <div><strong>01 / THE ORIGINAL GIF</strong>Yudho's 2560 × 1440, 12-frame source animation. The source pixels are sampled directly; this is the original work, not a redraw.</div>
+      <div><strong>02 / THREE.JS CANVAS TEXTURE</strong>The browser decodes the extracted source frames; Three.js advances them using the original timings through an unmodified CanvasTexture.</div>
+      <div><strong>03 / SOURCE & ACCESS</strong><a href="https://yudho.xyz/#main-title" target="_blank" rel="noreferrer">yudho.xyz</a> · local GIF fallback remains animated without WebGL; reduced-motion preference shows the first frame.</div>
+    </footer>
+  </main>
+  <script type="module" src="../assets/js/dirty-pixels.mjs"></script>
+</body>
+</html>
