@@ -84,7 +84,8 @@ def static_checks():
                     if unquote(parsed.fragment) not in target_ids:
                         failures.append(f'{name}: missing fragment {url}')
         scripts.extend((name, code) for code in doc.scripts)
-    scripts.extend((str(p.relative_to(ROOT)), p.read_text()) for p in (ROOT / 'assets/js').glob('*.js'))
+    scripts.extend((str(p.relative_to(ROOT)), p.read_text())
+                   for p in sorted((ROOT / 'assets/js').iterdir()) if p.suffix in ('.js', '.mjs'))
     with tempfile.TemporaryDirectory() as directory:
         for i, (name, code) in enumerate(scripts):
             script = Path(directory) / f'{i}.js'

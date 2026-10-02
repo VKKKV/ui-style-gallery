@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yudho's original animated GIF rebuilt in real time as an adjustable Three.js particle field.">
+  <title>41 — Dirty Pixel Particles</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    :root { --paper:#10110f; --ink:#eee9dc; --muted:#a8a397; --accent:#d8e39f; --line:#3a3b34; }
+    body { background:radial-gradient(ellipse at 50% 36%,#20221d 0%,var(--paper) 65%); color:var(--ink); font-family:Arial,sans-serif; }
+    main { max-width:1440px; margin:auto; padding:6rem 3rem 2rem; }
+    .eyebrow, .meta, .controls, .notes { font:.7rem/1.7 monospace; letter-spacing:.08em; }
+    .eyebrow { color:var(--accent); text-transform:uppercase; }
+    .intro { display:flex; justify-content:space-between; align-items:end; gap:2rem; margin-bottom:1.5rem; }
+    h1 { font:400 clamp(3.2rem,8vw,7rem)/.9 Georgia,serif; letter-spacing:-.065em; margin-top:1rem; }
+    h1 em { color:var(--accent); font-weight:400; }
+    .lead { max-width:330px; color:var(--muted); font-size:.85rem; line-height:1.8; }
+    #particleStage { position:relative; width:100%; aspect-ratio:16/9; max-height:72vh; min-height:340px; overflow:hidden; border:1px solid #535447; background:#090a0b; box-shadow:0 28px 90px #0008; margin-inline:auto; }
+    #particleStage img, #particleStage canvas { width:100%; height:100%; display:block; object-fit:contain; }
+    #particleStage canvas, #particleStage picture { position:absolute; inset:0; }
+    .toolbar { width:100%; }
+    .controls { justify-content:flex-end; }
+    .corner { position:absolute; z-index:1; font:.65rem/1.5 monospace; letter-spacing:.14em; color:#d2d0c3; pointer-events:none; text-shadow:0 1px 8px #000; }
+    .corner.top { top:1rem; left:1rem; }.corner.bottom { bottom:1rem; right:1rem; }
+    .toolbar { padding:1.1rem 0; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:1.5rem; }
+    .toolbar .controls { flex:1; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)) auto; align-items:center; gap:1.2rem; }
+    .meta { color:var(--muted); }
+    .controls { display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap; }
+    .count-control { display:grid; grid-template-columns:minmax(0,1fr) max-content; align-items:center; gap:.15rem .5rem; min-width:0; }
+    .count-control output { color:var(--ink); font-variant-numeric:tabular-nums; }
+    .count-control input { grid-column:1 / -1; width:100%; }
+    #lineWidth { accent-color:#eee9dc; }
+    #lineColor { accent-color:hsl(var(--line-hue, 0) 95% 60%); }
+    #lineColor::-webkit-slider-runnable-track { background:linear-gradient(90deg,#f33,#ff0,#3f6,#3cf,#73f,#f3a,#f33); height:4px; }
+    #lineColor::-moz-range-track { background:linear-gradient(90deg,#f33,#ff0,#3f6,#3cf,#73f,#f3a,#f33); height:4px; }
+    label { color:var(--muted); display:flex; align-items:center; gap:.7rem; }
+    select { background:#111; color:var(--ink); border:1px solid var(--line); min-height:44px; padding:.6rem; font:inherit; }
+    input[type=range] { width:100%; min-width:0; accent-color:var(--accent); min-height:32px; }
+    button { background:transparent; color:var(--ink); border:1px solid var(--line); padding:.8rem 1rem; font:inherit; min-height:44px; cursor:pointer; }
+    button:hover { border-color:var(--accent); } button:disabled { opacity:.45; cursor:not-allowed; }
+    button:focus-visible, a:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .notes { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:2rem; color:var(--muted); }
+    .notes strong { display:block; color:var(--ink); font-weight:400; margin-bottom:.6rem; }
+    [hidden] { display:none !important; }
+    @media(max-width:1100px) { .toolbar { align-items:start; flex-direction:column; }.toolbar .controls { width:100%; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; }.controls button { grid-column:1 / -1; justify-self:start; } }
+    @media(max-width:700px) { main { padding:5.5rem 1rem 2rem; }.intro { flex-direction:column; align-items:start; }.lead { max-width:100%; } #particleStage { min-height:240px; max-height:60vh; }.notes { grid-template-columns:1fr; gap:1rem; }.corner { font-size:.5rem; }.page-header { padding:1rem; font-size:.7rem; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+  <nav class="page-header"><a href="../index.html">Gallery</a><span class="sep">/</span><span class="current">41 Dirty Pixel Particles</span></nav>
+  <main>
+    <header class="intro">
+      <div><p class="eyebrow">Moving image / Three.js / GIF → points</p><h1>Dirty <em>particles.</em></h1></div>
+      <p class="lead">The original animated GIF is decoded frame by frame, then sampled live into a Three.js particle field. Change the point count without changing the source artwork.</p>
+    </header>
+    <section aria-label="Animated GIF particle artwork">
+      <div class="particle-stage" id="particleStage">
+        <picture>
+          <source media="(prefers-reduced-motion: reduce)" srcset="../assets/yudho-dirty-pixels-frames/frame-00.png">
+          <img id="particleFallback" src="../assets/yudho-dirty-pixels.gif" alt="Yudho's original dirty-pixel artwork.">
+        </picture>
+        <canvas id="particleCanvas" role="img" aria-label="Yudho's animated dirty-pixel GIF sampled into a Three.js particle field." hidden></canvas>
+        <span class="corner top">FRAME FIELD / 041</span><span class="corner bottom">SOURCE → PARTICLES</span>
+      </div>
+      <div class="toolbar">
+        <p class="meta" id="particleStatus" role="status">Original GIF visible · loading Three.js particles…</p>
+    <div class="controls">
+      <div class="count-control"><label for="particleCount">DENSITY</label><output id="particleCountValue" for="particleCount">12,000</output>
+        <input id="particleCount" type="range" min="2000" max="30000" step="1000" value="12000" aria-label="Particle count" aria-valuetext="12,000 particles"></div>
+      <div class="count-control"><label for="lineWidth">LINE WIDTH</label><output id="lineWidthValue" for="lineWidth">1.5 px</output>
+        <input id="lineWidth" type="range" min="0.5" max="3" step="0.25" value="1.5" aria-label="Line width"></div>
+      <div class="count-control"><label for="lineLength">LINE LENGTH</label><output id="lineLengthValue" for="lineLength">1.25 px</output>
+        <input id="lineLength" type="range" min="0.25" max="32" step="0.25" value="1.25" aria-label="Line length"></div>
+      <div class="count-control"><label for="lineColor">HUE SHIFT</label><output id="lineColorValue" for="lineColor">SOURCE</output>
+        <input id="lineColor" type="range" min="0" max="360" step="1" value="0" aria-label="Source color hue offset" aria-valuetext="Original source colors"></div>
+      <button id="particlePause" type="button" aria-pressed="false" disabled>PAUSE</button>
+    </div>
+      </div>
+    </section>
+    <noscript><p>The original artwork remains visible without JavaScript; reduced motion shows a still source frame.</p></noscript>
+    <footer class="notes">
+      <div><strong>01 / ORIGINAL FRAMES</strong>Samples the decoded frame sequence from the same local GIF used by the Dirty Pixels page. Source file and existing page are unchanged.</div>
+      <div><strong>02 / REAL-TIME PARTICLES</strong>Every GIF frame updates sampled particle positions. A single Three.js mesh renders short line particles; width and length resize the same segments without adding particles. Hue is an offset from the sampled source RGB; SOURCE preserves the original palette.</div>
+      <div><strong>03 / CONTROL & ACCESS</strong>Adjust from 2,000 to 30,000 particles. Reduced motion holds a still frame; unsupported WebGL leaves the original GIF visible.</div>
+    </footer>
+  </main>
+  <script type="module" src="../assets/js/dirty-pixel-particles.mjs"></script>
+</body>
+</html>
