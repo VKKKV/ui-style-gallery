@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A Three.js image-particle artwork with pointer repulsion and damped spring return.">
+  <title>39 — Particle Artwork</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    :root { --paper:#101017; --ink:#eee8de; --muted:#b0a6ba; --accent:#ffbc8e; --line:#38313f; }
+    body { background:var(--paper); color:var(--ink); font-family:Arial,sans-serif; }
+    main { max-width:1280px; margin:auto; padding:7rem 2rem 2rem; }
+    .intro { display:grid; grid-template-columns:1.4fr 1fr; gap:3rem; align-items:end; margin-bottom:2.5rem; }
+    .eyebrow, .caption, label, button, .notes { font-family:monospace; font-size:.72rem; letter-spacing:.06em; }
+    .eyebrow { color:var(--accent); margin-bottom:1rem; text-transform:uppercase; }
+    h1 { font-family:Georgia,serif; font-weight:400; font-size:clamp(3.5rem,7vw,7rem); line-height:.9; letter-spacing:-.05em; }
+    h1 em { color:var(--accent); }
+    .lead { color:var(--muted); line-height:1.7; max-width:400px; }
+    .workbench { display:grid; grid-template-columns:minmax(0,1fr) 260px; border:1px solid var(--line); }
+    .stage { position:relative; background:#171322; min-width:0; aspect-ratio:1; overflow:hidden; }
+    .stage img, .stage canvas { width:100%; height:100%; object-fit:contain; display:block; }
+    .stage canvas { position:absolute; inset:0; cursor:crosshair; touch-action:pan-y; }
+    .caption { position:absolute; bottom:1rem; left:1rem; right:1rem; padding:.6rem; background:#101017d9; color:var(--ink); pointer-events:none; }
+    .controls { padding:1.5rem; display:flex; flex-direction:column; gap:1.6rem; }
+    .controls h2 { font-family:Georgia,serif; font-size:1.8rem; font-weight:400; }
+    label { display:block; color:var(--muted); line-height:1.8; }
+    input[type=range] { width:100%; accent-color:var(--accent); min-height:30px; }
+    button { padding:.85rem; background:transparent; color:var(--ink); border:1px solid var(--line); cursor:pointer; min-height:44px; }
+    button:hover { border-color:var(--accent); }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    button:focus-visible, a:focus-visible, canvas:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .actions { display:grid; gap:.6rem; }
+    .controls p { color:var(--muted); font-size:.8rem; line-height:1.7; }
+    .notes { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; padding:2rem 0; color:var(--muted); line-height:1.8; }
+    .notes strong { display:block; color:var(--accent); margin-bottom:.3rem; font-weight:400; }
+    [hidden] { display:none !important; }
+    @media(max-width:760px) { main { padding:5.5rem 1rem 1rem; } .intro { grid-template-columns:1fr; gap:1.5rem; } .workbench { grid-template-columns:1fr; } .controls { gap:1rem; } .notes { grid-template-columns:1fr; gap:1rem; } .page-header { padding:1rem; font-size:.7rem; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+  <nav class="page-header"><a href="../index.html">Gallery</a><span class="sep">/</span><span class="current">39 Particle Artwork</span></nav>
+  <main>
+    <header class="intro">
+      <div><p class="eyebrow">Interaction study / Three.js / image → points</p><h1>Nothing stays<br><em>scattered.</em></h1></div>
+      <p class="lead">A little landscape, held together by springs. Brush through the image to push its pixels into depth. Step away and watch every point find its way home.</p>
+    </header>
+    <section class="workbench" aria-label="Interactive particle artwork">
+      <div class="stage" id="artStage">
+        <img id="artFallback" src="../assets/particle-art.svg" alt="Original sunset illustration: a striped peach sun behind violet mountains and a lilac sea.">
+        <canvas id="artCanvas" tabindex="0" aria-label="Particle landscape. Move your pointer to push particles. Use arrow keys to move the brush, Space to push, and Escape to release." hidden></canvas>
+        <p class="caption" id="artStatus" role="status">Original artwork · loading particle renderer…</p>
+      </div>
+      <aside class="controls">
+        <div><p class="eyebrow">Field controls</p><h2>A gentle disturbance.</h2></div>
+        <div><label for="brushRadius">Brush radius <output id="radiusValue">90</output> px</label><input id="brushRadius" type="range" min="35" max="180" value="90"></div>
+        <div><label for="pushStrength">Push strength <output id="strengthValue">1.8</output></label><input id="pushStrength" type="range" min="0.5" max="4" step="0.1" value="1.8"></div>
+        <div class="actions"><button id="scatterArt" type="button" disabled>SCATTER / RETURN</button><button id="resetArt" type="button" disabled>RESET ARTWORK</button><button id="pauseArt" type="button" aria-pressed="false" disabled>PAUSE MOTION</button></div>
+        <p>Mouse: sweep to push.<br>Touch: press or drag; vertical scrolling stays native.<br>Keyboard: focus the artwork, arrows to move, Space to push, Escape to release.</p>
+        <p>Reduced motion keeps a static image. No WebGL? The original artwork remains visible.</p>
+      </aside>
+    </section>
+    <noscript><p>JavaScript is disabled. The original landscape above remains available.</p></noscript>
+    <footer class="notes"><div><strong>01 / SAMPLE</strong>A local, original SVG becomes 14,400 colored points. No image requests to third-party services.</div><div><strong>02 / DISTURB</strong>A circular brush repels nearby particles in x, y and depth. One Three.js Points draw call.</div><div><strong>03 / RESTORE</strong>Fixed-step damped springs return to image coordinates. Rendering sleeps once the field settles.</div></footer>
+  </main>
+  <script type="module" src="../assets/js/particle-art.mjs"></script>
+</body>
+</html>
