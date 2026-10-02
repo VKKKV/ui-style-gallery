@@ -1,0 +1,3 @@
+# Python verification/extraction caches
+__pycache__/
+*.py[cod]
