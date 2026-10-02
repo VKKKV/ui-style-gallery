@@ -45,7 +45,7 @@
     .demo-shell::after { content: "2D CANVAS STUDY"; position: absolute; z-index: 1; right: 1.2rem; bottom: 1rem; color: rgba(243, 240, 232, .42); font-size: .62rem; letter-spacing: .08em; pointer-events: none; }
     #flowmap-canvas { display: block; width: 100%; height: min(68vw, 650px); min-height: 360px; cursor: crosshair; touch-action: none; }
     .canvas-fallback { display: block; padding: 6rem clamp(1.4rem, 8vw, 6rem); min-height: 360px; color: var(--ink); background: repeating-linear-gradient(135deg, #17191b 0 1px, #101113 1px 12px); }
-    .canvas-fallback[hidden] { display: none; }
+    [hidden] { display: none !important; }
     .canvas-fallback h2 { max-width: 18ch; margin: 0 0 1rem; font: 700 clamp(2rem, 6vw, 4.8rem)/.9 Arial, sans-serif; letter-spacing: -.07em; text-transform: uppercase; }
     .canvas-fallback p { max-width: 42ch; margin: 0; color: var(--muted); font-size: .8rem; }
     .controls { display: flex; align-items: center; flex-wrap: wrap; gap: .7rem 1.2rem; border-bottom: 1px solid var(--line); padding: 1.1rem 0; }
@@ -77,7 +77,7 @@
   <main class="page">
     <div class="topline">
       <a class="back" href="../index.html">← UI style gallery</a>
-      <span class="serial">experiment 06 / 31</span>
+      <span class="serial">experiment 10 / 38</span>
     </div>
 
     <header class="intro">
@@ -100,7 +100,7 @@
     <div class="controls" aria-label="Flowmap controls">
       <button class="button" id="pause-button" type="button" aria-pressed="false">Pause field</button>
       <button class="button" id="reset-button" type="button">Reset field</button>
-      <div class="readout" aria-live="polite">
+      <div class="readout">
         <span>State <b id="state-readout">LIVE</b></span>
         <span>Velocity <b id="velocity-readout">0.00</b></span>
         <span>Field <b id="field-readout">0%</b></span>
@@ -110,7 +110,7 @@
     <div class="notes">
       <section class="note" aria-labelledby="method-title">
         <h2 id="method-title">Method / 01</h2>
-        <p>Each gesture adds a directional impulse to a low-resolution flowmap. Neighbouring cells advect and decay every frame; the resulting vector offsets horizontal text slices and color layers.</p>
+        <p>Each gesture adds a directional impulse to a low-resolution flowmap. Neighbouring cells advect and decay at a fixed time step; the resulting vector offsets horizontal text slices and color layers.</p>
       </section>
       <section class="note" aria-labelledby="keys-title">
         <h2 id="keys-title">Control / 02</h2>

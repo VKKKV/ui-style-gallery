@@ -17,10 +17,13 @@
   }
   fallback.hidden = true;
 
-  const context = canvas.getContext('2d', { alpha: false });
+  let context;
+  try { context = canvas.getContext('2d', { alpha: false }); } catch { context = null; }
   if (!context) {
     canvas.hidden = true;
     fallback.hidden = false;
+    pauseButton.disabled = resetButton.disabled = true;
+    stateReadout.textContent = 'UNAVAILABLE';
     return;
   }
 
@@ -33,9 +36,13 @@
   let width = 0;
   let height = 0;
   let dpr = 1;
-  let paused = false;
+  let userPaused = false;
+  let paused = reduceMotion.matches;
   let raf = 0;
-  let lastFrame = 0;
+  let elapsed = 0;
+  let simulationTime = 0;
+  let inView = true;
+  let pageActive = true;
   let velocity = 0;
   let lastTime = performance.now();
 
@@ -51,6 +58,8 @@
     canvas.height = Math.round(height * dpr);
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
     context.imageSmoothingEnabled = true;
+    pointer.active = false;
+    drawBackground(simulationTime); drawSpecimen(); drawField();
   }
 
   function clearField() {
@@ -124,7 +133,7 @@
     const centerY = height * 0.52;
     const fontSize = clamp(width * 0.17, 60, 180);
     const label = 'DRIFT';
-    const measure = context.measureText(label);
+
     context.font = `900 ${fontSize}px Arial, Helvetica, sans-serif`;
     const textWidth = context.measureText(label).width;
     const startX = centerX - textWidth / 2;
@@ -192,21 +201,30 @@
     if (velocityReadout) velocityReadout.textContent = velocity.toFixed(2);
     if (fieldReadout) fieldReadout.textContent = `${Math.min(100, Math.round((fieldStrength || 0) * 3))}%`;
     if (pauseButton) {
+      pauseButton.disabled = reduceMotion.matches;
       pauseButton.textContent = paused ? 'Resume field' : 'Pause field';
       pauseButton.setAttribute('aria-pressed', String(paused));
     }
   }
 
   function render(time) {
-    if (paused) {
+    if (paused || document.hidden || !inView || !pageActive) {
       raf = 0;
       return;
     }
     const delta = Math.min(50, time - lastTime);
     lastTime = time;
-    const fieldStrength = advectField();
+    elapsed += delta;
+    while (elapsed >= 1000 / 60) {
+      advectField();
+      elapsed -= 1000 / 60;
+    }
+    simulationTime += delta;
+    let total = 0;
+    for (let i = 0; i < field.length; i += 2) total += Math.hypot(field[i], field[i + 1]);
+    const fieldStrength = total / (FIELD_WIDTH * FIELD_HEIGHT);
     velocity *= Math.pow(.82, delta / 16.67);
-    drawBackground(time);
+    drawBackground(simulationTime);
     drawSpecimen();
     drawField();
     updateReadout(fieldStrength);
@@ -214,7 +232,7 @@
   }
 
   function start() {
-    if (!raf) {
+    if (!raf && !paused && !document.hidden && inView && pageActive) {
       lastTime = performance.now();
       raf = requestAnimationFrame(render);
     }
@@ -226,6 +244,7 @@
   }
 
   function handlePointerDown(event) {
+    if (!event.isPrimary || event.button !== 0) return;
     const position = positionFromEvent(event);
     pointer.x = pointer.lastX = position.x;
     pointer.y = pointer.lastY = position.y;
@@ -235,6 +254,7 @@
   }
 
   function handlePointerMove(event) {
+    if (!event.isPrimary) return;
     const position = positionFromEvent(event);
     if (!pointer.active) {
       pointer.x = pointer.lastX = position.x;
@@ -258,7 +278,7 @@
 
   function handlePointerUp(event) {
     pointer.active = false;
-    if (event.pointerId !== undefined) canvas.releasePointerCapture?.(event.pointerId);
+    if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
   }
 
   function injectKeyboard(dx, dy) {
@@ -269,11 +289,17 @@
     } else start();
   }
 
-  pauseButton.addEventListener('click', () => {
-    paused = !paused;
-    if (!paused) start();
+  function updatePauseState() {
+    paused = userPaused || reduceMotion.matches;
+    syncLoop();
     updateReadout();
-  });
+  }
+  function togglePause() {
+    if (reduceMotion.matches) return;
+    userPaused = !userPaused;
+    updatePauseState();
+  }
+  pauseButton.addEventListener('click', togglePause);
   resetButton.addEventListener('click', () => {
     clearField();
     drawBackground(performance.now()); drawSpecimen(); drawField();
@@ -286,7 +312,7 @@
   canvas.addEventListener('pointerleave', () => { if (pointer.active) pointer.active = false; });
   canvas.addEventListener('keydown', (event) => {
     if (event.key === ' ' || event.key === 'Enter') {
-      event.preventDefault(); paused = !paused; if (!paused) start(); updateReadout();
+      event.preventDefault(); togglePause();
     } else if (event.key.toLowerCase() === 'r') {
       clearField(); drawBackground(performance.now()); drawSpecimen(); drawField(); start();
     } else {
@@ -294,12 +320,22 @@
       if (keyVectors[event.key]) { event.preventDefault(); injectKeyboard(...keyVectors[event.key]); }
     }
   });
+  function syncLoop() {
+    cancelAnimationFrame(raf); raf = 0;
+    pointer.active = false;
+    start();
+  }
+  document.addEventListener('visibilitychange', syncLoop);
+  window.addEventListener('pagehide', () => { pageActive = false; syncLoop(); });
+  window.addEventListener('pageshow', () => { pageActive = true; syncLoop(); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting; syncLoop();
+  }).observe(canvas);
+  new ResizeObserver(resize).observe(canvas);
   window.addEventListener('resize', resize, { passive: true });
-  reduceMotion.addEventListener?.('change', () => { if (reduceMotion.matches) paused = true; updateReadout(); });
+  reduceMotion.addEventListener?.('change', updatePauseState);
 
   resize();
   drawBackground(0); drawSpecimen(); drawField();
-  if (reduceMotion.matches) paused = true;
-  updateReadout();
-  if (!paused) start();
+  updatePauseState();
 })();
