@@ -67,7 +67,7 @@
     .live::before { width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 12px currentColor; content: ""; }
     .readout { text-align: right; }
     .stage { position: relative; min-height: clamp(440px, 59vw, 680px); overflow: hidden; background: #0a1713; }
-    #fluidCanvas { display: block; width: 100%; height: 100%; min-height: inherit; cursor: crosshair; touch-action: none; }
+    #fluidCanvas { display: block; width: 100%; height: clamp(440px, 59vw, 680px); min-height: inherit; cursor: crosshair; touch-action: none; }
     #fluidCanvas:focus-visible { outline-offset: -5px; }
     .stage-label { position: absolute; top: 1.2rem; left: 1.3rem; pointer-events: none; }
     .stage-label strong { display: block; color: var(--ink); font: 600 clamp(1rem, 2vw, 1.45rem)/1.1 "SFMono-Regular", Consolas, monospace; letter-spacing: .08em; }
@@ -111,6 +111,7 @@
       .workbench-top { align-items: start; flex-direction: column; gap: .4rem; }
       .readout { text-align: left; }
       .stage { min-height: 510px; }
+      #fluidCanvas { height: 510px; }
       .stage-label { left: .9rem; top: .9rem; }
       .axis { right: .9rem; top: .9rem; }
       .button-row button { flex: 1 1 auto; }
@@ -133,12 +134,12 @@
         <p class="kicker">// interaction study · canvas 2d</p>
         <h1>See the<br><span>current.</span></h1>
       </div>
-      <p class="lede"><strong>Drag across the instrument.</strong> Your pointer leaves a diffusing velocity field that peels back the solid surface and exposes its x-ray construction underneath.</p>
+      <p class="lede"><strong>Drag across the instrument.</strong> Your pointer leaves a diffusing density field that peels back the solid surface and exposes its x-ray construction underneath.</p>
     </header>
 
     <section class="workbench" aria-labelledby="demo-title">
       <div class="workbench-top">
-        <div class="live"><span id="demo-title">Live material scan</span></div>
+        <div class="live"><span id="demo-title">Simulated material scan</span></div>
         <div class="readout" id="status" role="status" aria-live="polite">SOLID SURFACE · TRACKING READY</div>
       </div>
       <div class="stage">
@@ -158,7 +159,7 @@
     </section>
 
     <section class="notes" aria-label="Interaction notes">
-      <article class="note"><span class="num">01 / DRAG</span><h2>Inject a trail</h2><p>Mouse, pen, and touch input inject velocity and dye; the field carries both forward before viscosity softens it.</p></article>
+      <article class="note"><span class="num">01 / DRAG</span><h2>Inject a trail</h2><p>Mouse, pen, and touch input paint a scalar density mask; neighbouring cells diffuse and fade the trail.</p></article>
       <article class="note"><span class="num">02 / REVEAL</span><h2>Open the layer</h2><p>A seeded burst turns the simulated density into a soft mask. The cyan internals appear only where the field is bright.</p></article>
       <article class="note"><span class="num">03 / KEYBOARD</span><h2>Stay in control</h2><p>Focus the canvas and press Enter or Space to reveal. R resets; P pauses or resumes the simulation.</p></article>
     </section>

@@ -32,12 +32,16 @@
   let width = 0;
   let height = 0;
   let dpr = 1;
+  let userPaused = false;
   let paused = reducedMotion.matches;
   let revealed = false;
   let revealEnergy = 0;
   let lastFrame = 0;
   let frameId = 0;
-  let destroyed = false;
+  let pageActive = true;
+  let inView = true;
+  let elapsedTime = 0;
+  let simulationTime = 0;
 
   function index(x, y) { return y * field.width + x; }
 
@@ -203,7 +207,7 @@
     ctx.fillStyle = '#8ca69a';
     ctx.font = `${Math.max(10, Math.min(13, width / 58))}px "SFMono-Regular", Consolas, monospace`;
     ctx.fillText('PRESSURE MAP', pad + 26, height - pad - 30);
-    ctx.fillText('SURFACE INTEGRITY  98.4%', width - pad - 190, height - pad - 30);
+    if (width > 520) ctx.fillText('SIMULATED MATERIAL', width - pad - 190, height - pad - 30);
     ctx.restore();
 
     // A low-resolution field is expanded as translucent radial sprites. This keeps the
@@ -241,15 +245,22 @@
   }
 
   function tick(now) {
-    if (destroyed) return;
-    const elapsed = Math.min(50, lastFrame ? now - lastFrame : 16.7);
+    frameId = 0;
+    if (paused || document.hidden || !inView || !pageActive) return;
+    const elapsed = Math.min(50, Math.max(0, now - lastFrame));
     lastFrame = now;
-    if (!paused) {
+    elapsedTime += elapsed;
+    while (elapsedTime >= 1000 / 60) {
       diffuse();
-      revealEnergy = Math.max(0, revealEnergy * Math.pow(.994, elapsed / 16.7));
-      if (revealed && revealEnergy < .015) revealed = false;
-      draw(now);
+      elapsedTime -= 1000 / 60;
     }
+    simulationTime += elapsed;
+    revealEnergy = Math.max(0, revealEnergy * Math.pow(.994, elapsed / (1000 / 60)));
+    if (revealed && revealEnergy < .015) {
+      revealed = false;
+      status.textContent = 'SOLID SURFACE · TRACKING READY';
+    }
+    draw(simulationTime);
     frameId = window.requestAnimationFrame(tick);
   }
 
@@ -259,16 +270,21 @@
   }
 
   function startPointer(event) {
+    if (!event.isPrimary || event.button !== 0) return;
     const point = positionFromEvent(event);
     pointer.active = true;
     pointer.x = pointer.previousX = point.x;
     pointer.y = pointer.previousY = point.y;
     canvas.setPointerCapture?.(event.pointerId);
     inject(point.x, point.y, .42, Math.min(width, height) * .1);
+    revealed = true;
+    revealEnergy = Math.max(revealEnergy, .42);
+    status.textContent = paused ? 'X-RAY LAYER · PAUSED' : 'X-RAY LAYER · TRACKING';
+    if (paused) draw(simulationTime);
   }
 
   function movePointer(event) {
-    if (!pointer.active) return;
+    if (!pointer.active || !event.isPrimary) return;
     const point = positionFromEvent(event);
     const distance = Math.hypot(point.x - pointer.previousX, point.y - pointer.previousY);
     inject(point.x, point.y, .18 + Math.min(.35, distance / Math.max(width, height)), Math.min(width, height) * .075);
@@ -282,22 +298,29 @@
 
   function endPointer(event) {
     pointer.active = false;
-    if (event?.pointerId !== undefined) canvas.releasePointerCapture?.(event.pointerId);
+    if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
   }
 
-  function togglePause() {
-    paused = !paused;
+  function updatePauseState() {
+    paused = userPaused || reducedMotion.matches;
+    pauseButton.disabled = reducedMotion.matches;
     pauseButton.setAttribute('aria-pressed', String(paused));
     pauseButton.textContent = paused ? 'Resume' : 'Pause';
     status.textContent = paused ? (revealed ? 'X-RAY LAYER · PAUSED' : 'SOLID SURFACE · PAUSED') : (revealed ? 'X-RAY LAYER · FIELD ACTIVE' : 'SOLID SURFACE · TRACKING READY');
-    if (!paused) { lastFrame = performance.now(); draw(lastFrame); }
+    syncLoop();
+  }
+
+  function togglePause() {
+    if (reducedMotion.matches) return;
+    userPaused = !userPaused;
+    updatePauseState();
   }
 
   canvas.addEventListener('pointerdown', startPointer);
   canvas.addEventListener('pointermove', movePointer);
   canvas.addEventListener('pointerup', endPointer);
   canvas.addEventListener('pointercancel', endPointer);
-  canvas.addEventListener('pointerleave', endPointer);
+  canvas.addEventListener('lostpointercapture', () => { pointer.active = false; });
   revealButton.addEventListener('click', seedReveal);
   pauseButton.addEventListener('click', togglePause);
   resetButton.addEventListener('click', reset);
@@ -306,15 +329,27 @@
     if (event.key.toLowerCase() === 'r') { event.preventDefault(); reset(); }
     if (event.key.toLowerCase() === 'p') { event.preventDefault(); togglePause(); }
   });
-  reducedMotion.addEventListener?.('change', event => {
-    if (event.matches && !paused) togglePause();
-  });
+  reducedMotion.addEventListener?.('change', updatePauseState);
   window.addEventListener('resize', resize, { passive: true });
-  window.addEventListener('pagehide', () => { destroyed = true; window.cancelAnimationFrame(frameId); }, { once: true });
+  function syncLoop() {
+    cancelAnimationFrame(frameId); frameId = 0;
+    pointer.active = false;
+    if (!paused && !document.hidden && inView && pageActive) {
+      lastFrame = performance.now();
+      frameId = requestAnimationFrame(tick);
+    }
+  }
+  document.addEventListener('visibilitychange', syncLoop);
+  window.addEventListener('pagehide', () => { pageActive = false; syncLoop(); });
+  window.addEventListener('pageshow', () => { pageActive = true; syncLoop(); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting; syncLoop();
+  }).observe(canvas);
+  new ResizeObserver(resize).observe(canvas);
 
   field.density = new Float32Array(field.width * field.height);
   field.next = new Float32Array(field.width * field.height);
   resize();
-  if (reducedMotion.matches) draw(performance.now());
-  else frameId = window.requestAnimationFrame(tick);
+  reset();
+  updatePauseState();
 })();
