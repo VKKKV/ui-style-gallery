@@ -79,7 +79,7 @@
     .project-card:hover { border-color: var(--card-accent, var(--accent)); background: oklch(100% 0 0 / .07); transform: translateY(-.3rem); }
     .project-card[aria-current="true"] { border-color: var(--card-accent, var(--accent)); background: oklch(100% 0 0 / .09); }
     .card-art, .detail-art { position: relative; overflow: hidden; isolation: isolate; background: var(--art-bg, #193638); }
-    .card-art { aspect-ratio: 1.36; border-bottom: 1px solid var(--rule); }
+    .card-art { display: block; aspect-ratio: 1.36; border-bottom: 1px solid var(--rule); }
     .card-art::before, .detail-art::before { content: ""; position: absolute; inset: 0; background: var(--art-image); background-size: cover; background-position: center; z-index: -1; }
     .card-art::after, .detail-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(145deg, transparent 25%, oklch(8% .025 250 / .35)); pointer-events: none; }
     .art-one { --art-bg: #123e42; --art-image: radial-gradient(circle at 72% 26%, oklch(87% .15 175 / .85) 0 8%, transparent 8.5%), radial-gradient(ellipse at 50% 70%, oklch(48% .15 181 / .75) 0 18%, transparent 18.5%), linear-gradient(135deg, oklch(26% .1 188), oklch(13% .04 225)); }
@@ -90,7 +90,7 @@
     .art-six { --art-bg: #412546; --art-image: linear-gradient(90deg, transparent 47%, oklch(87% .16 350 / .8) 47.5% 52%, transparent 52.5%), linear-gradient(0deg, transparent 47%, oklch(80% .12 60 / .75) 47.5% 52%, transparent 52.5%), radial-gradient(circle, oklch(48% .16 330), oklch(16% .06 296)); }
     .card-number { position: absolute; inset: 1rem auto auto 1rem; z-index: 1; color: oklch(100% 0 0 / .72); font: .65rem ui-monospace, monospace; letter-spacing: .16em; }
     .card-swatch { position: absolute; right: 1rem; bottom: 1rem; width: .62rem; height: .62rem; border-radius: 50%; background: var(--card-accent, var(--accent)); box-shadow: 0 0 .8rem var(--card-accent, var(--accent)); }
-    .card-copy { padding: 1rem 1rem 1.15rem; }
+    .card-copy { display: block; padding: 1rem 1rem 1.15rem; }
     .card-copy h3 { margin-bottom: .25rem; font-size: 1.1rem; font-weight: 570; letter-spacing: -.025em; }
     .card-copy p { margin: 0; color: var(--muted); font-size: .78rem; }
     .project-card:nth-child(1) { --card-accent: var(--accent); } .project-card:nth-child(2) { --card-accent: var(--accent-2); } .project-card:nth-child(3) { --card-accent: var(--warm); }
@@ -170,28 +170,28 @@
         <h2 id="gallery-title">Choose a visual study</h2>
         <p>Enter / Space to open · arrows to move</p>
       </div>
-      <div id="projectGrid" class="card-grid" role="list">
-        <button class="project-card" type="button" role="listitem" data-index="0" aria-current="false" aria-label="Open Tidal signal details">
+      <div id="projectGrid" class="card-grid">
+        <button class="project-card" type="button" data-index="0" aria-current="false" aria-label="Open Tidal signal details">
           <span class="card-art art-one" data-art="0" aria-hidden="true"><span class="card-number">01 / 06</span><span class="card-swatch"></span></span>
           <span class="card-copy"><span class="card-index">Tidal signal</span><h3>Gradient as horizon</h3><p>Layered atmosphere</p></span>
         </button>
-        <button class="project-card" type="button" role="listitem" data-index="1" aria-current="false" aria-label="Open Orbit index details">
+        <button class="project-card" type="button" data-index="1" aria-current="false" aria-label="Open Orbit index details">
           <span class="card-art art-two" data-art="1" aria-hidden="true"><span class="card-number">02 / 06</span><span class="card-swatch"></span></span>
           <span class="card-copy"><span class="card-index">Orbit index</span><h3>Signal in motion</h3><p>Radial attention</p></span>
         </button>
-        <button class="project-card" type="button" role="listitem" data-index="2" aria-current="false" aria-label="Open Amber field details">
+        <button class="project-card" type="button" data-index="2" aria-current="false" aria-label="Open Amber field details">
           <span class="card-art art-three" data-art="2" aria-hidden="true"><span class="card-number">03 / 06</span><span class="card-swatch"></span></span>
           <span class="card-copy"><span class="card-index">Amber field</span><h3>Warmth, indexed</h3><p>Soft focus system</p></span>
         </button>
-        <button class="project-card" type="button" role="listitem" data-index="3" aria-current="false" aria-label="Open Chromatic fold details">
+        <button class="project-card" type="button" data-index="3" aria-current="false" aria-label="Open Chromatic fold details">
           <span class="card-art art-four" data-art="3" aria-hidden="true"><span class="card-number">04 / 06</span><span class="card-swatch"></span></span>
-          <span class="card-copy"><span class="card-index">Chromatic fold</span><h3>Edges in tension</h3><p>Geometry with drag</p></span>
+          <span class="card-copy"><span class="card-index">Chromatic fold</span><h3>Edges in tension</h3><p>Angular composition</p></span>
         </button>
-        <button class="project-card" type="button" role="listitem" data-index="4" aria-current="false" aria-label="Open Green room details">
+        <button class="project-card" type="button" data-index="4" aria-current="false" aria-label="Open Green room details">
           <span class="card-art art-five" data-art="4" aria-hidden="true"><span class="card-number">05 / 06</span><span class="card-swatch"></span></span>
           <span class="card-copy"><span class="card-index">Green room</span><h3>Quiet repetition</h3><p>Organic intervals</p></span>
         </button>
-        <button class="project-card" type="button" role="listitem" data-index="5" aria-current="false" aria-label="Open Crossfade details">
+        <button class="project-card" type="button" data-index="5" aria-current="false" aria-label="Open Crossfade details">
           <span class="card-art art-six" data-art="5" aria-hidden="true"><span class="card-number">06 / 06</span><span class="card-swatch"></span></span>
           <span class="card-copy"><span class="card-index">Crossfade</span><h3>Meet at the center</h3><p>Alignment study</p></span>
         </button>
@@ -203,7 +203,7 @@
       <div id="detailArt" class="detail-art" aria-hidden="true"><span id="detailMark" class="art-mark">01</span></div>
       <div class="detail-copy">
         <p id="detailKicker" class="detail-kicker">01 / Tidal signal</p>
-        <h2 id="detailTitle">Gradient as horizon</h2>
+        <h2 id="detailTitle" tabindex="-1">Gradient as horizon</h2>
         <p id="detailDescription" class="detail-description">A study in soft layers, where a small shift in position can carry the same visual object into a new context.</p>
         <p id="detailMeta" class="detail-meta"><span>shared element</span><span>circular reveal</span><span>no dependency</span></p>
         <div class="detail-actions">

@@ -29,6 +29,7 @@
   let selected = -1;
   let lastTrigger = null;
   let transitionToken = 0;
+  let activeTransition = null;
 
   apiStatus.textContent = supportsViewTransition ? 'Native API ready' : 'CSS fallback active';
   apiStatus.classList.toggle('is-fallback', !supportsViewTransition);
@@ -41,7 +42,10 @@
 
   function render(project, index) {
     selected = index;
-    cards.forEach((card, cardIndex) => card.setAttribute('aria-current', String(cardIndex === index)));
+    cards.forEach((card, cardIndex) => {
+      card.setAttribute('aria-current', String(cardIndex === index));
+      card.setAttribute('aria-expanded', String(cardIndex === index));
+    });
     panel.style.setProperty('--detail-accent', project.accent);
     setArt(detailArt, project);
     detailMark.textContent = project.mark;
@@ -55,70 +59,96 @@
     }));
   }
 
-  function focusPanel() {
-    closeButton.focus({ preventScroll: true });
+  function clearNames() {
+    cards.forEach(card => card.querySelector('.card-art')?.style.removeProperty('view-transition-name'));
   }
 
-  function runUpdate(update, done) {
-    if (supportsViewTransition && !reduceMotion.matches) {
-      const transition = document.startViewTransition(update);
-      transition.finished.then(() => done?.()).catch(() => done?.());
-      return transition.finished;
+  function runUpdate(update, done, prepare) {
+    const token = ++transitionToken;
+    activeTransition?.skipTransition();
+    activeTransition = null;
+    clearNames();
+    const apply = () => {
+      if (token !== transitionToken) return;
+      update();
+    };
+    const finish = () => {
+      if (token !== transitionToken) return;
+      clearNames();
+      activeTransition = null;
+      done?.();
+    };
+    if (supportsViewTransition && !reduceMotion.matches && !document.hidden) {
+      prepare?.();
+      try {
+        const transition = document.startViewTransition(apply);
+        activeTransition = transition;
+        transition.ready.catch(() => {});
+        transition.finished.then(finish, finish);
+        return;
+      } catch {
+        clearNames();
+      }
     }
-    update();
-    return Promise.resolve().then(() => done?.());
+    apply();
+    finish();
   }
 
   function openDetail(index, trigger = cards[index]) {
     const project = projects[index];
     if (!project) return;
     lastTrigger = trigger;
-    const token = ++transitionToken;
-    cards.forEach(card => card.querySelector('.card-art')?.style.removeProperty('view-transition-name'));
+    selected = index;
     const cardArt = trigger?.querySelector('.card-art');
-    if (cardArt && panel.hidden) cardArt.style.viewTransitionName = 'detail-art';
     runUpdate(() => {
       render(project, index);
       panel.hidden = false;
-      cardArt?.style.removeProperty('view-transition-name');
-      panel.classList.remove('is-fallback-entry');
-      if (!supportsViewTransition || reduceMotion.matches) void panel.offsetWidth;
-      panel.classList.add('is-fallback-entry');
+      clearNames();
+      panel.classList.remove('is-fallback-entry', 'is-replaying');
+      if (!supportsViewTransition && !reduceMotion.matches) {
+        void panel.offsetWidth;
+        panel.classList.add('is-fallback-entry');
+      }
     }, () => {
-      if (token === transitionToken) focusPanel();
+      if (!document.hidden) detailTitle.focus();
+    }, () => {
+      if (cardArt && panel.hidden) cardArt.style.viewTransitionName = 'detail-art';
     });
   }
 
   function closeDetail() {
-    if (selected < 0) return;
+    if (selected < 0 && panel.hidden) return;
     const trigger = lastTrigger || cards[selected];
-    const token = ++transitionToken;
+    selected = -1;
     runUpdate(() => {
       const cardArt = trigger?.querySelector('.card-art');
       if (cardArt) cardArt.style.viewTransitionName = 'detail-art';
       panel.hidden = true;
-      cards.forEach(card => card.setAttribute('aria-current', 'false'));
+      cards.forEach(card => {
+        card.setAttribute('aria-current', 'false');
+        card.setAttribute('aria-expanded', 'false');
+      });
     }, () => {
-      trigger?.querySelector('.card-art')?.style.removeProperty('view-transition-name');
-      if (trigger && token === transitionToken) trigger.focus({ preventScroll: true });
-      selected = -1;
+      if (!document.hidden) trigger?.focus();
     });
   }
 
   function replay() {
-    if (panel.hidden) return;
-    panel.classList.remove('is-replaying');
-    void panel.offsetWidth;
-    panel.classList.add('is-replaying');
-    if (supportsViewTransition && !reduceMotion.matches) {
-      const active = projects[selected];
-      document.startViewTransition(() => {
-        render(active, selected);
-      }).finished.catch(() => {});
-    }
+    if (panel.hidden || selected < 0) return;
+    const index = selected;
+    runUpdate(() => {
+      render(projects[index], index);
+      panel.classList.remove('is-fallback-entry', 'is-replaying');
+      if (!supportsViewTransition && !reduceMotion.matches) {
+        void panel.offsetWidth;
+        panel.classList.add('is-replaying');
+      }
+    });
   }
 
   cards.forEach((card, index) => {
+    card.setAttribute('aria-controls', 'detailPanel');
+    card.setAttribute('aria-expanded', 'false');
     card.addEventListener('click', () => openDetail(index, card));
     card.addEventListener('keydown', event => {
       if (event.key !== 'ArrowRight' && event.key !== 'ArrowDown' && event.key !== 'ArrowLeft' && event.key !== 'ArrowUp') return;
@@ -131,12 +161,20 @@
   closeButton.addEventListener('click', closeDetail);
   replayButton.addEventListener('click', replay);
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !panel.hidden) {
+    if (event.key === 'Escape' && (selected >= 0 || !panel.hidden)) {
       event.preventDefault();
       closeDetail();
     }
   });
-  reduceMotion.addEventListener?.('change', () => {
+  function updateMotion() {
     apiStatus.textContent = reduceMotion.matches ? 'Reduced motion on' : (supportsViewTransition ? 'Native API ready' : 'CSS fallback active');
+    if (reduceMotion.matches) activeTransition?.skipTransition();
+  }
+  reduceMotion.addEventListener?.('change', updateMotion);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) activeTransition?.skipTransition();
   });
+  window.addEventListener('pagehide', () => activeTransition?.skipTransition());
+  window.addEventListener('pageshow', updateMotion);
+  updateMotion();
 })();
