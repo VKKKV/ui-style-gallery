@@ -24,77 +24,94 @@
 
   let running = true;
   let pointerSeen = false;
+  let stageVisible = true;
+  let suspended = false;
   let targetX = -100;
   let targetY = -100;
   let x = targetX;
   let y = targetY;
   let raf = 0;
+  let lastFrame = 0;
 
-  function setStatus(text) {
-    status.innerHTML = `<strong>${text}</strong> · ${running ? 'bubble field active' : 'bubble field paused'}`;
+  function enabled() {
+    return !reduceMotion.matches && !coarsePointer.matches && !document.hidden && !suspended;
+  }
+
+  function setStatus() {
+    const message = pointerSeen && enabled() ? 'STALKER TRACKING' : 'NATIVE CURSOR';
+    const bubbleState = reduceMotion.matches ? 'reduced motion' : !running ? 'paused' : !stageVisible || document.hidden || suspended ? 'idle' : 'active';
+    const text = `${message} · bubble field ${bubbleState}`;
+    if (status.textContent !== text) status.textContent = text;
+  }
+
+  function hide() {
+    pointerSeen = false;
+    cancelAnimationFrame(raf);
+    raf = 0;
+    lastFrame = 0;
+    stalker.classList.remove('is-visible', 'is-expanded');
+    setStatus();
+  }
+
+  function sync() {
+    if (!enabled()) hide();
+    const animate = running && !reduceMotion.matches && !document.hidden && !suspended && stageVisible;
+    bubbles.forEach(bubble => { bubble.style.animationPlayState = animate ? 'running' : 'paused'; });
+    pauseButton.disabled = reduceMotion.matches;
+    pauseButton.setAttribute('aria-pressed', String(!running || reduceMotion.matches));
+    pauseButton.textContent = reduceMotion.matches ? 'Reduced motion' : running ? 'Pause bubbles' : 'Resume bubbles';
+    setStatus();
+  }
+
+  function place() {
+    stalker.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+  }
+
+  function tick(time) {
+    raf = 0;
+    if (!enabled() || !pointerSeen) return;
+    const elapsed = lastFrame ? Math.min(50, time - lastFrame) : 1000 / 60;
+    lastFrame = time;
+    const blend = 1 - Math.pow(1 - 0.075, elapsed / (1000 / 60));
+    x += (targetX - x) * blend;
+    y += (targetY - y) * blend;
+    const moving = Math.hypot(targetX - x, targetY - y) > .1;
+    if (!moving) { x = targetX; y = targetY; lastFrame = 0; }
+    place();
+    if (moving) raf = requestAnimationFrame(tick);
   }
 
   function move(event) {
-    if (reduceMotion.matches || coarsePointer.matches) return;
+    if (!enabled() || event.pointerType === 'touch') return;
     targetX = event.clientX;
     targetY = event.clientY;
     if (!pointerSeen) {
       pointerSeen = true;
+      x = targetX; y = targetY;
+      place();
       stalker.classList.add('is-visible');
-      setStatus('STALKER TRACKING');
+      setStatus();
     }
-  }
-
-  function tick() {
-    if (!reduceMotion.matches && !coarsePointer.matches) {
-      x += (targetX - x) * 0.075;
-      y += (targetY - y) * 0.075;
-      stalker.style.transform = `translate3d(${x - stalker.offsetWidth / 2}px, ${y - stalker.offsetHeight / 2}px, 0)`;
-    }
-    raf = requestAnimationFrame(tick);
-  }
-
-  function toggleHover(event) {
-    if (event.type === 'focusin' || event.type === 'pointerenter') stalker.classList.add('is-expanded');
-    else stalker.classList.remove('is-expanded');
-  }
-
-  function toggleBubbles() {
-    running = !running;
-    field.classList.toggle('is-paused', !running);
-    bubbles.forEach((bubble) => { bubble.style.animationPlayState = running ? 'running' : 'paused'; });
-    pauseButton.setAttribute('aria-pressed', String(!running));
-    pauseButton.textContent = running ? 'Pause bubbles' : 'Resume bubbles';
-    setStatus(running ? 'STALKER TRACKING' : 'STALKER PAUSED');
+    stalker.classList.toggle('is-expanded', !!event.target.closest?.('a, button, #stalkerStage'));
+    if (!raf) raf = requestAnimationFrame(tick);
   }
 
   document.addEventListener('pointermove', move, { passive: true });
-  document.addEventListener('keydown', () => {
-    stalker.classList.remove('is-visible', 'is-expanded');
-    pointerSeen = false;
-    setStatus('NATIVE CURSOR');
-  }, { passive: true });
-  window.addEventListener('blur', () => stalker.classList.remove('is-visible', 'is-expanded'));
-  window.addEventListener('pointerover', (event) => {
-    if (event.target.closest('a, button, #stalkerStage')) toggleHover({ type: 'pointerenter' });
-  }, { passive: true });
-  window.addEventListener('pointerout', (event) => {
-    if (event.target.closest('a, button, #stalkerStage') && !event.relatedTarget?.closest?.('a, button, #stalkerStage')) toggleHover({ type: 'pointerleave' });
-  }, { passive: true });
-  pauseButton.addEventListener('click', toggleBubbles);
-  reduceMotion.addEventListener?.('change', () => {
-    if (reduceMotion.matches) stalker.classList.remove('is-visible', 'is-expanded');
-  });
-  coarsePointer.addEventListener?.('change', () => {
-    if (coarsePointer.matches) stalker.classList.remove('is-visible', 'is-expanded');
-  });
-
-  if (reduceMotion.matches || coarsePointer.matches) {
-    stalker.style.display = 'none';
-    setStatus('NATIVE CURSOR');
-  } else {
-    raf = requestAnimationFrame(tick);
+  document.addEventListener('keydown', hide);
+  document.addEventListener('pointerout', event => { if (!event.relatedTarget) hide(); });
+  window.addEventListener('blur', hide);
+  pauseButton.addEventListener('click', () => { running = !running; sync(); });
+  reduceMotion.addEventListener('change', sync);
+  coarsePointer.addEventListener('change', sync);
+  document.addEventListener('visibilitychange', sync);
+  window.addEventListener('pagehide', () => { suspended = true; hide(); sync(); });
+  window.addEventListener('pageshow', () => { suspended = false; sync(); });
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      stageVisible = entries[0].isIntersecting;
+      sync();
+    });
+    observer.observe(stage);
   }
-
-  window.addEventListener('pagehide', () => cancelAnimationFrame(raf), { once: true });
+  sync();
 })();
