@@ -8,8 +8,8 @@ const countInput = document.querySelector('#particleCount');
 const countValue = document.querySelector('#particleCountValue');
 const widthInput = document.querySelector('#lineWidth');
 const widthValue = document.querySelector('#lineWidthValue');
-const lengthInput = document.querySelector('#lineLength');
-const lengthValue = document.querySelector('#lineLengthValue');
+// Keep the original short-particle baseline; no global length stretch control.
+const sourceParticleLength = 1.25;
 const colorInput = document.querySelector('#lineColor');
 const colorValue = document.querySelector('#lineColorValue');
 const pauseButton = document.querySelector('#particlePause');
@@ -99,7 +99,7 @@ function sampleCurrentFrame() {
   const fitW = Math.min(stageAspect, sourceAspect);
   const fitH = fitW / sourceAspect;
   const positions = geometry.getAttribute('position');
-  const length = Number(lengthInput.value) / stageHeight;
+  const length = sourceParticleLength / stageHeight;
   const width = Number(widthInput.value) / stageHeight;
   for (let i = 0; i < count && candidates.length; i++) {
     const source = candidates[Math.min(candidates.length - 1, Math.floor(sampleSeeds[i] * candidates.length))];
@@ -116,7 +116,7 @@ function sampleCurrentFrame() {
   canvas.dataset.frameIndex = String(frameIndex);
   canvas.dataset.particleCount = String(count);
   canvas.dataset.particleSize = String(widthInput.value);
-  canvas.dataset.lineLength = String(lengthInput.value);
+  canvas.dataset.lineLength = String(sourceParticleLength);
   updateColor();
 }
 function updateColor() {
@@ -158,7 +158,7 @@ function updateStatus() {
     ? 'Particles unavailable · static source frame' : 'Particles unavailable · original GIF fallback') : reducedMotion.matches
     ? 'Reduced motion · static particle frame' : paused ? 'Particle loop paused' : `${count.toLocaleString()} particles · live GIF frame sampling`;
   pauseButton.disabled = !renderer || reducedMotion.matches;
-  for (const input of [countInput, widthInput, lengthInput, colorInput]) input.disabled = !renderer;
+  for (const input of [countInput, widthInput, colorInput]) input.disabled = !renderer;
 }
 function fallback() {
   failed = true;
@@ -183,9 +183,6 @@ countInput.addEventListener('input', () => {
 });
 widthInput.addEventListener('input', () => {
   widthValue.value = `${widthInput.value} px`; sampleCurrentFrame();
-});
-lengthInput.addEventListener('input', () => {
-  lengthValue.value = `${lengthInput.value} px`; sampleCurrentFrame();
 });
 colorInput.addEventListener('input', updateColor);
 pauseButton.addEventListener('click', () => {

@@ -64,12 +64,19 @@ def main():
             canvas = page.locator('#particleCanvas')
             assert canvas.is_visible()
             assert page.locator('#lineWidth').input_value() == '1.5'
-            assert page.locator('#lineLength').input_value() == '1.25'
+            assert page.locator('#lineLength').count() == 0, 'removed length control returned'
+            assert page.locator('.controls input[type=range]').count() == 3
+            assert canvas.get_attribute('data-line-length') == '1.25'
             assert page.locator('#lineColor').input_value() == '0'
-            samples = page.evaluate('''async()=>{const out=[];for(let i=0;i<12;i++){
-              out.push(await new Promise(resolve=>requestAnimationFrame(()=>{const c=document.createElement('canvas');c.width=80;c.height=45;
-              const ctx=c.getContext('2d');ctx.drawImage(particleCanvas,0,0,80,45);resolve([...ctx.getImageData(0,0,80,45).data].join(','))})));
-              await new Promise(r=>setTimeout(r,60));}return out}''')
+            # Capture presented pixels; a drawImage in an unrelated RAF can read a
+            # cleared WebGL backbuffer even though the composited artwork is visible.
+            samples = []
+            frame_indices = set()
+            for _ in range(12):
+                samples.append(canvas.screenshot())
+                frame_indices.add(canvas.get_attribute('data-frame-index'))
+                page.wait_for_timeout(60)
+            assert len(frame_indices) > 2, 'real GIF frame indices did not advance'
             assert len(set(samples)) > 2, 'real GIF particle frames did not change'
             page.locator('#particlePause').click()
             idle(page)
@@ -88,27 +95,19 @@ def main():
                 length = math.hypot(vertices[6]-vertices[3], vertices[7]-vertices[4]) * h
                 width = math.hypot(vertices[3]-vertices[0], vertices[4]-vertices[1]) * h
                 return center, length, width
-            short = segment()
-            drawn = page.evaluate('__vertexCount')
-            page.locator('#lineLength').fill('24')
-            long = segment()
-            assert page.evaluate('__vertexCount') == drawn == 12000 * 6, 'length added particles'
-            assert all(abs(a-b)<1e-6 for a,b in zip(short[0],long[0])), 'length moved centers'
-            assert abs(short[1]-1.25)<.01 and abs(long[1]-24)<.01, (short, long)
-            assert abs(short[2]-long[2])<.01, 'length changed width'
-            canvas.screenshot(path=str(SCRATCH / 'dirty-pixel-particles-length-24.png'))
-            page.locator('#lineLength').fill('1.25')
-            assert canvas.screenshot() == held
+            baseline = segment()
+            assert page.evaluate('__vertexCount') == 12000 * 6
+            assert abs(baseline[1]-1.25)<.01 and abs(baseline[2]-1.5)<.01, baseline
             page.wait_for_timeout(100)
             assert canvas.screenshot() == held
             for selector, value, attribute in [('#particleCount', '30000', 'data-particle-count'),
                                                ('#lineWidth', '3', 'data-particle-size'),
-                                               ('#lineLength', '24', 'data-line-length'),
                                                ('#lineColor', '120', 'data-particle-hue')]:
                 before = canvas.screenshot()
                 page.locator(selector).fill(value)
                 assert canvas.get_attribute(attribute) == value
                 assert canvas.screenshot() != before, f'{selector} did not affect pixels'
+                assert abs(segment()[1] - 1.25) < .01, f'{selector} changed fixed length'
                 idle(page)
             # Width edits restore exactly the same frame, rather than randomizing positions.
             before = canvas.screenshot()
@@ -138,6 +137,10 @@ def main():
                 page.wait_for_timeout(100)
                 assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), width
                 assert page.locator('#lineColor').evaluate('e=>e.getBoundingClientRect().width > 40')
+            # Deliver screenshots of the source-aligned defaults, not exaggerated edits.
+            page.locator('#particleCount').fill('12000')
+            page.locator('#lineWidth').fill('1.5')
+            page.locator('#lineColor').fill('0')
             page.screenshot(path=str(SCRATCH / 'dirty-pixel-particles-desktop.png'), full_page=True)
             page.set_viewport_size({'width': 375, 'height': 900})
             page.screenshot(path=str(SCRATCH / 'dirty-pixel-particles-mobile.png'), full_page=True)
@@ -210,7 +213,7 @@ def main():
                 idle(invalid)
                 invalid.close()
             browser.close()
-            print(f'PASS Dirty Pixel Particles: {len(set(samples))} real frames, 4 rendered controls, deterministic edits, cached samples, hue-only upload, pause/resize/keyboard, reduced motion, lifecycle/context loss/fallback; {delta}')
+            print(f'PASS Dirty Pixel Particles: {len(set(samples))} real frames, 3 rendered controls, fixed source-baseline length, deterministic edits, cached samples, hue-only upload, pause/resize/keyboard, reduced motion, lifecycle/context loss/fallback; {delta}')
             print(f'Screenshots: {SCRATCH}/dirty-pixel-particles-desktop.png and {SCRATCH}/dirty-pixel-particles-mobile.png')
     finally:
         server.shutdown()

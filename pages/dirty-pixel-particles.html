@@ -24,7 +24,7 @@
     .corner { position:absolute; z-index:1; font:.65rem/1.5 monospace; letter-spacing:.14em; color:#d2d0c3; pointer-events:none; text-shadow:0 1px 8px #000; }
     .corner.top { top:1rem; left:1rem; }.corner.bottom { bottom:1rem; right:1rem; }
     .toolbar { padding:1.1rem 0; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:1.5rem; }
-    .toolbar .controls { flex:1; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)) auto; align-items:center; gap:1.2rem; }
+    .toolbar .controls { flex:1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) auto; align-items:center; gap:1.2rem; }
     .meta { color:var(--muted); }
     .controls { display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap; }
     .count-control { display:grid; grid-template-columns:minmax(0,1fr) max-content; align-items:center; gap:.15rem .5rem; min-width:0; }
@@ -71,8 +71,6 @@
         <input id="particleCount" type="range" min="2000" max="30000" step="1000" value="12000" aria-label="Particle count" aria-valuetext="12,000 particles"></div>
       <div class="count-control"><label for="lineWidth">LINE WIDTH</label><output id="lineWidthValue" for="lineWidth">1.5 px</output>
         <input id="lineWidth" type="range" min="0.5" max="3" step="0.25" value="1.5" aria-label="Line width"></div>
-      <div class="count-control"><label for="lineLength">LINE LENGTH</label><output id="lineLengthValue" for="lineLength">1.25 px</output>
-        <input id="lineLength" type="range" min="0.25" max="32" step="0.25" value="1.25" aria-label="Line length"></div>
       <div class="count-control"><label for="lineColor">HUE SHIFT</label><output id="lineColorValue" for="lineColor">SOURCE</output>
         <input id="lineColor" type="range" min="0" max="360" step="1" value="0" aria-label="Source color hue offset" aria-valuetext="Original source colors"></div>
       <button id="particlePause" type="button" aria-pressed="false" disabled>PAUSE</button>
@@ -82,7 +80,7 @@
     <noscript><p>The original artwork remains visible without JavaScript; reduced motion shows a still source frame.</p></noscript>
     <footer class="notes">
       <div><strong>01 / ORIGINAL FRAMES</strong>Samples the decoded frame sequence from the same local GIF used by the Dirty Pixels page. Source file and existing page are unchanged.</div>
-      <div><strong>02 / REAL-TIME PARTICLES</strong>Every GIF frame updates sampled particle positions. A single Three.js mesh renders short line particles; width and length resize the same segments without adding particles. Hue is an offset from the sampled source RGB; SOURCE preserves the original palette.</div>
+      <div><strong>02 / REAL-TIME PARTICLES</strong>Every GIF frame updates sampled particle positions. A single Three.js mesh renders short line particles; the short-particle length stays fixed, with no global stretch effect. Density and width remain adjustable. Hue is an offset from the sampled source RGB; SOURCE preserves the original palette.</div>
       <div><strong>03 / CONTROL & ACCESS</strong>Adjust from 2,000 to 30,000 particles. Reduced motion holds a still frame; unsupported WebGL leaves the original GIF visible.</div>
     </footer>
   </main>
