@@ -42,6 +42,7 @@
     .signal::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 14px currentColor; }
     .stage-meta { color: var(--muted); text-align: right; }
     .canvas-wrap { position: relative; min-height: clamp(340px, 58vw, 650px); background: #090c11; }
+    #revealCanvas[hidden] { display: none; }
     #revealCanvas { display: block; width: 100%; height: clamp(340px, 58vw, 650px); cursor: crosshair; }
     .canvas-fallback { display: grid; place-content: center; min-height: clamp(340px, 58vw, 650px); padding: 32px; color: var(--ink); }
     .canvas-fallback[hidden] { display: none; }
@@ -96,7 +97,7 @@
         <p class="kicker">Canvas 2D / threshold compositor</p>
         <h1>Noise <span>reveals</span><br>the signal.</h1>
       </div>
-      <p class="dek">A procedural image is rebuilt from noisy blocks. During the handoff, the RGB channels slip apart before locking back into one frame.</p>
+      <p class="dek">A procedural image is rebuilt from noisy blocks. During the handoff, offset color copies slip apart before locking back into one frame.</p>
     </header>
 
     <section class="stage-shell" aria-labelledby="stage-title">
@@ -109,7 +110,7 @@
         <div class="canvas-fallback" id="canvasFallback" hidden>
           <div>
             <h2>Canvas 2D is unavailable.</h2>
-            <p id="fallbackCopy">This study uses no remote media: Signal is a procedural grid, rings, and waveform revealed by a noise threshold. Use NEXT to read the other programmed scenes.</p>
+            <p id="fallbackCopy">This study uses no remote media: Signal is a procedural grid, rings, and waveform revealed by a noise threshold. Other programmed scenes include Orbit and Archive.</p>
           </div>
         </div>
       </div>
@@ -125,9 +126,9 @@
     </section>
 
     <section class="legend" aria-label="Effect components">
-      <article class="legend-item"><b class="red">01 / red channel</b><p>Late blocks expose a red edge shifted outward from the target.</p></article>
-      <article class="legend-item"><b class="green">02 / green anchor</b><p>The unshifted procedural frame keeps the composition legible.</p></article>
-      <article class="legend-item"><b class="blue">03 / blue channel</b><p>A mirrored offset creates the chromatic split before convergence.</p></article>
+      <article class="legend-item"><b class="red">01 / left copy</b><p>Late blocks expose a full-color copy shifted left of the target.</p></article>
+      <article class="legend-item"><b class="green">02 / central anchor</b><p>The unshifted procedural frame keeps the composition legible.</p></article>
+      <article class="legend-item"><b class="blue">03 / right copy</b><p>A mirrored offset creates the chromatic split before convergence.</p></article>
     </section>
 
     <section class="notes" aria-label="How to use this demo">

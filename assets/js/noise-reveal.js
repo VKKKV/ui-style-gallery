@@ -22,7 +22,11 @@
   let sceneIndex = 0;
   let startedAt = 0;
   let pausedAt = 0;
-  let paused = reduceMotion.matches;
+  let paused = true;
+  let suspended = false;
+  let suspendedAt = 0;
+  let inView = true;
+  let pageHidden = false;
   let raf = 0;
   let width = 0;
   let height = 0;
@@ -47,7 +51,6 @@
     height = rect.height;
     canvas.width = Math.max(1, Math.round(width * dpr));
     canvas.height = Math.max(1, Math.round(height * dpr));
-    context = canvas.getContext('2d');
     if (!context) return;
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
     draw(reduceMotion.matches ? 1 : paused ? pausedAt : progress());
@@ -56,25 +59,27 @@
   function progress(now = performance.now()) {
     if (reduceMotion.matches) return 1;
     if (paused) return pausedAt;
-    return Math.min(1, Math.max(0, (now - startedAt) / 1900));
+    return Math.min(1, Math.max(0, ((suspended ? suspendedAt : now) - startedAt) / 1900));
   }
 
   function resetClock(complete = false) {
-    startedAt = performance.now();
+    startedAt = suspended ? suspendedAt : performance.now();
     pausedAt = complete ? 1 : 0;
     paused = complete || reduceMotion.matches;
     pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.textContent = paused && !complete ? 'Resume' : 'Pause';
+    pauseButton.textContent = paused ? 'Resume' : 'Pause';
+    pauseButton.disabled = reduceMotion.matches;
   }
 
   function selectScene(index, autoplay = true) {
     sceneIndex = (index + scenes.length) % scenes.length;
     const scene = scenes[sceneIndex];
     sceneName.textContent = scene.name;
+    canvas.setAttribute('aria-label', `${scene.name}: procedural ${scene.detail} composition revealed through threshold noise`);
     progressLabel.textContent = `Scene ${String(sceneIndex + 1).padStart(2, '0')} / ${String(scenes.length).padStart(2, '0')}`;
     fallbackCopy.textContent = `${scene.name} is a procedural ${scene.detail} composition revealed by a noise threshold. Canvas is unavailable, so the description remains the readable fallback.`;
     if (autoplay) resetClock(false);
-    setStatus(reduceMotion.matches ? 'Complete · reduced motion' : autoplay ? 'Transitioning · RGB offset active' : 'Ready · press NEXT');
+    setStatus(reduceMotion.matches ? 'Complete · reduced motion' : autoplay ? 'Transitioning · color offset active' : 'Ready · press NEXT');
     draw(reduceMotion.matches ? 1 : progress());
   }
 
@@ -173,7 +178,7 @@
     drawBackground(ctx);
     const p = Math.min(1, Math.max(0, nowProgress));
     const aberration = (1 - p) * 18 + (p < 1 ? Math.sin(p * Math.PI) * 12 : 0);
-    // Separate color channels are drawn as silhouettes first, then the green anchor.
+    // Offset full-color copies converge on the unshifted artwork.
     ctx.globalCompositeOperation = 'screen';
     drawArtwork(ctx, -aberration, 0, .72);
     ctx.globalCompositeOperation = 'screen';
@@ -190,7 +195,7 @@
       for (let column = 0; column < columns; column += 1) {
         const threshold = randomNoise(column, row, seed);
         const wave = (column / columns) * .22 + (row / rows) * .12;
-        if (threshold > p * 1.08 - wave) {
+        if (p < 1 && threshold > p * 1.08 - wave) {
           ctx.fillStyle = threshold > .84 ? 'rgba(255, 79, 154, .82)' : threshold < .16 ? 'rgba(85, 231, 237, .72)' : 'rgba(5, 8, 12, .92)';
           ctx.fillRect(column * block, row * block, block + 1, block + 1);
         }
@@ -199,13 +204,15 @@
     ctx.fillStyle = 'rgba(255,255,255,.32)';
     ctx.fillRect(0, Math.floor(height * (.12 + p * .72)), width, 1);
     ctx.globalCompositeOperation = 'source-over';
-    progressDetail.textContent = p >= 1 ? 'threshold resolved / RGB aligned' : `threshold ${Math.round(p * 100)}% / offset ${Math.round(aberration)}px`;
+    progressDetail.textContent = p >= 1 ? 'threshold resolved / copies aligned' : `threshold ${Math.round(p * 100)}% / offset ${Math.round(aberration)}px`;
     if (p >= 1 && !reduceMotion.matches) {
-      setStatus('Complete · RGB channels aligned');
+      setStatus('Complete · color copies aligned');
     }
   }
 
   function animate(now) {
+    raf = 0;
+    if (paused || suspended) return;
     const p = progress(now);
     draw(p);
     if (!paused && p < 1) raf = requestAnimationFrame(animate);
@@ -215,8 +222,9 @@
     if (!context) return;
     cancelAnimationFrame(raf);
     resetClock(false);
+    setStatus(reduceMotion.matches ? 'Complete · reduced motion' : 'Transitioning · color offset active');
     if (reduceMotion.matches) { draw(1); return; }
-    raf = requestAnimationFrame(animate);
+    if (!suspended) raf = requestAnimationFrame(animate);
   }
 
   function next() {
@@ -225,14 +233,16 @@
   }
 
   function togglePause() {
-    if (reduceMotion.matches) return;
+    if (reduceMotion.matches || !context) return;
+    cancelAnimationFrame(raf);
+    raf = 0;
     if (paused) {
-      startedAt = performance.now() - pausedAt * 1900;
+      startedAt = (suspended ? suspendedAt : performance.now()) - pausedAt * 1900;
       paused = false;
       pauseButton.textContent = 'Pause';
       pauseButton.setAttribute('aria-pressed', 'false');
-      setStatus('Transitioning · RGB offset active');
-      raf = requestAnimationFrame(animate);
+      setStatus('Transitioning · color offset active');
+      if (!suspended) raf = requestAnimationFrame(animate);
     } else {
       pausedAt = progress();
       paused = true;
@@ -248,14 +258,16 @@
     sceneIndex = 0;
     selectScene(0, false);
     paused = true;
-    pausedAt = 0;
+    pausedAt = reduceMotion.matches ? 1 : 0;
     pauseButton.textContent = 'Resume';
     pauseButton.setAttribute('aria-pressed', 'true');
-    setStatus('Reset · press NEXT or Replay');
-    draw(0);
+    setStatus(reduceMotion.matches ? 'Complete · reduced motion' : 'Reset · press NEXT or Replay');
+    draw(pausedAt);
   }
 
   function canvasUnavailable() {
+    cancelAnimationFrame(raf);
+    context = null;
     canvas.hidden = true;
     fallback.hidden = false;
     [nextButton, replayButton, pauseButton, resetButton].forEach(button => { button.disabled = true; });
@@ -272,21 +284,38 @@
     resetButton.addEventListener('click', reset);
     window.addEventListener('resize', resize, { passive: true });
     reduceMotion.addEventListener?.('change', () => {
-      paused = reduceMotion.matches;
       cancelAnimationFrame(raf);
-      pauseButton.textContent = paused ? 'Pause' : 'Resume';
-      pauseButton.setAttribute('aria-pressed', String(paused));
-      setStatus(paused ? 'Complete · reduced motion' : 'Ready · press NEXT');
-      draw(paused ? 1 : 0);
+      paused = true;
+      pausedAt = 1;
+      pauseButton.textContent = 'Resume';
+      pauseButton.disabled = reduceMotion.matches;
+      pauseButton.setAttribute('aria-pressed', 'true');
+      setStatus(reduceMotion.matches ? 'Complete · reduced motion' : 'Complete · color copies aligned');
+      draw(1);
     });
     document.addEventListener('keydown', event => {
-      if (event.target.matches('input, textarea, select')) return;
+      if (!context || event.ctrlKey || event.metaKey || event.altKey || event.repeat || event.target.closest('input, textarea, select, [contenteditable]')) return;
+      if (event.code === 'Space' && event.target.closest('button, a')) return;
       const key = event.key.toLowerCase();
       if (key === 'n') { event.preventDefault(); next(); }
       else if (key === 'r') { event.preventDefault(); replay(); }
       else if (key === 'p' || event.code === 'Space') { event.preventDefault(); togglePause(); }
       else if (key === '0') { event.preventDefault(); reset(); }
     });
+    function syncSuspension() {
+      const next = document.hidden || pageHidden || !inView;
+      if (next === suspended) return;
+      if (next) { suspendedAt = performance.now(); suspended = true; cancelAnimationFrame(raf); raf = 0; }
+      else { startedAt += performance.now() - suspendedAt; suspended = false; if (!paused && progress() < 1) raf = requestAnimationFrame(animate); }
+    }
+    document.addEventListener('visibilitychange', syncSuspension);
+    window.addEventListener('pagehide', () => { pageHidden = true; syncSuspension(); });
+    window.addEventListener('pageshow', () => { pageHidden = false; syncSuspension(); resize(); });
+    if (typeof IntersectionObserver === 'function') new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; syncSuspension(); }).observe(canvas);
+    pausedAt = reduceMotion.matches ? 1 : 0;
+    pauseButton.textContent = 'Resume';
+    pauseButton.setAttribute('aria-pressed', 'true');
+    pauseButton.disabled = reduceMotion.matches;
     selectScene(0, false);
     resize();
     if (reduceMotion.matches) draw(1);
